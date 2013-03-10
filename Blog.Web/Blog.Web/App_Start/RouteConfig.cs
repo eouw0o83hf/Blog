@@ -14,6 +14,22 @@ namespace Blog.Web
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
 
             routes.MapRoute(
+                name: "About",
+                url: "about",
+                defaults: new { controller = "Info", action = "About" }
+            );
+            routes.MapRoute(
+                name: "Version",
+                url: "Version",
+                defaults: new { controller = "Info", action = "VersionInfo" }
+            );
+            routes.MapRoute(
+                name: "Main",
+                url: "Main",
+                defaults: new { controller = "Home", action = "Main" }
+            );
+
+            routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
                 defaults: new { controller = "Home", action = "Main", id = UrlParameter.Optional }
