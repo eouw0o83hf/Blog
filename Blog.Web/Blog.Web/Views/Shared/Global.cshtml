@@ -2,8 +2,16 @@
 
 <html>
 <head>
+    @*Title, meta, etc*@
     <meta name="viewport" content="width=device-width" />
     <title>eouw0o83hf :: @ViewBag.Title</title>
+
+    @*Scripts and Styles*@
+    <link href="@Url.Content("~/Content/Style/Reset.css")" rel="stylesheet" type="text/css" />
+    <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+    <link href="@Url.Content("~/Content/Style/Global.css")" rel="stylesheet" type="text/css" />
+    <link href="@Url.Content("~/Content/Style/Prettifiest.css")" rel="stylesheet" type="text/css" />
+    @RenderSection("Styles", false)
 </head>
 <body>
     @RenderBody()

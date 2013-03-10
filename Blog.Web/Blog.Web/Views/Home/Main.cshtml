@@ -3,8 +3,34 @@
     Layout = "~/Views/Shared/Global.cshtml";
     ViewBag.Title = "About";
 }
+<h1>Post #2: FizzBuzz (Code PoC)</h1>
+<p class="subtitle">2013-03-10 3:45PM CST</p>
+<p>Okay, let's test out some code styling. Here's a fizz-buzz implementation (with a couple of liberties taken to get it to smash down to one line):</p>
+<pre class="prettyprint">
+public class Program
+{
+    public static void Main(string[] args)
+    {
+        Console.WriteLine
+        (
+            string.Join
+            (
+                Environment.Newline, 
+                Enumerable.Range(1, 100)
+                    .Select(a => 
+                        a.ToString() + ": " +
+                        (a % 3 == 0 ? "Fizz" : string.Empty) + 
+                        (a % 5 == 0 ? "Buzz" : string.Empty)
+                    )
+            )
+        );
+        Console.Read();
+    }
+}
+</pre>
+
 <h1>Post #1: My Title Here</h1>
-<p>2013-03-10 3:30PM CST</p>
+<p class="subtitle">2013-03-10 3:30PM CST</p>
 <p>Hello world, this is my first post. There should be a bucket of links on the bottom of each page now, so check out the other stuff.</p>
 <p>Next to come are:</p>
 <ul>
