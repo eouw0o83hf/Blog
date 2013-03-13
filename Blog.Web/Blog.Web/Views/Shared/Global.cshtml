@@ -15,13 +15,9 @@
 </head>
 <body>
     @RenderBody()
+    <hr />
     <div>
-        Site map:
-        <ul>
-            <li>@Html.RouteLink("Main", "Main")</li>
-            <li>@Html.RouteLink("About", "About")</li>
-            <li>@Html.RouteLink("Version Info", "Version")</li>
-        </ul>
+        @Html.RouteLink("Main", "Main") | @Html.RouteLink("About", "About") | @Html.RouteLink("Version Info", "Version") | <a href="https://trello.com/board/eouw0o83hf-com/513f9eae3db9e83015000ce1">Site Development Board</a>
     </div>
 </body>
 </html>
