@@ -26,13 +26,13 @@ namespace Blog.Web
             routes.MapRoute(
                 name: "Main",
                 url: "Main",
-                defaults: new { controller = "Home", action = "Main" }
+                defaults: new { controller = "Blog", action = "Page" }
             );
 
             routes.MapRoute(
                 name: "Default",
                 url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Home", action = "Main", id = UrlParameter.Optional }
+                defaults: new { controller = "Blog", action = "Page", id = UrlParameter.Optional }
             );
         }
     }

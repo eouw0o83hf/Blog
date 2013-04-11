@@ -1,0 +1,9 @@
+﻿@model Blog.Web.ViewModels.Blog.Page
+@{
+    Layout = "~/Views/Shared/Global.cshtml";
+    ViewBag.Title = "Blog :: " + Model.BlogName;
+}
+@foreach (var p in Model.Posts)
+{
+    @Html.Partial("Post", p)
+}

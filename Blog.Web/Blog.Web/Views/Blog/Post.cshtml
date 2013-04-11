@@ -1,0 +1,5 @@
+﻿@model Blog.Web.ViewModels.Blog.Post
+<h1>Post #@Model.Id: @Html.Raw(Model.Title)</h1>
+<p class="subtitle">@Model.PostDate.ToString("yyyy-MM-dd h:mm tt")</p>
+@Html.Raw(Model.RawBody)
+

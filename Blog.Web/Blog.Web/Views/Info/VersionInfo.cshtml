@@ -72,6 +72,20 @@
     <li>Created a barebones-simple DB migration framework so that I can actually be data-driven and seamlessly push builds</li>
 </ul>
 
+<h2>1.0.6 (changeset 72, unreleased)</h2>
+<h3>Summary</h3>
+<p>Data-Driven Views</p>
+<h3>Date</h3>
+<p>2013-04-10</p>
+<h3>Details</h3>
+<ul>
+    <li>Moved all of the post information out of the Views and into a Controller.*</li>
+    <li>Migrated from the default Home {Controller, View, Model namespace} into Blog</li>
+    <li>Updated routing table to point to the new Blog entities</li>
+</ul>
+<p class="subtitle">*This is for the purpose of making the application properly data-driven from the top down.</p>
+<p class="subtitle"><em>Why top-down? I thought you were supposed to build bottom-up?</em></p>
+<p class="subtitle">In general development, I'd say that's probably true. But my goal here is to squeeze as much deliverability out of as tiny time increments as possible, and to be able to continuously deliver. Thus, fueling the front end is the greatest good in my current context.</p>
 @* Template:
 
 <h2>1.x.x (changeset x)</h2>
