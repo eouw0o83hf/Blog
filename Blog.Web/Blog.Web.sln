@@ -7,9 +7,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSync", "..\Common\DbSync\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Data", "Blog.Data\Blog.Data.csproj", "{9669472B-DCE6-4D0D-833E-C616DF4C49AA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Models", "Blog.Models\Blog.Models.csproj", "{34337FF4-613A-4301-ACEB-C379A1C4AC70}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Service", "Blog.Service\Blog.Service.csproj", "{BEF3B9B1-91D4-467B-B0E8-CED806D9EE77}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "..\Common\Common\Common.csproj", "{9666892F-031A-4E8D-BC27-1A57A3F4F3D6}"
+EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 4
+		SccNumberOfProjects = 7
 		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
 		SccTeamFoundationServer = https://eouw0o83hf.tfspreview.com/defaultcollection
 		SccLocalPath0 = .
@@ -22,6 +28,15 @@ Global
 		SccProjectUniqueName3 = Blog.Data\\Blog.Data.csproj
 		SccProjectName3 = Blog.Data
 		SccLocalPath3 = Blog.Data
+		SccProjectUniqueName4 = Blog.Models\\Blog.Models.csproj
+		SccProjectName4 = Blog.Models
+		SccLocalPath4 = Blog.Models
+		SccProjectUniqueName5 = Blog.Service\\Blog.Service.csproj
+		SccProjectName5 = Blog.Service
+		SccLocalPath5 = Blog.Service
+		SccProjectUniqueName6 = ..\\Common\\Common\\Common.csproj
+		SccProjectName6 = ../Common/Common
+		SccLocalPath6 = ..\\Common\\Common
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -40,6 +55,18 @@ Global
 		{9669472B-DCE6-4D0D-833E-C616DF4C49AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9669472B-DCE6-4D0D-833E-C616DF4C49AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9669472B-DCE6-4D0D-833E-C616DF4C49AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{34337FF4-613A-4301-ACEB-C379A1C4AC70}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{34337FF4-613A-4301-ACEB-C379A1C4AC70}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{34337FF4-613A-4301-ACEB-C379A1C4AC70}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{34337FF4-613A-4301-ACEB-C379A1C4AC70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BEF3B9B1-91D4-467B-B0E8-CED806D9EE77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEF3B9B1-91D4-467B-B0E8-CED806D9EE77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEF3B9B1-91D4-467B-B0E8-CED806D9EE77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEF3B9B1-91D4-467B-B0E8-CED806D9EE77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9666892F-031A-4E8D-BC27-1A57A3F4F3D6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9666892F-031A-4E8D-BC27-1A57A3F4F3D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9666892F-031A-4E8D-BC27-1A57A3F4F3D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9666892F-031A-4E8D-BC27-1A57A3F4F3D6}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

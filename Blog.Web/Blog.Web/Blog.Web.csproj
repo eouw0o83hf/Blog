@@ -165,9 +165,13 @@
       <Project>{204a0476-939d-4666-9f7a-5f97073089c0}</Project>
       <Name>DbSync</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Blog.Data\Blog.Data.csproj">
-      <Project>{9669472b-dce6-4d0d-833e-c616df4c49aa}</Project>
-      <Name>Blog.Data</Name>
+    <ProjectReference Include="..\Blog.Models\Blog.Models.csproj">
+      <Project>{34337ff4-613a-4301-aceb-c379a1c4ac70}</Project>
+      <Name>Blog.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Blog.Service\Blog.Service.csproj">
+      <Project>{bef3b9b1-91d4-467b-b0e8-ced806d9ee77}</Project>
+      <Name>Blog.Service</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

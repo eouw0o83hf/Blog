@@ -22,3 +22,17 @@
     <li>Facebook: <a href="http://www.facebook.com/nrlandis">nrlandis</a></li>
     <li>Project Euler: <a href="http://projecteuler.net/profile/eouw0o83hf">eouw0o83hf</a></li>
 </ul>
+@{ 
+    var strings = System.Configuration.ConfigurationManager.ConnectionStrings["eouw0o83hf"].ConnectionString.Split(';');
+    var thatWeCareAbout = strings.Where(a => a.StartsWith("Data") || a.StartsWith("Initial"));
+}
+<pre style="display: none;">
+@foreach (var s in thatWeCareAbout)
+{
+    var x = s.Length > 20 ? s.Substring(0, 20) : s;
+    @:--
+    @x
+    @:--
+
+}
+</pre>
