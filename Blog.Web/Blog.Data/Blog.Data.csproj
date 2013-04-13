@@ -54,16 +54,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\DbSync\DbSync.csproj">
-      <Project>{204a0476-939d-4666-9f7a-5f97073089c0}</Project>
-      <Name>DbSync</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="Migrations\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="Blog.dbml">
       <Generator>MSLinqToSQLGenerator</Generator>
       <LastGenOutput>Blog.designer.cs</LastGenOutput>

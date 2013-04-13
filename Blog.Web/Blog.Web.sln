@@ -3,8 +3,6 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Web", "Blog.Web\Blog.Web.csproj", "{FB42EC03-FB5D-442C-B4B5-2D67E61F3E1D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSync", "..\Common\DbSync\DbSync.csproj", "{204A0476-939D-4666-9F7A-5F97073089C0}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Data", "Blog.Data\Blog.Data.csproj", "{9669472B-DCE6-4D0D-833E-C616DF4C49AA}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Models", "Blog.Models\Blog.Models.csproj", "{34337FF4-613A-4301-ACEB-C379A1C4AC70}"
@@ -12,6 +10,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Blog.Service", "Blog.Service\Blog.Service.csproj", "{BEF3B9B1-91D4-467B-B0E8-CED806D9EE77}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "..\Common\Common\Common.csproj", "{9666892F-031A-4E8D-BC27-1A57A3F4F3D6}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DbSync", "..\Common\DbSync\DbSync.csproj", "{204A0476-939D-4666-9F7A-5F97073089C0}"
 EndProject
 Global
 	GlobalSection(TeamFoundationVersionControl) = preSolution
@@ -22,21 +22,21 @@ Global
 		SccProjectUniqueName1 = Blog.Web\\Blog.Web.csproj
 		SccProjectName1 = Blog.Web
 		SccLocalPath1 = Blog.Web
-		SccProjectUniqueName2 = ..\\Common\\DbSync\\DbSync.csproj
-		SccProjectName2 = ../Common/DbSync
-		SccLocalPath2 = ..\\Common\\DbSync
-		SccProjectUniqueName3 = Blog.Data\\Blog.Data.csproj
-		SccProjectName3 = Blog.Data
-		SccLocalPath3 = Blog.Data
-		SccProjectUniqueName4 = Blog.Models\\Blog.Models.csproj
-		SccProjectName4 = Blog.Models
-		SccLocalPath4 = Blog.Models
-		SccProjectUniqueName5 = Blog.Service\\Blog.Service.csproj
-		SccProjectName5 = Blog.Service
-		SccLocalPath5 = Blog.Service
-		SccProjectUniqueName6 = ..\\Common\\Common\\Common.csproj
-		SccProjectName6 = ../Common/Common
-		SccLocalPath6 = ..\\Common\\Common
+		SccProjectUniqueName2 = Blog.Data\\Blog.Data.csproj
+		SccProjectName2 = Blog.Data
+		SccLocalPath2 = Blog.Data
+		SccProjectUniqueName3 = Blog.Models\\Blog.Models.csproj
+		SccProjectName3 = Blog.Models
+		SccLocalPath3 = Blog.Models
+		SccProjectUniqueName4 = Blog.Service\\Blog.Service.csproj
+		SccProjectName4 = Blog.Service
+		SccLocalPath4 = Blog.Service
+		SccProjectUniqueName5 = ..\\Common\\Common\\Common.csproj
+		SccProjectName5 = ../Common/Common
+		SccLocalPath5 = ..\\Common\\Common
+		SccProjectUniqueName6 = ..\\Common\\DbSync\\DbSync.csproj
+		SccProjectName6 = ../Common/DbSync
+		SccLocalPath6 = ..\\Common\\DbSync
 	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,10 +47,6 @@ Global
 		{FB42EC03-FB5D-442C-B4B5-2D67E61F3E1D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB42EC03-FB5D-442C-B4B5-2D67E61F3E1D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB42EC03-FB5D-442C-B4B5-2D67E61F3E1D}.Release|Any CPU.Build.0 = Release|Any CPU
-		{204A0476-939D-4666-9F7A-5F97073089C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{204A0476-939D-4666-9F7A-5F97073089C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{204A0476-939D-4666-9F7A-5F97073089C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{204A0476-939D-4666-9F7A-5F97073089C0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9669472B-DCE6-4D0D-833E-C616DF4C49AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9669472B-DCE6-4D0D-833E-C616DF4C49AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9669472B-DCE6-4D0D-833E-C616DF4C49AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -67,6 +63,10 @@ Global
 		{9666892F-031A-4E8D-BC27-1A57A3F4F3D6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9666892F-031A-4E8D-BC27-1A57A3F4F3D6}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9666892F-031A-4E8D-BC27-1A57A3F4F3D6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{204A0476-939D-4666-9F7A-5F97073089C0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{204A0476-939D-4666-9F7A-5F97073089C0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{204A0476-939D-4666-9F7A-5F97073089C0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{204A0476-939D-4666-9F7A-5F97073089C0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
