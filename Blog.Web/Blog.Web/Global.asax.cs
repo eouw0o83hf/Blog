@@ -22,6 +22,7 @@ namespace Blog.Web
         protected void Application_Start()
         {
             BootstrapContainer();
+            MigrationRunner.RunMigrations(Container);
 
             AreaRegistration.RegisterAllAreas();
 

@@ -124,6 +124,19 @@
     <li>I've now worked out most of the kinks in deploying a DB-driven site (except for the mundane detail of an actual database)</li>
 </ul>
 
+<h2>1.0.10 (changeset 111)</h2>
+<h3>Summary</h3>
+<p>Final preparations for database hookup</p>
+<h3>Date</h3>
+<p>2013-04-13</p>
+<h3>Details</h3>
+<ul>
+    <li>Registering all components with Windsor down to the data context</li>
+    <li>Registering the DB syncer in all appropriate places</li>
+    <li>Minor DB sync refactor to take in a wrapped Assembly so that it can be DI'd</li>
+    <li>Inherited set of Windsor installers so that each layer can wire up only what it needs, blissfully unaware of the others (future blog post?)</li>
+</ul>
+
 @* Template:
 
 <h2>1.x.x (changeset x)</h2>

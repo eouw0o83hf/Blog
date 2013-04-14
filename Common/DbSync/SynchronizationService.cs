@@ -20,7 +20,7 @@ namespace DbSync
             ConnectionString = connectionString;
         }
 
-        public void RunMigrations(Assembly migrationsAssembly)
+        public void RunMigrations(TargetAssembly migrationsAssembly)
         {
             using (var connection = new SqlConnection(ConnectionString))
             {
@@ -28,7 +28,7 @@ namespace DbSync
 
                 AssertVersionTableExists(connection);
 
-                var migrations = from t in migrationsAssembly.GetTypes()
+                var migrations = from t in migrationsAssembly.Target.GetTypes()
                                  where typeof(IMigration).IsAssignableFrom(t)
                                  let instance = (IMigration)Activator.CreateInstance(t)
                                  orderby instance.Version ascending
