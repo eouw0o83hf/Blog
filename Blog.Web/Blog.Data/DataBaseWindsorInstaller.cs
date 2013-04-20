@@ -18,7 +18,7 @@ namespace Blog.Data
         public virtual void Install(IWindsorContainer container, IConfigurationStore store)
         {
             // Repository
-            container.Register(Component.For<BlogDataContext>().DependsOn(ConnectionStringDependency_eouw0o83hf).LifestyleTransient());
+            container.Register(Component.For<BlogDataContext>().ImplementedBy<BlogDataContextWrapper>().DependsOn(ConnectionStringDependency_eouw0o83hf).LifestyleTransient());
             
             // Migrator
             container.Register(Component.For<TargetAssembly>().Instance(TargetAssembly).LifestyleSingleton());

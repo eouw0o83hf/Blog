@@ -57,6 +57,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Blog.dbml</DependentUpon>
     </Compile>
+    <Compile Include="BlogDataContextWrapper.cs" />
     <Compile Include="DataBaseWindsorInstaller.cs" />
     <Compile Include="Migrations\M001_InitialStartup.cs" />
     <Compile Include="Migrations\M002_AddInitialPosts.cs" />
