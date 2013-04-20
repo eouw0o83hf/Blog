@@ -7,10 +7,14 @@
     <title>eouw0o83hf :: @ViewBag.Title</title>
 
     @*Scripts and Styles*@
-    <link href="@Url.Content("~/Content/Style/Reset.css")" rel="stylesheet" type="text/css" />
+    <script src="@Url.Content("~/Scripts/jquery-2.0.0.min.js")"></script>
     <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
+    @RenderSection("Scripts", false)
+
+    <link href="@Url.Content("~/Content/Style/Reset.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/Style/Global.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/Style/Prettifiest.css")" rel="stylesheet" type="text/css" />
+
     @RenderSection("Styles", false)
 </head>
 <body>
@@ -19,5 +23,17 @@
     <div>
         @Html.RouteLink("Main", "Main") | @Html.RouteLink("About", "About") | @Html.RouteLink("Version Info", "Version") | <a href="https://trello.com/board/eouw0o83hf-com/513f9eae3db9e83015000ce1">Site Development Board</a>
     </div>
+
+    <!-- Make prettify work with markdown -->
+    <script type="text/javascript">
+        $(function () {
+            // The following line finds "pre" elements that also have "code" children
+            // There's probably a better jquery way to filter by children, but this works
+            $('pre')            // Anything code-y is in a pre
+                .find('code')   // Anything truly code-y is in a code in a pre
+                .parent()       // The class needs to be added to the pre
+                .addClass('prettyprint');
+        });
+    </script>
 </body>
 </html>

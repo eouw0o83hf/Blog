@@ -1,5 +1,9 @@
 ﻿@model Blog.Web.ViewModels.Blog.Post
-<h1>Post #@Model.Id: @Html.Raw(Model.Title)</h1>
+@{
+    // Since Markdown will handle making the h1 (otherwise it tries to make the Model.Title in a <p>) we can just throw this whole mess into it
+    var h1String = "#Post #" + Model.Id.ToString() + ": " + Model.Title;
+}
+@Html.Markdown(h1String)
 <p class="subtitle">@Model.PostDate.ToString("yyyy-MM-dd h:mm tt")</p>
-@Html.Raw(Model.RawBody)
+@Html.Markdown(Model.RawBody)
 

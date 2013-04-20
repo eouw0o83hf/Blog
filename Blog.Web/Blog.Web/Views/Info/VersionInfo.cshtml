@@ -137,6 +137,20 @@
     <li>Inherited set of Windsor installers so that each layer can wire up only what it needs, blissfully unaware of the others (future blog post?)</li>
 </ul>
 
+<h2>1.0.11 (changeset 112)</h2>
+<h3>Summary</h3>
+<p>Data-driven posts</p>
+<h3>Date</h3>
+<p>2013-04-20</p>
+<h3>Details</h3>
+<ul>
+    <li>Creating DB schema for simple Blogs and Posts</li>
+    <li>Pre-populating DB with three existing posts</li>
+    <li>Pulled in <a href="https://code.google.com/p/markdownsharp/" target="_blank">markdownsharp</a> so that posts can be written in markdown and converted at runtime</li>
+    <li>Had to fix up Views to allow <a href="https://code.google.com/p/google-code-prettify/" target="_blank">Prettify</a> and <a href="https://code.google.com/p/markdownsharp/" target="_blank">markdownsharp</a> to play nicely</li>
+    <li>Pulled in jQuery because I had to write some javascript to support the previous point</li>
+    <li>Did some clever ViewData passing to allow all Views to have a properly-initialized instance of Markdown instantiated by the BaseController (could get DI'd eventually, I suppose)</li>
+</ul>
 @* Template:
 
 <h2>1.x.x (changeset x)</h2>

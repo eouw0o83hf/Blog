@@ -6,8 +6,11 @@ using System.Web.Mvc;
 
 namespace Blog.Web.Controllers
 {
-    public class InfoController : Controller
+    public class InfoController : BaseController
     {
+        public InfoController(BlogControllerContext context)
+            : base(context) { }
+
         [HttpGet]
         public ActionResult About()
         {

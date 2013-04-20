@@ -17,10 +17,38 @@ namespace Blog.Service
         {
             BlogDb = blogDb;
         }
-
-        public PaginatedList<PostModel> GetPosts(int? page, int? count)
+        
+        public int? GetBlogId(string requestDomain)
         {
-            return null;
+            var result = (from b in BlogDb.Blogs
+                          where b.UrlName.Contains(requestDomain)
+                          select b.BlogId).FirstOrNull();
+
+            if (result.HasValue)
+            {
+                return result.Value;
+            }
+
+            // Temp fallback
+            return BlogDb.Blogs.First().BlogId;
+        }
+
+        public PaginatedList<PostModel> GetPosts(int blogId, int? page = null, int? count = null)
+        {
+            var query = from p in BlogDb.Posts
+                        where p.BlogId == blogId
+                        orderby p.PostId descending
+                        select new PostModel
+                        {
+                            Body = p.Body,
+                            CreatedDate = p.CreatedOn,
+                            Identifier = p.PermalinkGuid,
+                            ModifedDate = p.CreatedOn,
+                            PostId = p.PostId,
+                            Title = p.Title
+                        };
+
+            return new PaginatedList<PostModel>(query, page, count);
         }
     }
 }

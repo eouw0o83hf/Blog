@@ -1,4 +1,5 @@
 ﻿using Blog.Service;
+using Blog.Web.Controllers;
 using Castle.MicroKernel.Registration;
 using Castle.MicroKernel.SubSystems.Configuration;
 using Castle.Windsor;
@@ -25,6 +26,8 @@ namespace Blog.Web
         public override void Install(IWindsorContainer container, IConfigurationStore store)
         {
             base.Install(container, store);
+
+            container.Register(Component.For<BlogControllerContext>().LifestyleTransient());
 
             container.Register(Classes.FromThisAssembly()
                                 .BasedOn<IController>()

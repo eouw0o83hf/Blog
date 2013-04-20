@@ -10,6 +10,7 @@ namespace Blog.Service
 {
     public interface IBlogService
     {
-        PaginatedList<PostModel> GetPosts(int? page, int? count);
+        int? GetBlogId(string requestDomain);
+        PaginatedList<PostModel> GetPosts(int blogId, int? page = null, int? count = null);
     }
 }

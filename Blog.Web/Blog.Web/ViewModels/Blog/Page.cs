@@ -9,6 +9,6 @@ namespace Blog.Web.ViewModels.Blog
     {
         public string BlogName { get; set; }
 
-        public IList<Post> Posts { get; set; }
+        public ICollection<Post> Posts { get; set; }
     }
 }
