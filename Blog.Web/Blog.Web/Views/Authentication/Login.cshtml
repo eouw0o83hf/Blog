@@ -1,0 +1,13 @@
+﻿@model Blog.Web.ViewModels.Authentication.LoginViewModel
+@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/Global.cshtml";
+}
+<ul>
+    @foreach (var o in Model.OpenIdProviders)
+    {
+        <li>
+            @o.Name : @o.LoginUrl
+        </li>
+    }
+</ul>
