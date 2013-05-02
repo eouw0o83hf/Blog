@@ -36,6 +36,18 @@ namespace Blog.Data
     partial void InsertPost(Post instance);
     partial void UpdatePost(Post instance);
     partial void DeletePost(Post instance);
+    partial void InsertUser(User instance);
+    partial void UpdateUser(User instance);
+    partial void DeleteUser(User instance);
+    partial void InsertUserPermission(UserPermission instance);
+    partial void UpdateUserPermission(UserPermission instance);
+    partial void DeleteUserPermission(UserPermission instance);
+    partial void InsertIdentityProvider(IdentityProvider instance);
+    partial void UpdateIdentityProvider(IdentityProvider instance);
+    partial void DeleteIdentityProvider(IdentityProvider instance);
+    partial void InsertPermission(Permission instance);
+    partial void UpdatePermission(Permission instance);
+    partial void DeletePermission(Permission instance);
     #endregion
 		
 		public BlogDataContext() : 
@@ -81,6 +93,38 @@ namespace Blog.Data
 			get
 			{
 				return this.GetTable<Post>();
+			}
+		}
+		
+		public System.Data.Linq.Table<User> Users
+		{
+			get
+			{
+				return this.GetTable<User>();
+			}
+		}
+		
+		public System.Data.Linq.Table<UserPermission> UserPermissions
+		{
+			get
+			{
+				return this.GetTable<UserPermission>();
+			}
+		}
+		
+		public System.Data.Linq.Table<IdentityProvider> IdentityProviders
+		{
+			get
+			{
+				return this.GetTable<IdentityProvider>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Permission> Permissions
+		{
+			get
+			{
+				return this.GetTable<Permission>();
 			}
 		}
 	}
@@ -515,6 +559,653 @@ namespace Blog.Data
 			{
 				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
 			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Users")]
+	public partial class User : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _UserId;
+		
+		private int _IdentityProviderId;
+		
+		private string _Upn;
+		
+		private string _Email;
+		
+		private string _Handle;
+		
+		private System.Nullable<System.DateTimeOffset> _TimeZoneOffset;
+		
+		private EntitySet<UserPermission> _UserPermissions;
+		
+		private EntityRef<IdentityProvider> _IdentityProvider;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUserIdChanging(int value);
+    partial void OnUserIdChanged();
+    partial void OnIdentityProviderIdChanging(int value);
+    partial void OnIdentityProviderIdChanged();
+    partial void OnUpnChanging(string value);
+    partial void OnUpnChanged();
+    partial void OnEmailChanging(string value);
+    partial void OnEmailChanged();
+    partial void OnHandleChanging(string value);
+    partial void OnHandleChanged();
+    partial void OnTimeZoneOffsetChanging(System.Nullable<System.DateTimeOffset> value);
+    partial void OnTimeZoneOffsetChanged();
+    #endregion
+		
+		public User()
+		{
+			this._UserPermissions = new EntitySet<UserPermission>(new Action<UserPermission>(this.attach_UserPermissions), new Action<UserPermission>(this.detach_UserPermissions));
+			this._IdentityProvider = default(EntityRef<IdentityProvider>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int UserId
+		{
+			get
+			{
+				return this._UserId;
+			}
+			set
+			{
+				if ((this._UserId != value))
+				{
+					this.OnUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._UserId = value;
+					this.SendPropertyChanged("UserId");
+					this.OnUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdentityProviderId", DbType="Int NOT NULL")]
+		public int IdentityProviderId
+		{
+			get
+			{
+				return this._IdentityProviderId;
+			}
+			set
+			{
+				if ((this._IdentityProviderId != value))
+				{
+					if (this._IdentityProvider.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnIdentityProviderIdChanging(value);
+					this.SendPropertyChanging();
+					this._IdentityProviderId = value;
+					this.SendPropertyChanged("IdentityProviderId");
+					this.OnIdentityProviderIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Upn", DbType="NVarChar(200) NOT NULL", CanBeNull=false)]
+		public string Upn
+		{
+			get
+			{
+				return this._Upn;
+			}
+			set
+			{
+				if ((this._Upn != value))
+				{
+					this.OnUpnChanging(value);
+					this.SendPropertyChanging();
+					this._Upn = value;
+					this.SendPropertyChanged("Upn");
+					this.OnUpnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Email", DbType="NVarChar(MAX)")]
+		public string Email
+		{
+			get
+			{
+				return this._Email;
+			}
+			set
+			{
+				if ((this._Email != value))
+				{
+					this.OnEmailChanging(value);
+					this.SendPropertyChanging();
+					this._Email = value;
+					this.SendPropertyChanged("Email");
+					this.OnEmailChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Handle", DbType="NVarChar(MAX)")]
+		public string Handle
+		{
+			get
+			{
+				return this._Handle;
+			}
+			set
+			{
+				if ((this._Handle != value))
+				{
+					this.OnHandleChanging(value);
+					this.SendPropertyChanging();
+					this._Handle = value;
+					this.SendPropertyChanged("Handle");
+					this.OnHandleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_TimeZoneOffset", DbType="DateTimeOffset")]
+		public System.Nullable<System.DateTimeOffset> TimeZoneOffset
+		{
+			get
+			{
+				return this._TimeZoneOffset;
+			}
+			set
+			{
+				if ((this._TimeZoneOffset != value))
+				{
+					this.OnTimeZoneOffsetChanging(value);
+					this.SendPropertyChanging();
+					this._TimeZoneOffset = value;
+					this.SendPropertyChanged("TimeZoneOffset");
+					this.OnTimeZoneOffsetChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_UserPermission", Storage="_UserPermissions", ThisKey="UserId", OtherKey="UserId")]
+		public EntitySet<UserPermission> UserPermissions
+		{
+			get
+			{
+				return this._UserPermissions;
+			}
+			set
+			{
+				this._UserPermissions.Assign(value);
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="IdentityProvider_User", Storage="_IdentityProvider", ThisKey="IdentityProviderId", OtherKey="IdentityProviderId", IsForeignKey=true)]
+		public IdentityProvider IdentityProvider
+		{
+			get
+			{
+				return this._IdentityProvider.Entity;
+			}
+			set
+			{
+				IdentityProvider previousValue = this._IdentityProvider.Entity;
+				if (((previousValue != value) 
+							|| (this._IdentityProvider.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._IdentityProvider.Entity = null;
+						previousValue.Users.Remove(this);
+					}
+					this._IdentityProvider.Entity = value;
+					if ((value != null))
+					{
+						value.Users.Add(this);
+						this._IdentityProviderId = value.IdentityProviderId;
+					}
+					else
+					{
+						this._IdentityProviderId = default(int);
+					}
+					this.SendPropertyChanged("IdentityProvider");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_UserPermissions(UserPermission entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = this;
+		}
+		
+		private void detach_UserPermissions(UserPermission entity)
+		{
+			this.SendPropertyChanging();
+			entity.User = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.UserPermissions")]
+	public partial class UserPermission : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _UserId;
+		
+		private int _PermissionId;
+		
+		private EntityRef<User> _User;
+		
+		private EntityRef<Permission> _Permission;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnUserIdChanging(int value);
+    partial void OnUserIdChanged();
+    partial void OnPermissionIdChanging(int value);
+    partial void OnPermissionIdChanged();
+    #endregion
+		
+		public UserPermission()
+		{
+			this._User = default(EntityRef<User>);
+			this._Permission = default(EntityRef<Permission>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UserId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int UserId
+		{
+			get
+			{
+				return this._UserId;
+			}
+			set
+			{
+				if ((this._UserId != value))
+				{
+					if (this._User.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnUserIdChanging(value);
+					this.SendPropertyChanging();
+					this._UserId = value;
+					this.SendPropertyChanged("UserId");
+					this.OnUserIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PermissionId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PermissionId
+		{
+			get
+			{
+				return this._PermissionId;
+			}
+			set
+			{
+				if ((this._PermissionId != value))
+				{
+					if (this._Permission.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnPermissionIdChanging(value);
+					this.SendPropertyChanging();
+					this._PermissionId = value;
+					this.SendPropertyChanged("PermissionId");
+					this.OnPermissionIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="User_UserPermission", Storage="_User", ThisKey="UserId", OtherKey="UserId", IsForeignKey=true)]
+		public User User
+		{
+			get
+			{
+				return this._User.Entity;
+			}
+			set
+			{
+				User previousValue = this._User.Entity;
+				if (((previousValue != value) 
+							|| (this._User.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._User.Entity = null;
+						previousValue.UserPermissions.Remove(this);
+					}
+					this._User.Entity = value;
+					if ((value != null))
+					{
+						value.UserPermissions.Add(this);
+						this._UserId = value.UserId;
+					}
+					else
+					{
+						this._UserId = default(int);
+					}
+					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Permission_UserPermission", Storage="_Permission", ThisKey="PermissionId", OtherKey="PermissionId", IsForeignKey=true)]
+		public Permission Permission
+		{
+			get
+			{
+				return this._Permission.Entity;
+			}
+			set
+			{
+				Permission previousValue = this._Permission.Entity;
+				if (((previousValue != value) 
+							|| (this._Permission.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Permission.Entity = null;
+						previousValue.UserPermissions.Remove(this);
+					}
+					this._Permission.Entity = value;
+					if ((value != null))
+					{
+						value.UserPermissions.Add(this);
+						this._PermissionId = value.PermissionId;
+					}
+					else
+					{
+						this._PermissionId = default(int);
+					}
+					this.SendPropertyChanged("Permission");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.IdentityProviders")]
+	public partial class IdentityProvider : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _IdentityProviderId;
+		
+		private string _Uri;
+		
+		private EntitySet<User> _Users;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnIdentityProviderIdChanging(int value);
+    partial void OnIdentityProviderIdChanged();
+    partial void OnUriChanging(string value);
+    partial void OnUriChanged();
+    #endregion
+		
+		public IdentityProvider()
+		{
+			this._Users = new EntitySet<User>(new Action<User>(this.attach_Users), new Action<User>(this.detach_Users));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IdentityProviderId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int IdentityProviderId
+		{
+			get
+			{
+				return this._IdentityProviderId;
+			}
+			set
+			{
+				if ((this._IdentityProviderId != value))
+				{
+					this.OnIdentityProviderIdChanging(value);
+					this.SendPropertyChanging();
+					this._IdentityProviderId = value;
+					this.SendPropertyChanged("IdentityProviderId");
+					this.OnIdentityProviderIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Uri", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Uri
+		{
+			get
+			{
+				return this._Uri;
+			}
+			set
+			{
+				if ((this._Uri != value))
+				{
+					this.OnUriChanging(value);
+					this.SendPropertyChanging();
+					this._Uri = value;
+					this.SendPropertyChanged("Uri");
+					this.OnUriChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="IdentityProvider_User", Storage="_Users", ThisKey="IdentityProviderId", OtherKey="IdentityProviderId")]
+		public EntitySet<User> Users
+		{
+			get
+			{
+				return this._Users;
+			}
+			set
+			{
+				this._Users.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_Users(User entity)
+		{
+			this.SendPropertyChanging();
+			entity.IdentityProvider = this;
+		}
+		
+		private void detach_Users(User entity)
+		{
+			this.SendPropertyChanging();
+			entity.IdentityProvider = null;
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Permissions")]
+	public partial class Permission : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PermissionId;
+		
+		private string _Name;
+		
+		private EntitySet<UserPermission> _UserPermissions;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPermissionIdChanging(int value);
+    partial void OnPermissionIdChanged();
+    partial void OnNameChanging(string value);
+    partial void OnNameChanged();
+    #endregion
+		
+		public Permission()
+		{
+			this._UserPermissions = new EntitySet<UserPermission>(new Action<UserPermission>(this.attach_UserPermissions), new Action<UserPermission>(this.detach_UserPermissions));
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PermissionId", DbType="Int NOT NULL", IsPrimaryKey=true)]
+		public int PermissionId
+		{
+			get
+			{
+				return this._PermissionId;
+			}
+			set
+			{
+				if ((this._PermissionId != value))
+				{
+					this.OnPermissionIdChanging(value);
+					this.SendPropertyChanging();
+					this._PermissionId = value;
+					this.SendPropertyChanged("PermissionId");
+					this.OnPermissionIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Name", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Name
+		{
+			get
+			{
+				return this._Name;
+			}
+			set
+			{
+				if ((this._Name != value))
+				{
+					this.OnNameChanging(value);
+					this.SendPropertyChanging();
+					this._Name = value;
+					this.SendPropertyChanged("Name");
+					this.OnNameChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Permission_UserPermission", Storage="_UserPermissions", ThisKey="PermissionId", OtherKey="PermissionId")]
+		public EntitySet<UserPermission> UserPermissions
+		{
+			get
+			{
+				return this._UserPermissions;
+			}
+			set
+			{
+				this._UserPermissions.Assign(value);
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+		
+		private void attach_UserPermissions(UserPermission entity)
+		{
+			this.SendPropertyChanging();
+			entity.Permission = this;
+		}
+		
+		private void detach_UserPermissions(UserPermission entity)
+		{
+			this.SendPropertyChanging();
+			entity.Permission = null;
 		}
 	}
 }
