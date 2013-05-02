@@ -8,6 +8,8 @@ namespace Blog.Web.ViewModels.Authentication
     public class LoginViewModel
     {
         public ICollection<OpenIdProvider> OpenIdProviders { get; set; }
+
+        public string IdentityProviderUri { get; set; }
     }
 
     public class OpenIdProvider

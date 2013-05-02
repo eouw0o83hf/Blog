@@ -3,11 +3,38 @@
     ViewBag.Title = "Login";
     Layout = "~/Views/Shared/Global.cshtml";
 }
+@section ScriptFooter
+{
+    <script type="text/javascript">
+        $(function () {
+            $('.login-link').click(function () {
+                var uri = $(this).parent().find('input.login-uri').val();
+                $('form #IdentityProviderUri').val(uri);
+                $('form').submit();
+            });
+        });
+    </script>
+}
+<h1>Authenticate</h1>
+<h2>OpenID</h2>
+<p>Here at eouw0o83hf.com we do not register accounts; we only use OpenID. So, choose one of the authenticators listed below (if you have one you would like to use which is not listed, just let me know and I will add it).</p>
+<h2>What we Request</h2>
+<p>We request the following information from your identity provider. You'll be able to alter any of this information, but it's only requested for good user customization of our site.</p>
+<ul>
+    <li><strong>Email</strong>: Requested so that we can contact you and pre-populate your account with your contact information</li>
+    <li><strong>TimeZone</strong>: Requested so that we can properly localize times for you</li>
+    <li><strong>Nickname</strong>: Requested so that we can pre-populate a name for comments for you</li>
+</ul>
 <ul>
     @foreach (var o in Model.OpenIdProviders)
     {
         <li>
-            @o.Name : @o.LoginUrl
+            <input type="hidden" class="login-uri" value="@o.LoginUrl" />
+            <a href="javascript:void(0);" class="login-link">@o.Name</a>
         </li>
     }
 </ul>
+@using(Html.BeginForm())
+{
+    @Html.HiddenFor(a => a.IdentityProviderUri)
+}

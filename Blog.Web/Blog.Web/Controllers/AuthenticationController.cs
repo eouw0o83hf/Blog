@@ -34,13 +34,15 @@ namespace Blog.Web.Controllers
         {
             var openId = new OpenIdRelyingParty();
             var response = openId.GetResponse();
-
+                        
             if (response != null)
             {
                 switch (response.Status)
                 {
                     case AuthenticationStatus.Authenticated:
-                        throw new Exception("It worked! ID: " + response.ClaimedIdentifier);
+                        var details = response.GetExtension<ClaimsResponse>();
+                        
+                        throw new Exception(string.Format("It worked! ID: {0} for email {1}, name {2}, tz {3}, nickname {4}, lang {5}, zip {6}", response.ClaimedIdentifier, details.Email, details.FullName, details.TimeZone, details.Nickname, details.Language, details.PostalCode));
 
                     case AuthenticationStatus.Canceled:
                         throw new Exception("Login was cancelled at the provider");
@@ -57,30 +59,37 @@ namespace Blog.Web.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(string loginIdentifier)
+        public ActionResult Login(LoginViewModel model)
         {
-            if (!Identifier.IsValid(loginIdentifier))
+            if (!Identifier.IsValid(model.IdentityProviderUri))
             {
                 throw new Exception("The specified login identifier is invalid");
             }
 
             var openId = new OpenIdRelyingParty();
-            var request = openId.CreateRequest(Identifier.Parse(loginIdentifier));
+            var request = openId.CreateRequest(Identifier.Parse(model.IdentityProviderUri));
 
             request.AddExtension(new ClaimsRequest
             {
                 BirthDate = DemandLevel.NoRequest,
-                Email = DemandLevel.Require,
-                FullName = DemandLevel.Request,
+                Email = DemandLevel.Request,
+                FullName = DemandLevel.NoRequest,
                 TimeZone = DemandLevel.Request,
                 Nickname = DemandLevel.Request,
                 Country = DemandLevel.NoRequest,
                 Gender = DemandLevel.NoRequest,
-                Language = DemandLevel.Request,
-                PostalCode = DemandLevel.Request
+                Language = DemandLevel.NoRequest,
+                PostalCode = DemandLevel.NoRequest
             });
 
             return request.RedirectingResponse.AsActionResult();
+        }
+
+        [HttpGet]
+        public ActionResult Logout()
+        {
+            Session.Abandon();
+            return RedirectToRoute(RouteNames.Main);
         }
     }
 }
