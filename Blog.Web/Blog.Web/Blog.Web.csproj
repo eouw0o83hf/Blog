@@ -184,6 +184,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\MigrationRunner.cs" />
+    <Compile Include="BlogUser.cs" />
     <Compile Include="BlogWindsorInstaller.cs" />
     <Compile Include="Controllers\AdminController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />

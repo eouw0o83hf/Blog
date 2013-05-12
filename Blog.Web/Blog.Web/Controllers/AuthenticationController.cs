@@ -40,9 +40,16 @@ namespace Blog.Web.Controllers
                 switch (response.Status)
                 {
                     case AuthenticationStatus.Authenticated:
-                        var details = response.GetExtension<ClaimsResponse>();
-                        
-                        throw new Exception(string.Format("It worked! ID: {0} for email {1}, name {2}, tz {3}, nickname {4}, lang {5}, zip {6}", response.ClaimedIdentifier, details.Email, details.FullName, details.TimeZone, details.Nickname, details.Language, details.PostalCode));
+                        var user = BlogService.GetOrCreateUser(response);
+                        var blogUser = new BlogUser
+                        {
+                            Email = user.Email,
+                            Roles = new List<string>(),
+                            UserId = user.UserId,
+                            Upn = user.Upn
+                        };
+                        SetUserToContext(HttpContext.ApplicationInstance.Context, blogUser);
+                        return new EmptyResult();
 
                     case AuthenticationStatus.Canceled:
                         throw new Exception("Login was cancelled at the provider");
