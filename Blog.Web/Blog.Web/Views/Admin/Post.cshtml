@@ -5,6 +5,9 @@
 }
 @using (Html.BeginForm())
 {
+    @Html.HiddenFor(a => a.PostId)
+    @Html.HiddenFor(a => a.BlogId)
+    @Html.HiddenFor(a => a.Identifier)
     <table>
         <tr>
             <td>

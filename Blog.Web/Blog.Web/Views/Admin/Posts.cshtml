@@ -5,6 +5,9 @@
 }
 <h2>Admin: Posts</h2>
 <ul>
+    <li>
+        @Html.ActionLink("New Post", "Post")
+    </li>
 @foreach (var x in Model.Items)
 {
     <li>

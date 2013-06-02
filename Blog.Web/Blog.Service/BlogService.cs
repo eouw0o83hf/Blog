@@ -62,14 +62,15 @@ namespace Blog.Service
             {
                 dbPost = new Post
                 {
-                    PermalinkGuid = model.Identifier
+                    PermalinkGuid = model.Identifier,
+                    CreatedOn = DateTime.UtcNow,
+                    CreatedBy = System.Threading.Thread.CurrentPrincipal.Identity.Name
                 };
                 BlogDb.Posts.InsertOnSubmit(dbPost);
             }
 
+            dbPost.BlogId = model.BlogId;
             dbPost.Body = model.Body;
-            dbPost.CreatedBy = string.Empty;
-            dbPost.CreatedOn = model.CreatedDate;
             dbPost.Title = model.Title;
             dbPost.UrlTitle = model.UrlTitle ?? Regex.Replace(model.Title, @"[^A-Za-z0-9_\.~]+", "-");
 

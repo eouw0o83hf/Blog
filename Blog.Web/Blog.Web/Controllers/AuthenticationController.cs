@@ -44,7 +44,7 @@ namespace Blog.Web.Controllers
                         var blogUser = new BlogUser
                         {
                             Email = user.Email,
-                            Roles = new List<string>(),
+                            Roles = user.Permissions.Select(a => a.ToString()).ToList(),
                             UserId = user.UserId,
                             Upn = user.Upn
                         };
@@ -95,6 +95,7 @@ namespace Blog.Web.Controllers
         [HttpGet]
         public ActionResult Logout()
         {
+            Response.Cookies.Clear();
             Session.Abandon();
             return RedirectToRoute(RouteNames.Main);
         }

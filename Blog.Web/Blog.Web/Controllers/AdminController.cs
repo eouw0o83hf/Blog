@@ -16,8 +16,7 @@ namespace Blog.Web.Controllers
         public AdminController(BlogControllerContext context)
             : base(context) { }
         
-        [HttpGet]
-        [Authorize]
+        [HttpGet, Authorize(Roles = "Admin")]
         public ActionResult Posts()
         {
             var blogId = BlogService.GetBlogId(Request.Url.Host);
@@ -37,8 +36,7 @@ namespace Blog.Web.Controllers
             return View(result);
         }
 
-        [HttpGet]
-        [Authorize]
+        [HttpGet, Authorize(Roles = "Admin")]
         public ActionResult Post(int? postId)
         {
             EditPostViewModel viewModel;
@@ -69,15 +67,23 @@ namespace Blog.Web.Controllers
             return View(viewModel);
         }
 
-        [HttpPost]
-        [Authorize]
+        [HttpPost, Authorize(Roles = "Admin")]
         public ActionResult Post(EditPostViewModel model)
         {
-            throw new NotImplementedException();
+            var postId = BlogService.CreateOrUpdatePost(new Models.PostModel
+            {
+                BlogId = model.BlogId ?? GetBlogId().Value,
+                Body = model.Body,
+                Identifier = model.Identifier,
+                PostId = model.PostId,
+                Title = model.Title,
+                UrlTitle = string.Empty
+            });
+
+            return RedirectToAction("Posts");
         }
 
-        [HttpPost]
-        [Authorize]
+        [HttpPost, Authorize(Roles = "Admin")]
         public PartialViewResult PreviewMarkdown(string markdown)
         {
             return PartialView(markdown);
