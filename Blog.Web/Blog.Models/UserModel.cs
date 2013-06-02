@@ -12,5 +12,7 @@ namespace Blog.Models
         public string Upn { get; set; }
         public string Email { get; set; }
         public string Handle { get; set; }
+
+        public ICollection<PermissionEnum> Permissions { get; set; }
     }
 }

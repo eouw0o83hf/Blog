@@ -12,17 +12,7 @@ namespace Blog.Web.Controllers
     {
         public BlogController(BlogControllerContext context)
             : base(context) { }
-
-        protected virtual int? GetBlogId()
-        {
-            return BlogService.GetBlogId(Request.Url.Host);
-        }
-
-        protected virtual TimeZoneInfo GetLocalTime()
-        {
-            return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
-        }
-
+        
         [HttpGet]
         public ActionResult Page()
         {
@@ -36,7 +26,7 @@ namespace Blog.Web.Controllers
             var posts = BlogService.GetPosts(blogId.Value, 0, 1000000);
             var postVms = posts.Select(a => new Post
             {
-                Id = a.PostId,
+                Id = a.PostId.Value,
                 PostDate = TimeZoneInfo.ConvertTime(a.CreatedDate, TimeZoneInfo.Utc, timeZone),
                 RawBody = a.Body,
                 Title = a.Title

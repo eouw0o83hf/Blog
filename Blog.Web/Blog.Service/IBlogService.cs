@@ -14,7 +14,23 @@ namespace Blog.Service
         #region General Blog GET
 
         int? GetBlogId(string requestDomain);
+        
+        /// <summary>
+        /// Gets the Posts included in the specified range
+        /// </summary>
+        /// <param name="blogId">Target Blog ID</param>
+        /// <param name="page">0-indexed page</param>
+        /// <param name="count">Defaults to 1 if left null</param>
+        /// <returns></returns>
         PaginatedList<PostModel> GetPosts(int blogId, int? page = null, int? count = null);
+
+        PostModel GetPost(int postId);
+
+        /// <summary>
+        /// Creates or updates a Post
+        /// </summary>
+        /// <returns>ID of inserted or updated entity</returns>
+        int CreateOrUpdatePost(PostModel model);
 
         #endregion
 

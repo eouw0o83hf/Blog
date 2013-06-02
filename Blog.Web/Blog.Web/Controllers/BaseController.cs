@@ -69,14 +69,27 @@ namespace Blog.Web.Controllers
 
         #endregion
 
-        private Markdown GetMarkdown()
+        #region Helpers
+
+        protected virtual int? GetBlogId()
         {
-            return new Markdown();
+            return BlogService.GetBlogId(Request.Url.Host);
         }
+
+        protected virtual TimeZoneInfo GetLocalTime()
+        {
+            return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");
+        }
+
+        #endregion
 
         #region ViewData Cramming
 
         public const string VIEWDATA_MARKDOWN = "VIEWDATA_MARKDOWN";
+        private Markdown GetMarkdown()
+        {
+            return new Markdown();
+        }
 
         protected virtual void CramViewData()
         {

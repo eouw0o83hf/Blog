@@ -1,23 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Web;
 
-namespace Blog.Models
+namespace Blog.Web.ViewModels.Admin
 {
-    public class PostModel
+    public class EditPostViewModel
     {
         public int? PostId { get; set; }
         public Guid Identifier { get; set; }
 
-        public int BlogId { get; set; }
+        public int? BlogId { get; set; }
 
-        public DateTime CreatedDate { get; set; }
+        public DateTime? CreatedDate { get; set; }
         public DateTime? ModifedDate { get; set; }
-        
+
         public string Title { get; set; }
-        public string UrlTitle { get; set; }
         public string Body { get; set; }
     }
 }

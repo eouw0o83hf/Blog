@@ -22,5 +22,10 @@ namespace Common
         {
             return items.Cast<T?>();
         }
+
+        public static TResult SelectFirstOrDefault<T, TResult>(this IEnumerable<T> items, Func<T, bool> where, Func<T, TResult> select)
+        {
+            return items.Where(where).Select(select).FirstOrDefault();
+        }
     }
 }

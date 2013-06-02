@@ -1,0 +1,14 @@
+﻿@model Blog.Web.ViewModels.Admin.PostListViewModel
+@{
+    ViewBag.Title += "Admin: Posts";
+    Layout = "~/Views/Shared/Global.cshtml";
+}
+<h2>Admin: Posts</h2>
+<ul>
+@foreach (var x in Model.Items)
+{
+    <li>
+        @Html.ActionLink(x.PostId + ": " + x.Title, "Post", new { x.PostId })
+    </li>
+}
+</ul>

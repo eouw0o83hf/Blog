@@ -49,7 +49,7 @@ namespace Blog.Web.Controllers
                             Upn = user.Upn
                         };
                         SetUserToContext(HttpContext.ApplicationInstance.Context, blogUser);
-                        return new EmptyResult();
+                        return RedirectToRoute(RouteNames.Main);
 
                     case AuthenticationStatus.Canceled:
                         throw new Exception("Login was cancelled at the provider");

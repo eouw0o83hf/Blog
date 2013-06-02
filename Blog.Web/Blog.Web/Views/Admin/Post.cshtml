@@ -1,0 +1,44 @@
+﻿@model Blog.Web.ViewModels.Admin.EditPostViewModel
+@{
+    ViewBag.Title += "Admin: Posts";
+    Layout = "~/Views/Shared/Global.cshtml";
+}
+@using (Html.BeginForm())
+{
+    <table>
+        <tr>
+            <td>
+                BlogId:
+            </td>
+            <td>
+                @Model.BlogId
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(a => a.Title, "Title")
+            </td>
+            <td>
+                @Html.TextBoxFor(a => a.Title)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(a => a.Body, "Text")
+            </td>
+            <td>
+                @Html.TextAreaFor(a => a.Body)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="button">Preview</button>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit">Submit</button>
+            </td>
+        </tr>
+    </table>
+}

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Blog.Service
@@ -40,17 +41,41 @@ namespace Blog.Service
             var query = from p in BlogDb.Posts
                         where p.BlogId == blogId
                         orderby p.PostId descending
-                        select new PostModel
-                        {
-                            Body = p.Body,
-                            CreatedDate = p.CreatedOn,
-                            Identifier = p.PermalinkGuid,
-                            ModifedDate = p.CreatedOn,
-                            PostId = p.PostId,
-                            Title = p.Title
-                        };
+                        select p.ToModel();
 
             return new PaginatedList<PostModel>(query, page, count);
+        }
+
+        public PostModel GetPost(int postId)
+        {
+            return BlogDb.Posts.SelectFirstOrDefault(a => a.PostId == postId, a => a.ToModel());
+        }
+
+        public int CreateOrUpdatePost(PostModel model)
+        {
+            Post dbPost;
+            if (model.PostId.HasValue)
+            {
+                dbPost = BlogDb.Posts.Single(a => a.PostId == model.PostId.Value);
+            }
+            else
+            {
+                dbPost = new Post
+                {
+                    PermalinkGuid = model.Identifier
+                };
+                BlogDb.Posts.InsertOnSubmit(dbPost);
+            }
+
+            dbPost.Body = model.Body;
+            dbPost.CreatedBy = string.Empty;
+            dbPost.CreatedOn = model.CreatedDate;
+            dbPost.Title = model.Title;
+            dbPost.UrlTitle = model.UrlTitle ?? Regex.Replace(model.Title, @"[^A-Za-z0-9_\.~]+", "-");
+
+            BlogDb.SubmitChanges();
+
+            return dbPost.PostId;
         }
 
         public UserModel GetOrCreateUser(IAuthenticationResponse openIdResponse)
@@ -83,7 +108,6 @@ namespace Blog.Service
                         nickname = openIdResponse.FriendlyIdentifierForDisplay;
                     }
                 }
-
                 dbUser = createUser(identityProvider.IdentityProviderId, upn, email, nickname);
             }
 
@@ -92,7 +116,8 @@ namespace Blog.Service
                 UserId = dbUser.UserId,
                 Email = dbUser.Email,
                 Handle = dbUser.Handle,
-                Upn = dbUser.Upn
+                Upn = dbUser.Upn,
+                Permissions = dbUser.UserPermissions.Select(a => (PermissionEnum)a.PermissionId).ToList()
             };
         }
 
@@ -144,5 +169,22 @@ namespace Blog.Service
         }
 
         #endregion
+    }
+
+    public static class Extensions
+    {
+        public static PostModel ToModel(this Post post)
+        {
+            return new PostModel
+            {
+                Body = post.Body,
+                CreatedDate = post.CreatedOn,
+                Identifier = post.PermalinkGuid,
+                ModifedDate = post.CreatedOn,
+                PostId = post.PostId,
+                Title = post.Title,
+                BlogId = post.BlogId
+            };
+        }
     }
 }
