@@ -1,7 +1,9 @@
 ﻿using Blog.Service;
 using Blog.Web.ViewModels.Blog;
+using Common;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -14,12 +16,16 @@ namespace Blog.Web.Controllers
             : base(context) { }
         
         [HttpGet]
-        public ActionResult Page()
+        public ActionResult Page(string blog)
         {
-            var blogId = GetBlogId();
-            if (!blogId.HasValue)
+            var blogId = ConfigurationManager.AppSettings["DefaultBlogId"].TryParseInt();
+            if (blog.IsNotBlank())
             {
-                throw new HttpException(404, "Blog not found");
+                blogId = BlogService.GetBlogId(blog);
+                if (!blogId.HasValue)
+                {
+                    throw new HttpException(404, "Blog not found");
+                }
             }
 
             var timeZone = GetLocalTime();
@@ -32,9 +38,11 @@ namespace Blog.Web.Controllers
                 Title = a.Title
             });
 
+            var blogModel = BlogService.GetBlog(blogId.Value);
+
             var result = new Page
             {
-                BlogName = "eouw0o83hf.com Blog",
+                BlogName = blogModel.Name,
                 Posts = postVms.ToList()
             };
 

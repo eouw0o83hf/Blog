@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Blog.Web.ViewModels.Admin.BlogViewModel>
+@{
+    ViewBag.Title += "Admin: Blogs";
+    Layout = "~/Views/Shared/Global.cshtml";
+}
+<h2>Admin: Posts</h2>
+<ul>
+    <li>
+        @Html.ActionLink("New Blog", "Blog")
+    </li>
+@foreach (var x in Model)
+{
+    <li>
+        @Html.ActionLink(x.BlogId + ": " + x.Name, "Blog", new { x.BlogId })
+    </li>
+}
+</ul>

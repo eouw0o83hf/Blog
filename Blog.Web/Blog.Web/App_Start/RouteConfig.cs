@@ -13,6 +13,9 @@ namespace Blog.Web
         public const string Version = "Version";
         public const string Main = "Main";
         public const string Default = "Default";
+
+        public const string Blog = "Blog";
+        public const string Permalink = "Permalink";
     }
 
     public class RouteConfig
@@ -28,15 +31,29 @@ namespace Blog.Web
                 url: "about",
                 defaults: new { controller = "Info", action = "About" }
             );
+
             routes.MapRoute(
                 name: RouteNames.Version,
                 url: "Version",
                 defaults: new { controller = "Info", action = "VersionInfo" }
             );
+
             routes.MapRoute(
                 name: RouteNames.Main,
                 url: "Main",
                 defaults: new { controller = "Blog", action = "Page" }
+            );
+
+            routes.MapRoute(
+                name: RouteNames.Blog,
+                url: "blog/{blog}",
+                defaults: new { controller = "Blog", action = "Page" }
+            );
+
+            routes.MapRoute(
+                name: RouteNames.Permalink,
+                url: "permalink/{postIdentifier}/{urlTitle}",
+                defaults: new { controller = "Blog", action = "Permalink", urlTitle = UrlParameter.Optional }
             );
 
             routes.MapRoute(

@@ -70,12 +70,7 @@ namespace Blog.Web.Controllers
         #endregion
 
         #region Helpers
-
-        protected virtual int? GetBlogId()
-        {
-            return BlogService.GetBlogId(Request.Url.Host);
-        }
-
+        
         protected virtual TimeZoneInfo GetLocalTime()
         {
             return TimeZoneInfo.FindSystemTimeZoneById("Central Standard Time");

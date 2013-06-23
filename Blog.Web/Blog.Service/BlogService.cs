@@ -23,23 +23,44 @@ namespace Blog.Service
         
         public int? GetBlogId(string requestDomain)
         {
-            var result = (from b in BlogDb.Blogs
-                          where b.UrlName.Contains(requestDomain)
-                          select b.BlogId).FirstOrNull();
-
-            if (result.HasValue)
-            {
-                return result.Value;
-            }
-
-            // Temp fallback
-            return BlogDb.Blogs.First().BlogId;
+            return (from b in BlogDb.Blogs
+                    where b.UrlName == requestDomain
+                    select b.BlogId).FirstOrNull();
         }
 
-        public PaginatedList<PostModel> GetPosts(int blogId, int? page = null, int? count = null)
+        public ICollection<BlogModel> GetBlogs()
+        {
+            return BlogDb.Blogs.Select(a => a.ToModel()).ToList();
+        }
+
+        public BlogModel GetBlog(int blogId)
+        {
+            return BlogDb.Blogs.SelectFirstOrDefault(a => a.BlogId == blogId, a => a.ToModel());
+        }
+
+        public int CreateOrUpdateBlog(BlogModel blog)
+        {
+            var dbBlog = BlogDb.Blogs.FirstOrDefault(a => a.BlogId == blog.BlogId);
+            if (dbBlog == null)
+            {
+                dbBlog = new Data.Blog();
+                BlogDb.Blogs.InsertOnSubmit(dbBlog);
+            }
+
+            dbBlog.DisplayName = blog.Name;
+            dbBlog.UrlName = blog.UrlName;
+            dbBlog.Description = blog.Description;
+
+            BlogDb.SubmitChanges();
+
+            blog.BlogId = dbBlog.BlogId;
+            return blog.BlogId;
+        }
+
+        public PaginatedList<PostModel> GetPosts(int? blogId, int? page = null, int? count = null)
         {
             var query = from p in BlogDb.Posts
-                        where p.BlogId == blogId
+                        where blogId == null || p.BlogId == blogId
                         orderby p.PostId descending
                         select p.ToModel();
 
@@ -49,6 +70,11 @@ namespace Blog.Service
         public PostModel GetPost(int postId)
         {
             return BlogDb.Posts.SelectFirstOrDefault(a => a.PostId == postId, a => a.ToModel());
+        }
+
+        public PostModel GetPost(Guid postIdentifier)
+        {
+            return BlogDb.Posts.SelectFirstOrDefault(a => a.PermalinkGuid == postIdentifier, a => a.ToModel());
         }
 
         public int CreateOrUpdatePost(PostModel model)
@@ -75,6 +101,8 @@ namespace Blog.Service
             dbPost.UrlTitle = model.UrlTitle ?? Regex.Replace(model.Title, @"[^A-Za-z0-9_\.~]+", "-");
 
             BlogDb.SubmitChanges();
+
+            model.PostId = dbPost.PostId;
 
             return dbPost.PostId;
         }
@@ -185,6 +213,17 @@ namespace Blog.Service
                 PostId = post.PostId,
                 Title = post.Title,
                 BlogId = post.BlogId
+            };
+        }
+
+        public static BlogModel ToModel(this Blog.Data.Blog blog)
+        {
+            return new BlogModel
+            {
+                BlogId = blog.BlogId,
+                Description = blog.Description,
+                Name = blog.DisplayName,
+                UrlName = blog.UrlName
             };
         }
     }

@@ -14,7 +14,9 @@ namespace Blog.Service
         #region General Blog GET
 
         int? GetBlogId(string requestDomain);
-        
+        ICollection<BlogModel> GetBlogs();
+        BlogModel GetBlog(int blogId);
+
         /// <summary>
         /// Gets the Posts included in the specified range
         /// </summary>
@@ -22,15 +24,21 @@ namespace Blog.Service
         /// <param name="page">0-indexed page</param>
         /// <param name="count">Defaults to 1 if left null</param>
         /// <returns></returns>
-        PaginatedList<PostModel> GetPosts(int blogId, int? page = null, int? count = null);
+        PaginatedList<PostModel> GetPosts(int? blogId, int? page = null, int? count = null);
 
         PostModel GetPost(int postId);
+        PostModel GetPost(Guid postIdentifier);
+        
+        #endregion
+
+        #region General Blog SET
 
         /// <summary>
         /// Creates or updates a Post
         /// </summary>
         /// <returns>ID of inserted or updated entity</returns>
         int CreateOrUpdatePost(PostModel model);
+        int CreateOrUpdateBlog(BlogModel blog);
 
         #endregion
 

@@ -2,19 +2,26 @@
 @{
     ViewBag.Title += "Admin: Posts";
     Layout = "~/Views/Shared/Global.cshtml";
+    
+    var blogs = (IDictionary<int, string>)ViewData[Blog.Web.Controllers.AdminController.VIEWDATA_BLOGS];
+    var blogDdl = blogs.Select(a => new SelectListItem
+    {
+        Selected = a.Key == Model.BlogId,
+        Text = a.Value,
+        Value = a.Key.ToString()
+    });
 }
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(a => a.PostId)
-    @Html.HiddenFor(a => a.BlogId)
     @Html.HiddenFor(a => a.Identifier)
     <table>
         <tr>
             <td>
-                BlogId:
+                @Html.LabelFor(a => a.BlogId, "Blog")
             </td>
             <td>
-                @Model.BlogId
+                @Html.DropDownListFor(a => a.BlogId, blogDdl, "Select a Blog")
             </td>
         </tr>
         <tr>
