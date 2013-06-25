@@ -8,6 +8,8 @@ namespace Common
 {
     public static class LinqExtensions
     {
+        #region Null-Friendly
+
         public static T? FirstOrNull<T>(this IEnumerable<T> items, Func<T, bool> predicate) where T : struct
         {
             return items.Where(a => predicate(a)).FirstOrNull();
@@ -27,5 +29,20 @@ namespace Common
         {
             return items.Where(where).Select(select).FirstOrDefault();
         }
+
+        #endregion
+
+        #region Dictionary
+
+        public static TValue Get<TValue>(this IDictionary<string, object> dictionary, string key)
+        {
+            if (dictionary.ContainsKey(key))
+            {
+                return (TValue)dictionary[key];
+            }
+            return default(TValue);
+        }
+
+        #endregion
     }
 }

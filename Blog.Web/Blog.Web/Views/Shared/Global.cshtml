@@ -21,7 +21,14 @@
     @RenderBody()
     <hr />
     <div>
-        @Html.RouteLink("Main", "Main") | @Html.RouteLink("About", "About") | @Html.RouteLink("Version Info", "Version") | <a href="https://trello.com/board/eouw0o83hf-com/513f9eae3db9e83015000ce1">Site Development Board</a>
+        @{
+            var links = ViewData.Get<ICollection<LinkViewModel>>("MenuLinks");
+            var index = 0;
+        }
+        @foreach(var l in links)
+        {
+            <a href="@l.Url">@l.LinkText</a> @(++index < links.Count ? " | " : null)
+        }
     </div>
 
     <!-- Make prettify work with markdown -->

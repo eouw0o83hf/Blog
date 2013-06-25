@@ -3,7 +3,7 @@
     ViewBag.Title += "Admin: Blogs";
     Layout = "~/Views/Shared/Global.cshtml";
 }
-<h2>Admin: Posts</h2>
+<h2>@Html.ActionLink("Admin", "Index") » Blogs</h2>
 <ul>
     <li>
         @Html.ActionLink("New Blog", "Blog")

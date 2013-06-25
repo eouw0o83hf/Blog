@@ -1,4 +1,6 @@
-﻿using Blog.Service;
+﻿using Blog.Models;
+using Blog.Service;
+using Blog.Web.ViewModels.Shared;
 using MarkdownSharp;
 using System;
 using System.Collections.Generic;
@@ -89,6 +91,20 @@ namespace Blog.Web.Controllers
         protected virtual void CramViewData()
         {
             ViewData[VIEWDATA_MARKDOWN] = GetMarkdown();
+
+            var menuLinks = new List<LinkViewModel>();
+
+            menuLinks.Add(new LinkViewModel { Url = Url.RouteUrl(RouteNames.Main), LinkText = "Main" });
+            menuLinks.Add(new LinkViewModel { Url = Url.RouteUrl(RouteNames.About), LinkText = "About" });
+            menuLinks.Add(new LinkViewModel { Url = Url.RouteUrl(RouteNames.Version), LinkText = "Version Info" });
+            menuLinks.Add(new LinkViewModel { Url = "https://trello.com/board/eouw0o83hf-com/513f9eae3db9e83015000ce1", LinkText = "Site Development Board" });
+
+            if (User.IsInRole(PermissionEnum.Admin.ToString()))
+            {
+                menuLinks.Add(new LinkViewModel { Url = Url.RouteUrl(RouteNames.Admin), LinkText = "Admin" });
+            }
+
+            ViewData["MenuLinks"] = menuLinks;
         }
 
         #region Decorators

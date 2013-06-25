@@ -16,6 +16,8 @@ namespace Blog.Web
 
         public const string Blog = "Blog";
         public const string Permalink = "Permalink";
+
+        public const string Admin = "Admin";
     }
 
     public class RouteConfig
@@ -42,6 +44,12 @@ namespace Blog.Web
                 name: RouteNames.Main,
                 url: "Main",
                 defaults: new { controller = "Blog", action = "Page" }
+            );
+
+            routes.MapRoute(
+                name: RouteNames.Admin,
+                url: "Admin",
+                defaults: new { controller = "Admin", action = "Index" }
             );
 
             routes.MapRoute(

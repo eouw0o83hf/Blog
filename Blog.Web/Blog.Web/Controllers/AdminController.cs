@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using Blog.Web.ViewModels.Admin;
 using Blog.Models;
+using Blog.Web.Filters;
 
 namespace Blog.Web.Controllers
 {
@@ -17,9 +18,14 @@ namespace Blog.Web.Controllers
         public AdminController(BlogControllerContext context)
             : base(context) { }
 
+        public ActionResult Index()
+        {
+            return View();
+        }
+
         #region Blogs
 
-        [HttpGet, Authorize(Roles = "Admin")]
+        [HttpGet, BlogAuthorize(PermissionEnum.Admin)]
         public ActionResult Blogs()
         {
             var blogs = BlogService.GetBlogs();
@@ -33,7 +39,7 @@ namespace Blog.Web.Controllers
             return View(result);
         }
 
-        [HttpGet, Authorize(Roles = "Admin")]
+        [HttpGet, BlogAuthorize(PermissionEnum.Admin)]
         public ActionResult Blog(int? blogId)
         {
             BlogViewModel viewModel;
@@ -55,12 +61,12 @@ namespace Blog.Web.Controllers
             return View(viewModel);
         }
 
-        [HttpPost, Authorize(Roles = "Admin")]
+        [HttpPost, BlogAuthorize(PermissionEnum.Admin)]
         public ActionResult Blog(BlogViewModel blog)
         {
             var domainModel = new BlogModel
             {
-                BlogId = blog.BlogId,
+                BlogId = blog.BlogId ?? 0,
                 Description = blog.Description,
                 Name = blog.Name,
                 UrlName = blog.UrlName
@@ -71,7 +77,9 @@ namespace Blog.Web.Controllers
 
         #endregion
 
-        [HttpGet, Authorize(Roles = "Admin")]
+        #region Posts
+
+        [HttpGet, BlogAuthorize(PermissionEnum.Admin)]
         public ActionResult Posts()
         {
             var posts = BlogService.GetPosts(null, 0, int.MaxValue);
@@ -89,7 +97,7 @@ namespace Blog.Web.Controllers
             return View(result);
         }
 
-        [HttpGet, Authorize(Roles = "Admin")]
+        [HttpGet, BlogAuthorize(PermissionEnum.Admin)]
         public ActionResult Post(int? postId)
         {
             EditPostViewModel viewModel;
@@ -120,7 +128,7 @@ namespace Blog.Web.Controllers
             return View(viewModel);
         }
 
-        [HttpPost, Authorize(Roles = "Admin")]
+        [HttpPost, BlogAuthorize(PermissionEnum.Admin)]
         public ActionResult Post(EditPostViewModel model)
         {
             var postId = BlogService.CreateOrUpdatePost(new Models.PostModel
@@ -136,11 +144,13 @@ namespace Blog.Web.Controllers
             return RedirectToAction("Posts");
         }
 
-        [HttpPost, Authorize(Roles = "Admin")]
+        [HttpPost, BlogAuthorize(PermissionEnum.Admin)]
         public PartialViewResult PreviewMarkdown(string markdown)
         {
             return PartialView(markdown);
         }
+
+        #endregion
 
         public const string VIEWDATA_BLOGS = "VIEWDATA_BLOGS";
         protected override void CramViewData()

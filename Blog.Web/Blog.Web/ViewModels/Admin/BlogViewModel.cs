@@ -7,7 +7,7 @@ namespace Blog.Web.ViewModels.Admin
 {
     public class BlogViewModel
     {
-        public int BlogId { get; set; }
+        public int? BlogId { get; set; }
         public string Name { get; set; }
         public string UrlName { get; set; }
         public string Description { get; set; }

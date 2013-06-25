@@ -192,6 +192,7 @@
     <Compile Include="Controllers\BlogController.cs" />
     <Compile Include="Controllers\BlogControllerContext.cs" />
     <Compile Include="Controllers\InfoController.cs" />
+    <Compile Include="Filters\BlogAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -203,6 +204,7 @@
     <Compile Include="ViewModels\Authentication\LoginViewModel.cs" />
     <Compile Include="ViewModels\Blog\Page.cs" />
     <Compile Include="ViewModels\Blog\Post.cs" />
+    <Compile Include="ViewModels\Shared\LinkViewModel.cs" />
     <Compile Include="WindsorControllerFactory.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -230,6 +232,7 @@
     <Content Include="Views\Admin\Post.cshtml" />
     <Content Include="Views\Admin\Blogs.cshtml" />
     <Content Include="Views\Admin\Blog.cshtml" />
+    <Content Include="Views\Admin\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

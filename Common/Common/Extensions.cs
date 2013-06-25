@@ -8,6 +8,8 @@ namespace Common
 {
     public static class Extensions
     {
+        #region String-Related
+
         public static bool IsBlank(this string str)
         {
             return str == null || string.IsNullOrEmpty(str) || string.IsNullOrWhiteSpace(str);
@@ -25,5 +27,7 @@ namespace Common
                 return result;
             return null;
         }
+
+        #endregion
     }
 }

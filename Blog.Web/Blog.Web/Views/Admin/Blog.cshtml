@@ -1,8 +1,11 @@
 ﻿@model Blog.Web.ViewModels.Admin.BlogViewModel
 @{
-    ViewBag.Title += "Admin: Posts";
+    ViewBag.Title += "Admin: Blog";
     Layout = "~/Views/Shared/Global.cshtml";
+
+    var breadcrumbName = Model.BlogId.HasValue ? "Edit" : "Create";
 }
+<h2>@Html.ActionLink("Admin", "Index") » @Html.ActionLink("Blogs", "Blogs") »  @breadcrumbName</h2>
 @using (Html.BeginForm())
 {
     <table>

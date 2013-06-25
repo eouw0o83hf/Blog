@@ -10,7 +10,10 @@
         Text = a.Value,
         Value = a.Key.ToString()
     });
+
+    var breadcrumbName = Model.PostId.HasValue ? "Edit" : "Create";
 }
+<h2>@Html.ActionLink("Admin", "Index") » @Html.ActionLink("Posts", "Posts") »  @breadcrumbName</h2>
 @using (Html.BeginForm())
 {
     @Html.HiddenFor(a => a.PostId)
