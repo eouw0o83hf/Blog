@@ -14,11 +14,11 @@ namespace Blog.Web.Controllers
 {
     public class BaseController : Controller
     {
-        private readonly BlogControllerContext _context;
+        protected readonly BlogControllerContext Context;
         protected readonly IBlogService BlogService;
         protected BaseController(BlogControllerContext context)
         {
-            _context = context;
+            Context = context;
 
             BlogService = context.BlogService;
         }

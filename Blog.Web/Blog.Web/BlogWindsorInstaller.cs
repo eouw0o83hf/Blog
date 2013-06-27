@@ -27,7 +27,13 @@ namespace Blog.Web
         {
             base.Install(container, store);
 
-            container.Register(Component.For<BlogControllerContext>().LifestyleTransient());
+            container.Register(Component.For<BlogControllerContext>()
+                                .LifestyleTransient()
+                                .DependsOn(
+                                    Dependency.OnValue("SendGridSmtpServer", ConfigurationManager.AppSettings["SendGrid_SmtpServer"]),
+                                    Dependency.OnValue("SendGridUsername", ConfigurationManager.AppSettings["SendGrid_Username"]),
+                                    Dependency.OnValue("SendGridPassword", ConfigurationManager.AppSettings["SendGrid_Password"])
+                                ));
 
             container.Register(Classes.FromThisAssembly()
                                 .BasedOn<IController>()

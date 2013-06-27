@@ -9,5 +9,9 @@ namespace Blog.Web.Controllers
     public class BlogControllerContext
     {
         public IBlogService BlogService { get; set; }
+
+        public string SendGridSmtpServer { get; set; }
+        public string SendGridUsername { get; set; }
+        public string SendGridPassword { get; set; }
     }
 }
