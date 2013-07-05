@@ -25,7 +25,7 @@ namespace Blog.Web
 
         public bool IsInRole(string role)
         {
-            return Roles.Contains(role);
+            return Roles != null && Roles.Contains(role);
         }
 
         public string AuthenticationType

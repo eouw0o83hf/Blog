@@ -1,0 +1,35 @@
+﻿@model Blog.Web.ViewModels.Account.BlobUploadResultViewModel
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>UploadImage</title>
+</head>
+<body>
+    @if (Model == null)
+    {
+        using (Html.BeginForm("UploadImageOtherThing", "Account", FormMethod.Post, new { encType = "multipart/form-data" }))
+        {
+            <label for="file">File: </label>
+            <input type="file" name="file" id="file" />
+            <button type="submit">Submit</button>
+        }
+    }
+    else
+    {
+        <h2>You just uploaded <a href="@Model.UploadedUrl">@Model.UploadedUrl</a></h2>
+        <h2>All blobs:</h2>
+        <ul>
+            @foreach (var b in Model.AllBlobs)
+            {
+                <a href="@b">@b</a>
+            }
+        </ul>
+    }
+</body>
+</html>
