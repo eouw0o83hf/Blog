@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace Blog.Web.ViewModels.Admin
 {
@@ -15,7 +16,9 @@ namespace Blog.Web.ViewModels.Admin
         public DateTime? CreatedDate { get; set; }
         public DateTime? ModifedDate { get; set; }
 
+        [AllowHtml]
         public string Title { get; set; }
+        [AllowHtml]
         public string Body { get; set; }
     }
 }
