@@ -18,6 +18,9 @@ namespace Blog.Web
         public const string Permalink = "Permalink";
 
         public const string Admin = "Admin";
+
+        public const string Login = "Login";
+        public const string Logout = "Logout";
     }
 
     public class RouteConfig
@@ -56,6 +59,18 @@ namespace Blog.Web
                 name: RouteNames.Blog,
                 url: "blog/{blog}",
                 defaults: new { controller = "Blog", action = "Page" }
+            );
+
+            routes.MapRoute(
+                name: RouteNames.Login,
+                url: "login",
+                defaults: new { controller = "Authentication", action = "Login" }
+            );
+
+            routes.MapRoute(
+                name: RouteNames.Logout,
+                url: "logout",
+                defaults: new { controller = "Authentication", action = "Logout" }
             );
 
             routes.MapRoute(

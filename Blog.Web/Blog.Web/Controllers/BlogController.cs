@@ -18,14 +18,21 @@ namespace Blog.Web.Controllers
         [HttpGet]
         public ActionResult Page(string blog)
         {
-            var blogId = ConfigurationManager.AppSettings["DefaultBlogId"].TryParseInt();
-            if (blog.IsNotBlank())
+            int? blogId = null;
+            if (blog.IsBlank())
             {
                 blogId = BlogService.GetBlogId(blog);
-                if (!blogId.HasValue)
-                {
-                    throw new HttpException(404, "Blog not found");
-                }
+            }
+
+            if (blogId == null)
+            {
+                blog = ConfigurationManager.AppSettings["DefaultBlogName"];
+                blogId = BlogService.GetBlogId(blog);
+            }
+
+            if(blogId == null)
+            {
+                throw new HttpException(404, "Blog not found");
             }
 
             var timeZone = GetLocalTime();

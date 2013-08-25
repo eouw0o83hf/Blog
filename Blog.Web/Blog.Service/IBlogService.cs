@@ -46,6 +46,8 @@ namespace Blog.Service
 
         UserModel GetOrCreateUser(IAuthenticationResponse openIdResponse);
 
+        void GrantUserPermission(int userId, PermissionEnum permission);
+
         #endregion
     }
 }

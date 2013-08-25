@@ -150,6 +150,27 @@ namespace Blog.Service
             };
         }
 
+        public void GrantUserPermission(int userId, PermissionEnum permission)
+        {
+            var dbUser = BlogDb.Users.FirstOrDefault(a => a.UserId == userId);
+            if (dbUser == null)
+            {
+                return;
+            }
+
+            var dbPermission = BlogDb.Permissions.FirstOrDefault(a => a.Name == permission.ToString());
+            if (!dbUser.UserPermissions.Any(a => a.PermissionId == dbPermission.PermissionId))
+            {
+                BlogDb.UserPermissions.InsertOnSubmit(new UserPermission
+                {
+                    PermissionId = dbPermission.PermissionId,
+                    UserId = dbUser.UserId
+                });
+
+                BlogDb.SubmitChanges();
+            }
+        }
+
         #region Repository
 
         protected IdentityProvider getIdentityProvider(string uri)

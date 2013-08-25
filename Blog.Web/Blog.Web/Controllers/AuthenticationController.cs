@@ -8,6 +8,9 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Blog.Web.ViewModels.Authentication;
+using System.Configuration;
+using Blog.Web.Filters;
+using Blog.Models;
 
 namespace Blog.Web.Controllers
 {
@@ -27,6 +30,14 @@ namespace Blog.Web.Controllers
                     new OpenIdProvider { Name = "Yahoo", LoginUrl = "https://me.yahoo.com" }
                 }
             };
+        }
+
+        protected BlogUser BlogUser
+        {
+            get
+            {
+                return User as BlogUser;
+            }
         }
 
         [HttpGet]
@@ -98,6 +109,22 @@ namespace Blog.Web.Controllers
             Response.Cookies.Clear();
             Session.Abandon();
             return RedirectToRoute(RouteNames.Main);
+        }
+
+        [HttpGet, Authorize]
+        public ActionResult MakeMeAnAdmin(Guid guid)
+        {
+            if (guid == Guid.Parse(ConfigurationManager.AppSettings["MakeMeAnAdminGuid"]))
+            {
+                if (BlogUser == null || BlogUser.UserId == null)
+                {
+                    throw new HttpException(404, "Not found");
+                }
+                BlogService.GrantUserPermission(BlogUser.UserId.Value, PermissionEnum.Admin);
+            }
+
+            // Make sure we logout so that the saved state will get repopulated
+            return RedirectToRoute(RouteNames.Logout);
         }
     }
 }
