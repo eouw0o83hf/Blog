@@ -7,3 +7,6 @@
 {
     @Html.Partial("Post", p)
 }
+<div>
+    @Html.RouteLink("Feed", RouteNames.Feed, new { blog = Model.UrlName })
+</div>

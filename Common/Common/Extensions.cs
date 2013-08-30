@@ -28,6 +28,15 @@ namespace Common
             return null;
         }
 
+        public static string Truncate(this string str, int length)
+        {
+            if (str.Length < length)
+            {
+                return str;
+            }
+            return str.Substring(0, length);
+        }
+
         #endregion
     }
 }

@@ -1,0 +1,36 @@
+﻿@using Common;
+@model Blog.Web.ViewModels.Feed.FeedViewModel
+@{
+    Layout = null;
+}
+<rss xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:sy="http://purl.org/rss/1.0/modules/syndication/" xmlns:slash="http://purl.org/rss/1.0/modules/slash/" version="2.0">
+    <channel>
+        <title>@Model.BlogName</title>
+        <atom:link href="http://eouw0o83hf.com/blog/@Model.UrlName/feed/" rel="self" type="application/rss+xml"/>
+        <link>http://eouw0o83hf.com/blog/@Model.UrlName</link>
+        <description>An eouw0o83hf blog</description>
+        <lastBuildDate>@DateTime.UtcNow.ToString("ddd, dd MMM yyyy hh:mm:ss zzz")</lastBuildDate>
+        <language>en-US</language>
+        <sy:updatePeriod>hourly</sy:updatePeriod>
+        <sy:updateFrequency>1</sy:updateFrequency>        
+        @foreach (var p in Model.Posts)
+        {
+            var body = Html.Markdown(p.RawBody).ToHtmlString().Truncate(250) + "...";
+            <item>
+                <title>@p.Title</title>
+                @{
+                    var linkTag = new System.Text.StringBuilder("<link>");
+                    linkTag.Append(Url.RouteUrl(RouteNames.Permalink, new { PostIdentifier = p.PostIdentifier, UrlTitle = p.UrlTitle }, "http"));
+                    linkTag.Append("</link>");
+                }
+                @Html.Raw(linkTag)
+                @*<comments>eouw0o83hf.com/comments</comments>*@
+                <pubDate>@p.PostDate.ToString("ddd, dd MMM yyyy hh:mm:ss zzz")</pubDate>
+                <dc:creator>eouw0o83hf</dc:creator>
+                <guid isPermaLink="true">@Url.RouteUrl(RouteNames.Permalink, new { PostIdentifier = p.PostIdentifier, UrlTitle = p.UrlTitle }, "http")</guid>
+                <description><![CDATA[@Html.Raw(body)]]></description>  
+                <content:encoded><![CDATA[@Html.Markdown(p.RawBody)]]></content:encoded>
+            </item>
+        }
+    </channel>
+</rss>

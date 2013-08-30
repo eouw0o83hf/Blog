@@ -1,22 +1,21 @@
-﻿using Blog.Service;
-using Blog.Web.ViewModels.Blog;
-using Common;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Blog.Web.ViewModels.Feed;
+using Common;
+using System.Configuration;
 
 namespace Blog.Web.Controllers
 {
-    public class BlogController : BaseController
+    public class FeedController : BaseController
     {
-        public BlogController(BlogControllerContext context)
+        public FeedController(BlogControllerContext context)
             : base(context) { }
-        
+
         [HttpGet]
-        public ActionResult Page(string blog)
+        public ActionResult Index(string blog)
         {
             int? blogId = null;
             if (blog.IsBlank())
@@ -30,7 +29,7 @@ namespace Blog.Web.Controllers
                 blogId = BlogService.GetBlogId(blog);
             }
 
-            if(blogId == null)
+            if (blogId == null)
             {
                 throw new HttpException(404, "Blog not found");
             }
@@ -42,19 +41,24 @@ namespace Blog.Web.Controllers
                 Id = a.PostId.Value,
                 PostDate = TimeZoneInfo.ConvertTime(a.CreatedDate, TimeZoneInfo.Utc, timeZone),
                 RawBody = a.Body,
-                Title = a.Title
+                Title = a.Title,
+                PostIdentifier = a.Identifier,
+                UrlTitle = a.UrlTitle
             });
 
             var blogModel = BlogService.GetBlog(blogId.Value);
 
-            var result = new Page
+            var result = new FeedViewModel
             {
                 BlogName = blogModel.Name,
                 UrlName = blogModel.UrlName,
                 Posts = postVms.ToList()
             };
 
+            Response.ContentType = "text/xml";
+
             return View(result);
         }
+
     }
 }
