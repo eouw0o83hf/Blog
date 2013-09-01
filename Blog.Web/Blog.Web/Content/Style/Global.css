@@ -38,3 +38,8 @@ ol, ul {
 li {
     margin: 0 0 0 20px; 
 }
+
+#Body {
+    width: 750px;
+    font-family: "Segoe UI", Calibri, Helvetica Neue, Arial ,Verdana, sans-serif;
+}
