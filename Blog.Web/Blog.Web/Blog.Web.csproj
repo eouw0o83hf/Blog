@@ -243,7 +243,6 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Content Include="Content\Style\Global.css" />
     <Content Include="Content\Style\Prettifiest.css" />
-    <Content Include="Content\Style\Reset.css" />
     <Content Include="Global.asax" />
     <None Include="Scripts\jquery-2.0.0.intellisense.js" />
     <Content Include="lib\CodeScales.Http.dll" />

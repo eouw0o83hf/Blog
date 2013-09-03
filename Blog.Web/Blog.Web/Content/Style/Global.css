@@ -1,4 +1,39 @@
-﻿h1 {
+﻿body {
+    background-color: #f3f3f9;
+    font-family: "Segoe UI", Calibri, Helvetica Neue, Arial,Verdana, sans-serif;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    line-height: 23px;
+}
+
+#Wrapper {
+    width: 1030px;
+    margin: 10px auto 0 auto;
+}
+
+#Menu {
+    margin: 0 20px 0 0;
+    background-color: #fcfcfc;
+    color: #0f0f0f;
+    padding: 15px 20px;
+    width: 220px;
+    float: left;
+}
+
+#Content {
+    width: 750px;
+    float: left;
+}
+
+.post-wrapper {
+    margin: 0 0 30px 0;
+    background-color: #fcfcfc;
+    color: #0f0f0f;
+    padding: 20px;
+}
+
+h1 {
     font-weight: bold;
     font-size: 22px;
     text-decoration: underline;
@@ -17,6 +52,12 @@ h3 {
     margin: 0 0 1px 0;
 }
 
+ul, ol {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
 pre, pre.prettyprint {
     border: 0 none;
 }
@@ -29,17 +70,13 @@ p {
         color: #666666;
         margin: 0 0 2px 0;
     }
-    
-ol, ul {
-    list-style: disc;
-    margin: 0 0 5px 0;
+
+.post-wrapper ul {
+    list-style-type: decimal;
+    list-style-position: inside;
 }
 
-li {
-    margin: 0 0 0 20px; 
-}
-
-#Body {
-    width: 750px;
-    font-family: "Segoe UI", Calibri, Helvetica Neue, Arial ,Verdana, sans-serif;
+.post-wrapper ol {
+    list-style-type: decimal;
+    list-style-position: inside;
 }

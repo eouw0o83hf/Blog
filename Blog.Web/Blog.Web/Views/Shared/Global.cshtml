@@ -11,28 +11,27 @@
     <script src="https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js"></script>
     @RenderSection("Scripts", false)
 
-    @*<link href="@Url.Content("~/Content/Style/Reset.css")" rel="stylesheet" type="text/css" />*@
     <link href="@Url.Content("~/Content/Style/Global.css")" rel="stylesheet" type="text/css" />
     <link href="@Url.Content("~/Content/Style/Prettifiest.css")" rel="stylesheet" type="text/css" />
 
     @RenderSection("Styles", false)
 </head>
 <body>
-    <div id="Body">
-        @RenderBody()
+    <div id="Wrapper">
+        <div id="Menu">
+            <ul>
+            @foreach(var l in ViewData.Get<ICollection<LinkViewModel>>("MenuLinks"))
+            {
+                <li>
+                    <a href="@l.Url">@l.LinkText</a>
+                </li>
+            }
+            </ul>
+        </div>
+        <div id="Content">
+            @RenderBody()
+        </div>
     </div>
-    <hr />
-    <div>
-        @{
-            var links = ViewData.Get<ICollection<LinkViewModel>>("MenuLinks");
-            var index = 0;
-        }
-        @foreach(var l in links)
-        {
-            <a href="@l.Url">@l.LinkText</a> @(++index < links.Count ? " | " : null)
-        }
-    </div>
-
     <!-- Make prettify work with markdown -->
     <script type="text/javascript">
         $(function () {
