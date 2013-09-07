@@ -32,7 +32,9 @@ namespace Blog.Web
                                 .DependsOn(
                                     Dependency.OnValue("SendGridSmtpServer", ConfigurationManager.AppSettings["SendGrid_SmtpServer"]),
                                     Dependency.OnValue("SendGridUsername", ConfigurationManager.AppSettings["SendGrid_Username"]),
-                                    Dependency.OnValue("SendGridPassword", ConfigurationManager.AppSettings["SendGrid_Password"])
+                                    Dependency.OnValue("SendGridPassword", ConfigurationManager.AppSettings["SendGrid_Password"]),
+                                    Dependency.OnValue("CdnAccountName", ConfigurationManager.AppSettings["Cdn_AccountName"]),
+                                    Dependency.OnValue("CdnAccessKey", ConfigurationManager.AppSettings["Cdn_AccessKey_Primary"])
                                 ));
 
             container.Register(Classes.FromThisAssembly()

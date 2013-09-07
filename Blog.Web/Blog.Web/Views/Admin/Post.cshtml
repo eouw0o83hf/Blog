@@ -13,45 +13,47 @@
 
     var breadcrumbName = Model.PostId.HasValue ? "Edit" : "Create";
 }
-<h2>@Html.ActionLink("Admin", "Index") » @Html.ActionLink("Posts", "Posts") »  @breadcrumbName</h2>
-@using (Html.BeginForm())
-{
-    @Html.HiddenFor(a => a.PostId)
-    @Html.HiddenFor(a => a.Identifier)
-    <table>
-        <tr>
-            <td>
-                @Html.LabelFor(a => a.BlogId, "Blog")
-            </td>
-            <td>
-                @Html.DropDownListFor(a => a.BlogId, blogDdl, "Select a Blog")
-            </td>
-        </tr>
-        <tr>
-            <td>
-                @Html.LabelFor(a => a.Title, "Title")
-            </td>
-            <td>
-                @Html.TextBoxFor(a => a.Title)
-            </td>
-        </tr>
-        <tr>
-            <td>
-                @Html.LabelFor(a => a.Body, "Text")
-            </td>
-            <td>
-                @Html.TextAreaFor(a => a.Body)
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <button type="button">Preview</button>
-            </td>
-        </tr>
-        <tr>
-            <td colspan="2">
-                <button type="submit">Submit</button>
-            </td>
-        </tr>
-    </table>
-}
+<div class="admin-wrapper">
+    <h2>@Html.ActionLink("Admin", "Index") » @Html.ActionLink("Posts", "Posts") »  @breadcrumbName</h2>
+    @using (Html.BeginForm())
+    {
+        @Html.HiddenFor(a => a.PostId)
+        @Html.HiddenFor(a => a.Identifier)
+        <table>
+            <tr>
+                <td>
+                    @Html.LabelFor(a => a.BlogId, "Blog")
+                </td>
+                <td>
+                    @Html.DropDownListFor(a => a.BlogId, blogDdl, "Select a Blog")
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(a => a.Title, "Title")
+                </td>
+                <td>
+                    @Html.TextBoxFor(a => a.Title)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(a => a.Body, "Text")
+                </td>
+                <td>
+                    @Html.TextAreaFor(a => a.Body)
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="button">Preview</button>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="submit">Submit</button>
+                </td>
+            </tr>
+        </table>
+    }
+</div>

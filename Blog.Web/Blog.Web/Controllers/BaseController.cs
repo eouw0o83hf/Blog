@@ -102,6 +102,7 @@ namespace Blog.Web.Controllers
             if (User.IsInRole(PermissionEnum.Admin.ToString()))
             {
                 menuLinks.Add(new LinkViewModel { Url = Url.RouteUrl(RouteNames.Admin), LinkText = "Admin" });
+                menuLinks.Add(new LinkViewModel { Url = Url.RouteUrl(RouteNames.Logout), LinkText = "Logout" });
             }
 
             ViewData["MenuLinks"] = menuLinks;

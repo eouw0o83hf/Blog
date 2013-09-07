@@ -1,0 +1,56 @@
+﻿@model Blog.Web.ViewModels.Cdn.ResourcesViewModel
+@{
+    ViewBag.Title += "Admin: CDN Resources";
+    Layout = "~/Views/Shared/Global.cshtml";
+}
+@section ScriptFooter
+{
+    <script type="text/ecmascript">
+        $(function() {
+            $('.delete-resource').click(function () {
+                var name = $(this).parent().find('.delete-resource-name').val();
+                var directory = $(this).parent().find('.delete-resource-directory').val();
+                if (confirm('Really delete ' + name + '?')) {
+                    window.location = 'DeleteResource?directory=' + directory + '&fileName=' + name;
+                }
+            });
+        });
+    </script>
+}
+<div class="admin-wrapper">
+    <h2>@Html.ActionLink("Admin", "Index", "Admin") » @Html.ActionLink("Directories", "List") » Resources</h2>
+    <table>
+        <thead>
+            <tr>
+                <td>Name</td>
+                <td>Link</td>
+                <td>Delete</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var i in Model.LineItems)
+            {
+            <tr>
+                <td>
+                    <a href="@i.Url" target="_blank" title="@i.Name">@i.Name</a>
+                </td>
+                <td>
+                    ![@i.Name](@i.Url "@i.Name")
+                </td>
+                <td>
+                    <input type="hidden" class="delete-resource-directory" value="@Model.Directory" />
+                    <input type="hidden" class="delete-resource-name" value="@i.Name" />
+                    <a href="javascript:void(0);" class="delete-resource" title="Delete">[X]</a>
+                </td>
+            </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="2">
+                    @Html.ActionLink("New", "NewResource", new { directory = Model.Directory })
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

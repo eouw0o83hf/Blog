@@ -219,6 +219,7 @@
     <Compile Include="Controllers\BlogController.cs" />
     <Compile Include="Controllers\BlogControllerContext.cs" />
     <Compile Include="Controllers\FeedController.cs" />
+    <Compile Include="Controllers\CdnController.cs" />
     <Compile Include="Controllers\InfoController.cs" />
     <Compile Include="Filters\BlogAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -233,8 +234,11 @@
     <Compile Include="ViewModels\Authentication\LoginViewModel.cs" />
     <Compile Include="ViewModels\Blog\Page.cs" />
     <Compile Include="ViewModels\Blog\Post.cs" />
+    <Compile Include="ViewModels\Cdn\NewResourceViewModel.cs" />
     <Compile Include="ViewModels\Feed\FeedViewModel.cs" />
+    <Compile Include="ViewModels\Cdn\ListViewModel.cs" />
     <Compile Include="ViewModels\Shared\LinkViewModel.cs" />
+    <Compile Include="ViewModels\Cdn\ResourcesViewModel.cs" />
     <Compile Include="WindsorControllerFactory.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -265,6 +269,9 @@
     <Content Include="Views\Admin\Index.cshtml" />
     <Content Include="Views\Account\UploadImage.cshtml" />
     <Content Include="Views\Feed\Index.cshtml" />
+    <Content Include="Views\Cdn\List.cshtml" />
+    <Content Include="Views\Cdn\Resources.cshtml" />
+    <Content Include="Views\Cdn\NewResource.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

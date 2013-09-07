@@ -3,15 +3,17 @@
     ViewBag.Title += "Admin: Blogs";
     Layout = "~/Views/Shared/Global.cshtml";
 }
-<h2>@Html.ActionLink("Admin", "Index") » Blogs</h2>
-<ul>
-    <li>
-        @Html.ActionLink("New Blog", "Blog")
-    </li>
-@foreach (var x in Model)
-{
-    <li>
-        @Html.ActionLink(x.BlogId + ": " + x.Name, "Blog", new { x.BlogId })
-    </li>
-}
-</ul>
+<div class="admin-wrapper">
+    <h2>@Html.ActionLink("Admin", "Index") » Blogs</h2>
+    <ul>
+        <li>
+            @Html.ActionLink("New Blog", "Blog")
+        </li>
+    @foreach (var x in Model)
+    {
+        <li>
+            @Html.ActionLink(x.BlogId + ": " + x.Name, "Blog", new { x.BlogId })
+        </li>
+    }
+    </ul>
+</div>

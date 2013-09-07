@@ -13,5 +13,8 @@ namespace Blog.Web.Controllers
         public string SendGridSmtpServer { get; set; }
         public string SendGridUsername { get; set; }
         public string SendGridPassword { get; set; }
+
+        public string CdnAccountName { get; set; }
+        public string CdnAccessKey { get; set; }
     }
 }

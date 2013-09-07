@@ -21,7 +21,7 @@ namespace Blog.Web
         {
             if (controllerType == null)
             {
-                throw new HttpException(404, "The controller path could not be found");
+                throw new HttpException(404, "The controller path could not be found.");
             }
 
             return (IController)Kernel.Resolve(controllerType);

@@ -1,0 +1,14 @@
+﻿@model Blog.Web.ViewModels.Cdn.NewResourceViewModel
+@{
+    ViewBag.Title += "Admin: New CDN Resource";
+    Layout = "~/Views/Shared/Global.cshtml";
+}
+<div class="admin-wrapper">
+    <h2>@Html.ActionLink("Admin", "Index", "Admin") » @Html.ActionLink("Directories", "List") » @Html.ActionLink("Resources", "Resources", new { directory = Model.Directory }) » New</h2>
+    @using (Html.BeginForm("NewResource", "Cdn", new { directory = Model.Directory }, FormMethod.Post, new { encType = "multipart/form-data" }))
+    {
+        <label for="file">File: </label>
+        <input type="file" name="file" id="file" />
+        <button type="submit">Submit</button>
+    }
+</div>

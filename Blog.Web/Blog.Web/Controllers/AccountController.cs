@@ -31,58 +31,5 @@ namespace Blog.Web.Controllers
             //var transport = SendGrid.Transport.SMTP.GetInstance(creds);
             //transport.Deliver(message);
         }
-
-        //[HttpGet]
-        //public ActionResult UploadImage()
-        //{
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //public ActionResult UploadImageOtherThing(HttpPostedFileBase file)
-        //{
-        //    if (file.ContentLength == 0)
-        //    {
-        //        throw new Exception();
-        //    }
-
-        //    var connectionStringBuilder = new StringBuilder("DefaultEndpointsProtocol=https;");
-        //    connectionStringBuilder.Append("AccountName=").Append(ConfigurationManager.AppSettings["Cdn_AccountName"]).Append(';');
-        //    connectionStringBuilder.Append("AccountKey=").Append(ConfigurationManager.AppSettings["Cdn_AccessKey_Primary"]).Append(';');
-
-        //    var storageAccount = CloudStorageAccount.Parse(connectionStringBuilder.ToString());
-        //    var client = storageAccount.CreateCloudBlobClient();
-
-        //    var imagesContainer = ConfigurationManager.AppSettings["Cdn_ImageContainer"];
-        //    var containerReference = client.GetContainerReference(imagesContainer);
-
-        //    // Make sure it exists
-        //    if (!containerReference.Exists())
-        //    {
-        //        containerReference.CreateIfNotExists();
-        //        containerReference.SetPermissions(new BlobContainerPermissions
-        //        {
-        //            PublicAccess = BlobContainerPublicAccessType.Blob
-        //        });
-        //    }
-
-        //    var name = Path.GetFileName(file.FileName);
-
-        //    var blobReference = containerReference.GetBlockBlobReference(name);
-
-        //    var stream = new MemoryStream();
-        //    file.InputStream.CopyTo(stream);
-
-        //    // Warning, this overwrites
-        //    blobReference.UploadFromStream(stream);
-
-        //    var result = new BlobUploadResultViewModel
-        //    {
-        //        UploadedUrl = blobReference.Uri.ToString(),
-        //        AllBlobs = containerReference.ListBlobs().Select(a => a.Uri.ToString()).ToList()
-        //    };
-
-        //    return View("UploadImage", result);
-        //}
     }
 }

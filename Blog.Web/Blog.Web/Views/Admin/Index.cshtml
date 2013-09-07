@@ -2,11 +2,20 @@
     ViewBag.Title = "Index";
     Layout = "~/Views/Shared/Global.cshtml";
 }
+<div class="admin-wrapper">
+    <h2>Admin</h2>
 
-<h2>Admin</h2>
+    <h3>Blogs and Posts</h3>
+    <ul>
+        <li>@Html.ActionLink("Manage Blogs", "Blogs")</li>
+        <li>@Html.ActionLink("Manage Posts", "Posts")</li>
+        <li>@Html.ActionLink("QuickLink: New Post", "Post")</li>
+    </ul>
 
-<ul>
-    <li>@Html.ActionLink("Manage Blogs", "Blogs")</li>
-    <li>@Html.ActionLink("Manage Posts", "Posts")</li>
-    <li>@Html.ActionLink("QuickLink: New Post", "Post")</li>
-</ul>
+    <h3>Resources</h3>
+    <ul>
+        <li>
+            @Html.ActionLink("Manage Resources", "List", "Cdn")
+        </li>
+    </ul>
+</div>
