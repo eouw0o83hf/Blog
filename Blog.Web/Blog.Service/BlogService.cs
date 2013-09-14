@@ -98,7 +98,17 @@ namespace Blog.Service
             dbPost.BlogId = model.BlogId;
             dbPost.Body = model.Body;
             dbPost.Title = model.Title;
-            dbPost.UrlTitle = model.UrlTitle ?? Regex.Replace(model.Title, @"[^A-Za-z0-9_\.~]+", "-");
+
+            var urlTitle = model.UrlTitle;
+            if (urlTitle.IsBlank())
+            {
+                urlTitle = Regex.Replace(model.Title, @"[^A-Za-z0-9_\.~]+", "-");
+            }
+            if (urlTitle.IsNotBlank())
+            {
+                urlTitle = urlTitle.Truncate(100);
+            }
+            dbPost.UrlTitle = urlTitle;
 
             BlogDb.SubmitChanges();
 
@@ -233,7 +243,8 @@ namespace Blog.Service
                 ModifedDate = post.CreatedOn,
                 PostId = post.PostId,
                 Title = post.Title,
-                BlogId = post.BlogId
+                BlogId = post.BlogId,
+                UrlTitle = post.UrlTitle
             };
         }
 

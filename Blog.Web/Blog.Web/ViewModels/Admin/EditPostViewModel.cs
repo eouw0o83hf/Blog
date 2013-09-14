@@ -18,6 +18,7 @@ namespace Blog.Web.ViewModels.Admin
 
         [AllowHtml]
         public string Title { get; set; }
+        public string UrlTitle { get; set; }
         [AllowHtml]
         public string Body { get; set; }
     }

@@ -10,6 +10,8 @@ using System.Web.Mvc;
 using Blog.Web.ViewModels.Admin;
 using Blog.Models;
 using Blog.Web.Filters;
+using Common;
+using System.Text.RegularExpressions;
 
 namespace Blog.Web.Controllers
 {
@@ -112,7 +114,8 @@ namespace Blog.Web.Controllers
                     ModifedDate = model.ModifedDate,
                     PostId = model.PostId,
                     Title = model.Title,
-                    BlogId = model.BlogId
+                    BlogId = model.BlogId,
+                    UrlTitle = model.UrlTitle
                 };
             }
             else
@@ -138,7 +141,7 @@ namespace Blog.Web.Controllers
                 Identifier = model.Identifier,
                 PostId = model.PostId,
                 Title = model.Title,
-                UrlTitle = string.Empty
+                UrlTitle = model.UrlTitle
             });
 
             return RedirectToAction("Posts");
