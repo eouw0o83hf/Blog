@@ -11,5 +11,8 @@ namespace Blog.Web.ViewModels.Blog
         public string Title { get; set; }
         public DateTime PostDate { get; set; }
         public string RawBody { get; set; }
+
+        public Guid Identifier { get; set; }
+        public string UrlTitle { get; set; }
     }
 }

@@ -233,6 +233,7 @@
     <Compile Include="ViewModels\Admin\PostListViewModel.cs" />
     <Compile Include="ViewModels\Authentication\LoginViewModel.cs" />
     <Compile Include="ViewModels\Blog\Page.cs" />
+    <Compile Include="ViewModels\Blog\Permalink.cs" />
     <Compile Include="ViewModels\Blog\Post.cs" />
     <Compile Include="ViewModels\Cdn\NewResourceViewModel.cs" />
     <Compile Include="ViewModels\Feed\FeedViewModel.cs" />
@@ -273,6 +274,7 @@
     <Content Include="Views\Cdn\List.cshtml" />
     <Content Include="Views\Cdn\Resources.cshtml" />
     <Content Include="Views\Cdn\NewResource.cshtml" />
+    <Content Include="Views\Blog\Permalink.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

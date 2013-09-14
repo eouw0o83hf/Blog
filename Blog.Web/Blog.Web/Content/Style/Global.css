@@ -81,10 +81,15 @@ p {
     color: #1a1a1a;
 }
 
-    p.subtitle {
-        color: #666666;
-        margin: 0 0 2px 0;
-    }
+.post-subtitle {
+    color: #666666;
+    margin: 0 0 2px 0;
+}
+
+.post-footer {
+    border-top: 1px solid #000000;
+    padding: 12px 0 0 0;
+}
 
 .post-wrapper ul, .post-wrapper ol {
     margin: 0 0 0 -20px;

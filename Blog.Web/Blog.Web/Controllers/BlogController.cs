@@ -42,7 +42,9 @@ namespace Blog.Web.Controllers
                 Id = a.PostId.Value,
                 PostDate = TimeZoneInfo.ConvertTime(a.CreatedDate, TimeZoneInfo.Utc, timeZone),
                 RawBody = a.Body,
-                Title = a.Title
+                Title = a.Title,
+                Identifier = a.Identifier,
+                UrlTitle = a.UrlTitle
             });
 
             var blogModel = BlogService.GetBlog(blogId.Value);
@@ -55,6 +57,31 @@ namespace Blog.Web.Controllers
             };
 
             return View(result);
+        }
+
+        [HttpGet]
+        public ActionResult Permalink(Guid postIdentifier, string urlTitle)
+        {
+            var post = BlogService.GetPost(postIdentifier);
+            if (post == null)
+            {
+                throw new HttpException(404, "Post not found");
+            }
+
+            var viewModel = new Post
+            {
+                Id = post.PostId.Value,
+                Identifier = post.Identifier,
+                PostDate = post.CreatedDate,
+                RawBody = post.Body,
+                Title = post.Title,
+                UrlTitle = post.UrlTitle
+            };
+
+            return View(new Permalink
+                {
+                    Post = viewModel
+                });
         }
     }
 }

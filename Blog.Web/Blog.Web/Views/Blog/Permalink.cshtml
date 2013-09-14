@@ -1,0 +1,6 @@
+﻿@model Blog.Web.ViewModels.Blog.Permalink
+@{
+    Layout = "~/Views/Shared/Global.cshtml";
+    ViewBag.Title = "Post :: " + Model.Post.Title;
+}
+@Html.Partial("Post", Model.Post)
