@@ -67,7 +67,7 @@ h3 {
     margin: 0 0 1px 0;
 }
 
-ul, ol {
+#Menu ul, #Menu ol {
     list-style: none;
     margin: 0;
     padding: 0;
@@ -86,12 +86,16 @@ p {
         margin: 0 0 2px 0;
     }
 
-.post-wrapper ul {
-    list-style-type: decimal;
-    list-style-position: inside;
+.post-wrapper ul, .post-wrapper ol {
+    margin: 0 0 0 -20px;
 }
 
-.post-wrapper ol {
-    list-style-type: decimal;
-    list-style-position: inside;
+input[type="text"], select {
+    padding: 4px;
+}
+
+textarea {
+    width: 600px;
+    height: 300px;
+    padding: 10px;
 }
