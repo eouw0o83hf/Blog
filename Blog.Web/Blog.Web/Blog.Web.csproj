@@ -245,6 +245,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="Content\Assets\feed-icon-14x14.png" />
     <Content Include="Content\Style\Global.css" />
     <Content Include="Content\Style\Prettifiest.css" />
     <Content Include="Global.asax" />

@@ -3,10 +3,20 @@
     Layout = "~/Views/Shared/Global.cshtml";
     ViewBag.Title = "Blog :: " + Model.BlogName;
 }
+@section MenuLinks
+{
+    @{
+        var url = Url.RouteUrl(RouteNames.Feed, new { blog = Model.UrlName });
+    }
+
+    <li>
+        <a href="@url">
+            <img src="@Href("~/Content/Assets/feed-icon-14x14.png")" alt="RSS" />
+            Feed
+        </a>
+    </li>   
+}
 @foreach (var p in Model.Posts)
 {
     @Html.Partial("Post", p)
 }
-<div>
-    @Html.RouteLink("Feed", RouteNames.Feed, new { blog = Model.UrlName })
-</div>
