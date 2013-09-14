@@ -6,6 +6,8 @@ using DotNetOpenAuth.OpenId.RelyingParty;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -15,10 +17,17 @@ namespace Blog.Service
     public class BlogService : IBlogService
     {
         protected readonly BlogDataContext BlogDb;
+        protected readonly string SendGridSmtpServer;
+        protected readonly string SendGridUsername;
+        protected readonly string SendGridPassword;
 
-        public BlogService(BlogDataContext blogDb)
+        public BlogService(BlogServiceContext context)
         {
-            BlogDb = blogDb;
+            BlogDb = context.BlogDb;
+
+            SendGridSmtpServer = context.SendGridSmtpServer;
+            SendGridUsername = context.SendGridUsername;
+            SendGridPassword = context.SendGridPassword;
         }
         
         public int? GetBlogId(string requestDomain)
@@ -150,13 +159,26 @@ namespace Blog.Service
                 dbUser = createUser(identityProvider.IdentityProviderId, upn, email, nickname);
             }
 
+            return GetUser(dbUser.UserId);
+        }
+
+        public UserModel GetUser(int userId)
+        {
+            var dbUser = BlogDb.Users.FirstOrDefault(a => a.UserId == userId);
+
+            if (dbUser == null)
+            {
+                return null;
+            }
+
             return new UserModel
             {
                 UserId = dbUser.UserId,
                 Email = dbUser.Email,
                 Handle = dbUser.Handle,
                 Upn = dbUser.Upn,
-                Permissions = dbUser.UserPermissions.Select(a => (PermissionEnum)a.PermissionId).ToList()
+                Permissions = dbUser.UserPermissions.Select(a => (PermissionEnum)a.PermissionId).ToList(),
+                EmailIsVerified = dbUser.EmailIsVerified ?? false
             };
         }
 
@@ -179,6 +201,83 @@ namespace Blog.Service
 
                 BlogDb.SubmitChanges();
             }
+        }
+
+        public Response UpdateEmail(int userId, string emailAddress)
+        {
+            if (Regex.IsMatch(emailAddress, @"^\S+@\S+$", RegexOptions.IgnoreCase))
+            {
+                return new Response
+                {
+                    Success = false,
+                    Message = "Email address is invalid"
+                };
+            }
+
+            var dbUser = BlogDb.GetTable<User>().FirstOrDefault(a => a.UserId == userId);
+            if (dbUser == null)
+            {
+                return new Response
+                {
+                    Success = false,
+                    Message = "User not found"
+                };
+            }
+
+            var existingEmail = BlogDb.GetTable<User>().Any(a => a.Email == emailAddress.Trim());
+            if (existingEmail) 
+            {
+                return new Response
+                {
+                    Success = false,
+                    Message = "That email address is already in use"
+                };
+            }
+
+            dbUser.Email = emailAddress;
+            dbUser.EmailIsVerified = false;
+            BlogDb.SubmitChanges();
+
+            SendEmailPickupInvite(userId);
+
+            return new Response
+            {
+                Success = true
+            };
+        }
+
+        public void SendEmailPickupInvite(int userId)
+        {
+            var dbUser = BlogDb.GetTable<User>().FirstOrDefault(a => a.UserId == userId);
+            if (userId != null)
+            {
+                var invite = new EmailVerification
+                {
+                    Created = DateTime.UtcNow,
+                    Expires = DateTime.UtcNow.AddHours(30),
+                    Id = Guid.NewGuid(),
+                    UserId = userId
+                };
+
+                var from = new MailAddress("noreply@eouw0o83hf.com");
+                var to = new[] { new MailAddress(dbUser.Email) };
+                var subject = "Email invite";
+                var html = @"<h1>Oh hai!</h1><p>Here's where the body would be, along with a</p><h2><a href=""#"">Confirmation Link</a></h2>";
+
+                var message = SendGrid.Mail.GetInstance(from, to, new MailAddress[0], new MailAddress[0], subject, html, null);
+                var creds = new NetworkCredential(SendGridUsername, SendGridPassword);
+                var transport = SendGrid.Transport.SMTP.GetInstance(creds);
+                transport.Deliver(message);
+
+
+                BlogDb.GetTable<EmailVerification>().InsertOnSubmit(invite);
+                BlogDb.SubmitChanges();
+            }
+        }
+
+        public bool AttemptEmailInvitePickup(int userId, Guid inviteId)
+        {
+            throw new NotImplementedException();
         }
 
         #region Repository

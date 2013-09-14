@@ -19,6 +19,8 @@ namespace Blog.Web
         public const string FeedDefault = "FeedDefault";
         public const string Permalink = "Permalink";
 
+        public const string AccountIndex = "Account";
+
         public const string Admin = "Admin";
 
         public const string Login = "Login";
@@ -73,6 +75,12 @@ namespace Blog.Web
                 name: RouteNames.FeedDefault,
                 url: "feed",
                 defaults: new { controller = "Feed", action = "Index" }
+            );
+
+            routes.MapRoute(
+                name: RouteNames.AccountIndex,
+                url: "account",
+                defaults: new { controller = "Account", action = "Index" }
             );
 
             routes.MapRoute(

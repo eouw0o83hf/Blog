@@ -45,8 +45,12 @@ namespace Blog.Service
         #region Authentication and Authorization
 
         UserModel GetOrCreateUser(IAuthenticationResponse openIdResponse);
+        UserModel GetUser(int userId);
 
         void GrantUserPermission(int userId, PermissionEnum permission);
+        Response UpdateEmail(int userId, string emailAddress);
+        void SendEmailPickupInvite(int userId);
+        bool AttemptEmailInvitePickup(int userId, Guid inviteId);
 
         #endregion
     }

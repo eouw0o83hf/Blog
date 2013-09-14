@@ -101,11 +101,16 @@ p {
 
 
 input[type="text"], select {
-    padding: 4px;
+    padding: 6px;
+    width: 300px;
 }
 
 textarea {
     width: 600px;
     height: 300px;
     padding: 10px;
+}
+
+.warning {
+    color: #f00000;
 }

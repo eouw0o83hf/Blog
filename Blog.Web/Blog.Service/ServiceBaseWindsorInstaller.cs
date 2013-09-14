@@ -17,6 +17,14 @@ namespace Blog.Service
         {
             base.Install(container, store);
 
+            container.Register(Component.For<BlogServiceContext>()
+                .LifestyleTransient()
+                .DependsOn(
+                    Dependency.OnValue("SendGridSmtpServer", ConfigurationManager.AppSettings["SendGrid_SmtpServer"]),
+                    Dependency.OnValue("SendGridUsername", ConfigurationManager.AppSettings["SendGrid_Username"]),
+                    Dependency.OnValue("SendGridPassword", ConfigurationManager.AppSettings["SendGrid_Password"])
+                ));
+
             // Service
             container.Register(Component.For<IBlogService>().ImplementedBy<BlogService>().LifestyleTransient());
         }

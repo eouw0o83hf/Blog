@@ -19,6 +19,43 @@ namespace Blog.Web.Controllers
         public AccountController(BlogControllerContext context)
             : base(context) { }
 
+        [HttpGet, Authorize]
+        public ActionResult Index()
+        {
+            if (!(User is BlogUser))
+            {
+                throw new HttpException(401, "Unauthorized");
+            }
+
+            var user = BlogService.GetUser(((BlogUser)User).UserId ?? 0);
+            var viewModel = new AccountViewModel
+            {
+                EmailAddress = user.Email,
+                EmailIsVerified = user.EmailIsVerified
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost, Authorize]
+        public ActionResult UpdateEmail(AccountViewModel model)
+        {
+            var response = BlogService.UpdateEmail(((BlogUser)User).UserId.Value, model.EmailAddress);
+            return RedirectToAction("Index");
+        }
+
+        [HttpGet, Authorize]
+        public ActionResult RequestEmailLink()
+        {
+            return null;
+        }
+
+        [HttpGet, Authorize]
+        public ActionResult VerifyEmail(Guid id)
+        {
+            return null;
+        }
+
         public void SendVerificationEmail()
         {
             //var from = new MailAddress("noreply@eouw0o83hf.com");

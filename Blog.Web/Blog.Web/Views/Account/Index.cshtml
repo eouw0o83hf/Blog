@@ -1,0 +1,46 @@
+﻿@model Blog.Web.ViewModels.Account.AccountViewModel
+@{
+    ViewBag.Title = "Account";
+    Layout = "~/Views/Shared/Global.cshtml";
+}
+<div class="admin-wrapper outer-container"
+    <h2>Account</h2>
+
+    <h3>Email Status</h3>
+    @if(Model.EmailAddress.IsNotBlank())
+    {
+        <p>
+            The email address we have on file for you is <strong>@Model.EmailAddress</strong>
+        </p>
+        if (!Model.EmailIsVerified)
+        {
+            <p>
+                <strong class="warning">Your email address has not been verified. Please either change your email address below or request a new verification link.</strong>
+            </p>
+        }
+    }
+    else
+    {
+        <p>
+            We don't have an email address on file for you. If you would like to link one to your account, please do so below.
+        </p>
+    }
+
+    @using (Html.BeginForm("UpdateEmail", "Account"))
+    {
+        <div>
+            @Html.LabelFor(a => a.EmailAddress, "Email Address")
+            @Html.TextBoxFor(a => a.EmailAddress)
+        </div>
+        <div>
+            <button type="submit">Submit</button>
+        </div>
+    }
+
+    @if (Model.EmailAddress.IsNotBlank() && !Model.EmailIsVerified)
+    {
+        <div>
+            @Html.ActionLink("Resend verification email", "RequestEmailLink")
+        </div>
+    }
+</div>
