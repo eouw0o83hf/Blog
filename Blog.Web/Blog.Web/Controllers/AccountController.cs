@@ -40,7 +40,7 @@ namespace Blog.Web.Controllers
         [HttpPost, Authorize]
         public ActionResult UpdateEmail(AccountViewModel model)
         {
-            var response = BlogService.UpdateEmail(((BlogUser)User).UserId.Value, model.EmailAddress);
+            var response = BlogService.UpdateEmail(((BlogUser)User).UserId.Value, model.EmailAddress, "TODO: Add the Verification URL Here with Guid.Empty as the ID");
             return RedirectToAction("Index");
         }
 

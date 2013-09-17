@@ -48,8 +48,8 @@ namespace Blog.Service
         UserModel GetUser(int userId);
 
         void GrantUserPermission(int userId, PermissionEnum permission);
-        Response UpdateEmail(int userId, string emailAddress);
-        void SendEmailPickupInvite(int userId);
+        Response UpdateEmail(int userId, string emailAddress, string pickupUrl);
+        void SendEmailPickupInvite(int userId, string pickupUrl);
         bool AttemptEmailInvitePickup(int userId, Guid inviteId);
 
         #endregion

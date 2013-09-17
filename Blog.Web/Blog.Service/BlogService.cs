@@ -203,7 +203,7 @@ namespace Blog.Service
             }
         }
 
-        public Response UpdateEmail(int userId, string emailAddress)
+        public Response UpdateEmail(int userId, string emailAddress, string pickupUrl)
         {
             if (Regex.IsMatch(emailAddress, @"^\S+@\S+$", RegexOptions.IgnoreCase))
             {
@@ -236,9 +236,13 @@ namespace Blog.Service
 
             dbUser.Email = emailAddress;
             dbUser.EmailIsVerified = false;
+
+            // Make sure we clear any existing invites so no user can send invite, change email, click on old invite
+            // and get an email verified which is not actually theirs
+            BlogDb.GetTable<EmailVerification>().DeleteAllOnSubmit(dbUser.EmailVerifications);
             BlogDb.SubmitChanges();
 
-            SendEmailPickupInvite(userId);
+            SendEmailPickupInvite(userId, pickupUrl);
 
             return new Response
             {
@@ -246,33 +250,43 @@ namespace Blog.Service
             };
         }
 
-        public void SendEmailPickupInvite(int userId)
+        public void SendEmailPickupInvite(int userId, string pickupUrl)
         {
             var dbUser = BlogDb.GetTable<User>().FirstOrDefault(a => a.UserId == userId);
-            if (userId != null)
+            if (dbUser == null)
             {
-                var invite = new EmailVerification
-                {
-                    Created = DateTime.UtcNow,
-                    Expires = DateTime.UtcNow.AddHours(30),
-                    Id = Guid.NewGuid(),
-                    UserId = userId
-                };
-
-                var from = new MailAddress("noreply@eouw0o83hf.com");
-                var to = new[] { new MailAddress(dbUser.Email) };
-                var subject = "Email invite";
-                var html = @"<h1>Oh hai!</h1><p>Here's where the body would be, along with a</p><h2><a href=""#"">Confirmation Link</a></h2>";
-
-                var message = SendGrid.Mail.GetInstance(from, to, new MailAddress[0], new MailAddress[0], subject, html, null);
-                var creds = new NetworkCredential(SendGridUsername, SendGridPassword);
-                var transport = SendGrid.Transport.SMTP.GetInstance(creds);
-                transport.Deliver(message);
-
-
-                BlogDb.GetTable<EmailVerification>().InsertOnSubmit(invite);
-                BlogDb.SubmitChanges();
+                return;
             }
+
+            var invite = new EmailVerification
+            {
+                Created = DateTime.UtcNow,
+                Expires = DateTime.UtcNow.AddHours(30),
+                Id = Guid.NewGuid(),
+                UserId = userId
+            };
+
+            var from = new MailAddress("noreply@eouw0o83hf.com");
+            var to = new[] { new MailAddress(dbUser.Email) };
+            var subject = "Confirm your email";
+
+            var replacedUrl = pickupUrl.Replace(Guid.Empty.ToString(), invite.Id.ToString());
+
+            var htmlBuilder = new StringBuilder();
+            htmlBuilder.Append("<p>Hello there,</p>")
+                .Append("<p>This is your email verification for an eouw0o83hf.com blog. Please click on the link provided below to verify this email address.</p>")
+                .Append("<p><a href=\"").Append(replacedUrl).Append("\">")
+                    .Append(replacedUrl)
+                .Append("</a></p>")
+                .Append("<p>If you did not register for this site, please simply ignore this email and we'll forget about it.</p>");
+
+            var message = SendGrid.Mail.GetInstance(from, to, new MailAddress[0], new MailAddress[0], subject, htmlBuilder.ToString(), null);
+            var creds = new NetworkCredential(SendGridUsername, SendGridPassword);
+            var transport = SendGrid.Transport.SMTP.GetInstance(creds);
+            transport.Deliver(message);
+
+            BlogDb.GetTable<EmailVerification>().InsertOnSubmit(invite);
+            BlogDb.SubmitChanges();
         }
 
         public bool AttemptEmailInvitePickup(int userId, Guid inviteId)
