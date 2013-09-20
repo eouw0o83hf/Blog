@@ -3,36 +3,70 @@
     ViewBag.Title += "Admin: CDN Directories";
     Layout = "~/Views/Shared/Global.cshtml";
 }
-<div class="admin-wrapper">
-    <h2>@Html.ActionLink("Admin", "Index", "Admin") » Directories</h2>
-    <p>Click to drill down</p>
-    <table>
-        <thead>
-            <tr>
-                <td>Name</td>
-                <td>URI</td>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach(var i in Model.Containers)
-            {
-            <tr>
-                <td>
-                    @Html.ActionLink(i.Name, "Resources", new { directory = i.Name })
-                    @i.Name
-                </td>
-                <td>
-                    @i.Uri
-                </td>
-            </tr>
-            }
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="2">
-                    <a href="#">New</a>
-                </td>
-            </tr>
-        </tfoot>
-    </table>
-</div>
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function () {
+            $('#container-new').click(function () {
+                $(this).parents('tfoot').find('.new-container-input').toggleClass('new-container-input');
+                $(this).parents('tr').hide();
+            });
+        });
+    </script>
+}
+@section Styles
+{
+    <style type="text/css">
+        .new-container-input {
+            display: none;
+        }
+    </style>
+}
+@using(Html.BeginForm("NewContainer", "Cdn")) {
+    <div class="admin-wrapper">
+        <h2>@Html.ActionLink("Admin", "Index", "Admin") » Directories</h2>
+        <p>Click to drill down</p>
+        <table>
+            <thead>
+                <tr>
+                    <td>Name</td>
+                    <td>URI</td>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var i in Model.Containers)
+                {
+                <tr>
+                    <td>
+                        @Html.ActionLink(i.Name, "Resources", new { directory = i.Name })
+                        @i.Name
+                    </td>
+                    <td>
+                        @i.Uri
+                    </td>
+                </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="2">
+                        <a id="container-new" href="javascript:void(0);">New</a>
+                    </td>
+                </tr>
+                <tr class="new-container-input">
+                    <td>
+                        <label for="containerName">Name</label>
+                    </td>
+                    <td>
+                        <input type="text" name="containerName" id="containerName" />
+                    </td>
+                </tr>
+                <tr class="new-container-input">
+                    <td colspan="2">
+                        <button type="submit">Submit</button>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+}

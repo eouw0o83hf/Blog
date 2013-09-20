@@ -53,6 +53,41 @@ namespace Blog.Web.Controllers
             return View(result);
         }
 
+        [HttpPost, BlogAuthorize(PermissionEnum.Admin)]
+        public ActionResult NewContainer(string containerName)
+        {
+            var client = GetCdnClient();
+
+            containerName = containerName.Trim();
+                        
+            var containerReference = client.GetContainerReference(containerName);
+            if(containerReference.Exists())
+            {
+                TempData.StoreNotification(new ViewModels.Feed.Notification
+                {
+                    Type = ViewModels.Feed.NotificationType.Error,
+                    Subject = "Directory Already Exists",
+                    Message = "That directory already exists, please try again"
+                });
+
+                return RedirectToAction("List");
+            }
+
+            containerReference.CreateIfNotExists();
+            containerReference.SetPermissions(new BlobContainerPermissions
+            {
+                PublicAccess = BlobContainerPublicAccessType.Blob
+            });
+
+            TempData.StoreNotification(new ViewModels.Feed.Notification
+            {
+                Type = ViewModels.Feed.NotificationType.Confirmation,
+                Subject = "Success",
+                Message = "Directory successfully created"
+            });
+            return RedirectToAction("List");
+        }
+
         [HttpGet, BlogAuthorize(PermissionEnum.Admin)]
         public ActionResult Resources(string directory)
         {
