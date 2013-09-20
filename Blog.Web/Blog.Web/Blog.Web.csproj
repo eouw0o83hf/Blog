@@ -221,6 +221,7 @@
     <Compile Include="Controllers\FeedController.cs" />
     <Compile Include="Controllers\CdnController.cs" />
     <Compile Include="Controllers\InfoController.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="Filters\BlogAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -238,6 +239,7 @@
     <Compile Include="ViewModels\Cdn\NewResourceViewModel.cs" />
     <Compile Include="ViewModels\Feed\FeedViewModel.cs" />
     <Compile Include="ViewModels\Cdn\ListViewModel.cs" />
+    <Compile Include="ViewModels\Feed\Notification.cs" />
     <Compile Include="ViewModels\Shared\LinkViewModel.cs" />
     <Compile Include="ViewModels\Cdn\ResourcesViewModel.cs" />
     <Compile Include="WindsorControllerFactory.cs" />

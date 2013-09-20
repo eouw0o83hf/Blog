@@ -1,4 +1,5 @@
 ﻿using Blog.Web.ViewModels.Account;
+using Blog.Web.ViewModels.Feed;
 using Microsoft.WindowsAzure.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
 using System;
@@ -11,6 +12,7 @@ using System.Net.Mail;
 using System.Text;
 using System.Web;
 using System.Web.Mvc;
+using System.Web.Routing;
 
 namespace Blog.Web.Controllers
 {
@@ -37,23 +39,84 @@ namespace Blog.Web.Controllers
             return View(viewModel);
         }
 
+        protected string TemplatePickupUrl
+        {
+            get
+            {
+                return Url.RouteUrl(RouteNames.ConfirmEmail, new { id = Guid.Empty }, "https");
+            }
+        }
+
         [HttpPost, Authorize]
         public ActionResult UpdateEmail(AccountViewModel model)
-        {
-            var response = BlogService.UpdateEmail(((BlogUser)User).UserId.Value, model.EmailAddress, "TODO: Add the Verification URL Here with Guid.Empty as the ID");
+        {            
+            var response = BlogService.UpdateEmail(((BlogUser)User).UserId.Value, model.EmailAddress, TemplatePickupUrl);
+
+            Notification notification;
+            if (response.Success)
+            {
+                notification = new Notification
+                {
+                    Type = NotificationType.Information,
+                    Subject = "Email Confirmation Required",
+                    Message = "In order to confirm your email address, a verification email has been sent to the address you provided."
+                };
+            }
+            else
+            {
+                notification = new Notification
+                {
+                    Type = NotificationType.Error,
+                    Subject = "Update Failed",
+                    Message = "Your email address could not be updated; " + response.Message
+                };
+            }
+
+            TempData.StoreNotification(notification);
+
             return RedirectToAction("Index");
         }
 
         [HttpGet, Authorize]
         public ActionResult RequestEmailLink()
         {
-            return null;
+            BlogService.SendEmailPickupInvite(((BlogUser)User).UserId.Value, TemplatePickupUrl);
+            TempData.StoreNotification(new Notification
+            {
+                Type = NotificationType.Confirmation,
+                Subject = "Confirmation Email Sent",
+                Message = "A confirmation email has been sent to the address you have on file with us."
+            });
+            return RedirectToAction("Index");
         }
 
         [HttpGet, Authorize]
         public ActionResult VerifyEmail(Guid id)
         {
-            return null;
+            var response = BlogService.AttemptEmailInvitePickup(((BlogUser)User).UserId.Value, id);
+            
+            Notification notification;
+            if (response.Success)
+            {
+                notification = new Notification
+                {
+                    Type = NotificationType.Confirmation,
+                    Subject = "Email Verified",
+                    Message = "Your email address has been verified. Thanks!"
+                };
+            }
+            else
+            {
+                notification = new Notification
+                {
+                    Type = NotificationType.Error,
+                    Subject = "Verification Failed",
+                    Message = "Your email address could not be verified. " + response.Message
+                };
+            }
+            TempData.StoreNotification(notification);
+
+            return RedirectToAction("Index");
         }
 
         public void SendVerificationEmail()

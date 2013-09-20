@@ -30,6 +30,16 @@
             </ul>
         </div>
         <div id="Content">
+            @{
+                var notification = TempData.GetNotification();                        
+            }
+            @if (notification != null)
+            {
+                <div class="notification-container notification-container-@notification.Type.ToString().ToLowerInvariant() outer-container">
+                    <span>@notification.Subject</span>
+                    <p>@notification.Message</p>
+                </div>
+            }
             @RenderBody()
         </div>
     </div>

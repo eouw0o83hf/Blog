@@ -20,6 +20,7 @@ namespace Blog.Web
         public const string Permalink = "Permalink";
 
         public const string AccountIndex = "Account";
+        public const string ConfirmEmail = "ConfirmEmail";
 
         public const string Admin = "Admin";
 
@@ -81,6 +82,12 @@ namespace Blog.Web
                 name: RouteNames.AccountIndex,
                 url: "account",
                 defaults: new { controller = "Account", action = "Index" }
+            );
+
+            routes.MapRoute(
+                name: RouteNames.ConfirmEmail,
+                url: "confirmemail/{id}",
+                defaults: new { controller = "Account", action = "VerifyEmail" }
             );
 
             routes.MapRoute(

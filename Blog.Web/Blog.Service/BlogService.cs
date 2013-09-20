@@ -205,12 +205,12 @@ namespace Blog.Service
 
         public Response UpdateEmail(int userId, string emailAddress, string pickupUrl)
         {
-            if (Regex.IsMatch(emailAddress, @"^\S+@\S+$", RegexOptions.IgnoreCase))
+            if (!Regex.IsMatch(emailAddress, @"^\S+@\S+$", RegexOptions.IgnoreCase))
             {
                 return new Response
                 {
                     Success = false,
-                    Message = "Email address is invalid"
+                    Message = "that email address is invalid"
                 };
             }
 
@@ -220,7 +220,7 @@ namespace Blog.Service
                 return new Response
                 {
                     Success = false,
-                    Message = "User not found"
+                    Message = "your user was not found"
                 };
             }
 
@@ -230,7 +230,7 @@ namespace Blog.Service
                 return new Response
                 {
                     Success = false,
-                    Message = "That email address is already in use"
+                    Message = "that email address is already in use"
                 };
             }
 
@@ -289,9 +289,36 @@ namespace Blog.Service
             BlogDb.SubmitChanges();
         }
 
-        public bool AttemptEmailInvitePickup(int userId, Guid inviteId)
+        public Response AttemptEmailInvitePickup(int userId, Guid inviteId)
         {
-            throw new NotImplementedException();
+            var verification = BlogDb.GetTable<EmailVerification>().FirstOrDefault(a => a.UserId == userId && a.Id == inviteId);
+            if (verification == null)
+            {
+                return new Response
+                {
+                    Success = false,
+                    Message = "Your verification code was not found."
+                };
+            }
+
+            if(verification.Expires < DateTime.UtcNow)
+            {
+                return new Response
+                {
+                    Success = false,
+                    Message = "Your verification code has expired (they last for 30 hours). Please request a new one and try again."
+                };
+            }
+
+            // Everything checks out, we can confirm it.
+            verification.User.EmailIsVerified = true;
+            BlogDb.GetTable<EmailVerification>().DeleteOnSubmit(verification);
+            BlogDb.SubmitChanges();
+
+            return new Response
+            {
+                Success = true
+            };
         }
 
         #region Repository

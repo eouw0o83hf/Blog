@@ -99,6 +99,50 @@ p {
     border-radius: 5px;
 }
 
+.notification-container {
+    margin: 0 0 10px 0;
+    background-color: #fcfcfc;
+    color: #0f0f0f;
+    padding: 20px 20px 10px 20px;
+}
+    .notification-container span {
+        font-weight: bold;
+        text-decoration: underline;
+    }
+
+.notification-container-information {
+    background-color: #e9e9ff;
+    border: 1px solid #0000ff;
+}
+    .notification-container-information span {
+        color: #002070;
+    }
+
+.notification-container-confirmation {
+    background-color: #f0fff0;
+    border: 1px solid #30a030;
+}
+
+    .notification-container-confirmation span {
+        color: #306030;
+    }
+
+.notification-container-warning {
+    background-color: #fff0d0;
+    border: 1px solid #ffa000;
+}
+    .notification-container-warning span {
+        color: #d09000;
+    }
+
+.notification-container-error {
+    background-color: #fff6f6;
+    border: 1px solid #ff0000;
+}
+
+    .notification-container-error span {
+        color: #d02020;
+    }
 
 input[type="text"], select {
     padding: 6px;

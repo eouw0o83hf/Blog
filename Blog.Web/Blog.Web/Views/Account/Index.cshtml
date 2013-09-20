@@ -3,7 +3,7 @@
     ViewBag.Title = "Account";
     Layout = "~/Views/Shared/Global.cshtml";
 }
-<div class="admin-wrapper outer-container"
+<div class="admin-wrapper outer-container">
     <h2>Account</h2>
 
     <h3>Email Status</h3>
@@ -14,8 +14,8 @@
         </p>
         if (!Model.EmailIsVerified)
         {
-            <p>
-                <strong class="warning">Your email address has not been verified. Please either change your email address below or request a new verification link.</strong>
+            <p class="warning">
+                Your email address has not been verified. Please either change your email address below or request a new verification link.
             </p>
         }
     }

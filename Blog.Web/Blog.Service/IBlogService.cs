@@ -50,7 +50,7 @@ namespace Blog.Service
         void GrantUserPermission(int userId, PermissionEnum permission);
         Response UpdateEmail(int userId, string emailAddress, string pickupUrl);
         void SendEmailPickupInvite(int userId, string pickupUrl);
-        bool AttemptEmailInvitePickup(int userId, Guid inviteId);
+        Response AttemptEmailInvitePickup(int userId, Guid inviteId);
 
         #endregion
     }
