@@ -1,0 +1,42 @@
+﻿@model Blog.Web.ViewModels.Users.UserListViewModel
+@{
+    ViewBag.Title += "Admin: Users";
+    Layout = "~/Views/Shared/Global.cshtml";
+}
+<div class="admin-wrapper">
+    <h2>@Html.ActionLink("Admin", "Index", "Admin") » Users</h2>
+    <p>Click to drill down</p>
+    <table>
+        <thead>
+            <tr>
+                <td>Email</td>
+                <td>UserId</td>
+                <td>UPN</td>
+                <td>Permissions</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var i in Model.LineItems)
+            {
+            <tr>
+                <td>
+                    @Html.ActionLink(i.Email, "User", new { userId = i.UserId }) 
+                    @if(i.EmailConfirmed)
+                    {
+                        @:✓
+                    }
+                </td>
+                <td>
+                    @i.UserId
+                </td>
+                <td>
+                    @i.Upn
+                </td>
+                <td>
+                    @string.Join(",", i.Permissions.Select(a => a.PermissionType))
+                </td>
+            </tr>
+            }
+        </tbody>
+    </table>
+</div>

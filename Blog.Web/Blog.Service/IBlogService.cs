@@ -46,6 +46,7 @@ namespace Blog.Service
 
         UserModel GetOrCreateUser(IAuthenticationResponse openIdResponse);
         UserModel GetUser(int userId);
+        ICollection<UserModel> GetAllUsers();
 
         void GrantUserPermission(int userId, PermissionEnum permission);
         Response UpdateEmail(int userId, string emailAddress, string pickupUrl);

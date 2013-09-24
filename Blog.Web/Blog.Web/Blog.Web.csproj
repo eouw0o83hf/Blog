@@ -221,6 +221,7 @@
     <Compile Include="Controllers\FeedController.cs" />
     <Compile Include="Controllers\CdnController.cs" />
     <Compile Include="Controllers\InfoController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="Filters\BlogAuthorizeAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -242,6 +243,8 @@
     <Compile Include="ViewModels\Feed\Notification.cs" />
     <Compile Include="ViewModels\Shared\LinkViewModel.cs" />
     <Compile Include="ViewModels\Cdn\ResourcesViewModel.cs" />
+    <Compile Include="ViewModels\Users\UserListViewModel.cs" />
+    <Compile Include="ViewModels\Users\UserViewModel.cs" />
     <Compile Include="WindsorControllerFactory.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -277,6 +280,8 @@
     <Content Include="Views\Cdn\NewResource.cshtml" />
     <Content Include="Views\Blog\Permalink.cshtml" />
     <Content Include="Views\Account\Index.cshtml" />
+    <Content Include="Views\Users\List.cshtml" />
+    <Content Include="Views\Users\User.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

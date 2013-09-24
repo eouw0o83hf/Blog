@@ -182,6 +182,22 @@ namespace Blog.Service
             };
         }
 
+        public ICollection<UserModel> GetAllUsers()
+        {
+            var dbUsers = BlogDb.GetTable<User>().ToList();
+            return dbUsers
+                        .Select(a => new UserModel
+                        {
+                            UserId = a.UserId,
+                            Email = a.Email,
+                            Handle = a.Handle,
+                            Upn = a.Upn,
+                            Permissions = a.UserPermissions.Select(b => (PermissionEnum)b.PermissionId).ToList(),
+                            EmailIsVerified = a.EmailIsVerified ?? false
+                        })
+                        .ToList();
+        }
+
         public void GrantUserPermission(int userId, PermissionEnum permission)
         {
             var dbUser = BlogDb.Users.FirstOrDefault(a => a.UserId == userId);

@@ -20,6 +20,7 @@ namespace Blog.Web.Controllers
         public AdminController(BlogControllerContext context)
             : base(context) { }
 
+        [HttpGet, BlogAuthorize(PermissionEnum.Admin)]
         public ActionResult Index()
         {
             return View();

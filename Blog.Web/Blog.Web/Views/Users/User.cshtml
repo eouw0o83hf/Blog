@@ -1,0 +1,60 @@
+﻿@model Blog.Web.ViewModels.Users.UserViewModel
+@{
+    ViewBag.Title += "Admin: User";
+    Layout = "~/Views/Shared/Global.cshtml";
+
+    var permissions = (ICollection<Blog.Models.PermissionEnum>)ViewData[Blog.Web.Controllers.UsersController.VIEWDATA_PERMISSIONS];
+}
+<div class="admin-wrapper">
+    <h2>@Html.ActionLink("Admin", "Index") » @Html.ActionLink("List", "Users") »  @Model.Email</h2>
+    @using (Html.BeginForm())
+    {
+        <table>
+            <tr>
+                <td>
+                    @Html.LabelFor(a => a.Email)
+                </td>
+                <td>
+                    @Html.DisplayFor(a => a.Email)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(a => a.EmailConfirmed)
+                </td>
+                <td>
+                    @Html.DisplayFor(a => a.EmailConfirmed)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(a => a.Upn)
+                </td>
+                <td>
+                    @Html.DisplayFor(a => a.Upn)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(a => a.UserId)
+                </td>
+                <td>
+                    @Html.DisplayFor(a => a.UserId)
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    @Html.LabelFor(a => a.Permissions)
+                </td>
+                <td>
+                    @string.Join(",", Model.Permissions.Select(a => a.PermissionType))
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2">
+                    <button type="submit">Submit</button>
+                </td>
+            </tr>
+        </table>
+    }
+</div>
