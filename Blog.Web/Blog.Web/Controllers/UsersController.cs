@@ -59,6 +59,12 @@ namespace Blog.Web.Controllers
             return View(result);
         }
 
+        [HttpPost, BlogAuthorize(PermissionEnum.Admin)]
+        public ActionResult User(UserViewModel model)
+        {
+            return RedirectToAction("Index");
+        }
+
         public const string VIEWDATA_PERMISSIONS = "VIEWDATA_PERMISSIONS";
         protected override void CramViewData()
         {
