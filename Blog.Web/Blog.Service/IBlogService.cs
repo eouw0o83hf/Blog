@@ -24,7 +24,7 @@ namespace Blog.Service
         /// <param name="page">0-indexed page</param>
         /// <param name="count">Defaults to 1 if left null</param>
         /// <returns></returns>
-        PaginatedList<PostModel> GetPosts(int? blogId, int? page = null, int? count = null);
+        PaginatedList<PostModel> GetPosts(int? blogId, int? page = null, int? count = null, bool overridePublishDate = false, bool overrideDraftStatus = false);
 
         PostModel GetPost(int postId);
         PostModel GetPost(Guid postIdentifier);

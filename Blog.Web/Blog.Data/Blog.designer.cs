@@ -33,9 +33,6 @@ namespace Blog.Data
     partial void InsertBlog(Blog instance);
     partial void UpdateBlog(Blog instance);
     partial void DeleteBlog(Blog instance);
-    partial void InsertPost(Post instance);
-    partial void UpdatePost(Post instance);
-    partial void DeletePost(Post instance);
     partial void InsertUserPermission(UserPermission instance);
     partial void UpdateUserPermission(UserPermission instance);
     partial void DeleteUserPermission(UserPermission instance);
@@ -51,6 +48,9 @@ namespace Blog.Data
     partial void InsertEmailVerification(EmailVerification instance);
     partial void UpdateEmailVerification(EmailVerification instance);
     partial void DeleteEmailVerification(EmailVerification instance);
+    partial void InsertPost(Post instance);
+    partial void UpdatePost(Post instance);
+    partial void DeletePost(Post instance);
     #endregion
 		
 		public BlogDataContext() : 
@@ -91,14 +91,6 @@ namespace Blog.Data
 			}
 		}
 		
-		public System.Data.Linq.Table<Post> Posts
-		{
-			get
-			{
-				return this.GetTable<Post>();
-			}
-		}
-		
 		public System.Data.Linq.Table<UserPermission> UserPermissions
 		{
 			get
@@ -136,6 +128,14 @@ namespace Blog.Data
 			get
 			{
 				return this.GetTable<EmailVerification>();
+			}
+		}
+		
+		public System.Data.Linq.Table<Post> Posts
+		{
+			get
+			{
+				return this.GetTable<Post>();
 			}
 		}
 	}
@@ -299,277 +299,6 @@ namespace Blog.Data
 		{
 			this.SendPropertyChanging();
 			entity.Blog = null;
-		}
-	}
-	
-	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Posts")]
-	public partial class Post : INotifyPropertyChanging, INotifyPropertyChanged
-	{
-		
-		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
-		
-		private int _PostId;
-		
-		private int _BlogId;
-		
-		private System.Guid _PermalinkGuid;
-		
-		private string _UrlTitle;
-		
-		private string _Title;
-		
-		private string _Body;
-		
-		private System.DateTime _CreatedOn;
-		
-		private string _CreatedBy;
-		
-		private EntityRef<Blog> _Blog;
-		
-    #region Extensibility Method Definitions
-    partial void OnLoaded();
-    partial void OnValidate(System.Data.Linq.ChangeAction action);
-    partial void OnCreated();
-    partial void OnPostIdChanging(int value);
-    partial void OnPostIdChanged();
-    partial void OnBlogIdChanging(int value);
-    partial void OnBlogIdChanged();
-    partial void OnPermalinkGuidChanging(System.Guid value);
-    partial void OnPermalinkGuidChanged();
-    partial void OnUrlTitleChanging(string value);
-    partial void OnUrlTitleChanged();
-    partial void OnTitleChanging(string value);
-    partial void OnTitleChanged();
-    partial void OnBodyChanging(string value);
-    partial void OnBodyChanged();
-    partial void OnCreatedOnChanging(System.DateTime value);
-    partial void OnCreatedOnChanged();
-    partial void OnCreatedByChanging(string value);
-    partial void OnCreatedByChanged();
-    #endregion
-		
-		public Post()
-		{
-			this._Blog = default(EntityRef<Blog>);
-			OnCreated();
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PostId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
-		public int PostId
-		{
-			get
-			{
-				return this._PostId;
-			}
-			set
-			{
-				if ((this._PostId != value))
-				{
-					this.OnPostIdChanging(value);
-					this.SendPropertyChanging();
-					this._PostId = value;
-					this.SendPropertyChanged("PostId");
-					this.OnPostIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BlogId", DbType="Int NOT NULL")]
-		public int BlogId
-		{
-			get
-			{
-				return this._BlogId;
-			}
-			set
-			{
-				if ((this._BlogId != value))
-				{
-					if (this._Blog.HasLoadedOrAssignedValue)
-					{
-						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
-					}
-					this.OnBlogIdChanging(value);
-					this.SendPropertyChanging();
-					this._BlogId = value;
-					this.SendPropertyChanged("BlogId");
-					this.OnBlogIdChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PermalinkGuid", DbType="UniqueIdentifier NOT NULL")]
-		public System.Guid PermalinkGuid
-		{
-			get
-			{
-				return this._PermalinkGuid;
-			}
-			set
-			{
-				if ((this._PermalinkGuid != value))
-				{
-					this.OnPermalinkGuidChanging(value);
-					this.SendPropertyChanging();
-					this._PermalinkGuid = value;
-					this.SendPropertyChanged("PermalinkGuid");
-					this.OnPermalinkGuidChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UrlTitle", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string UrlTitle
-		{
-			get
-			{
-				return this._UrlTitle;
-			}
-			set
-			{
-				if ((this._UrlTitle != value))
-				{
-					this.OnUrlTitleChanging(value);
-					this.SendPropertyChanging();
-					this._UrlTitle = value;
-					this.SendPropertyChanged("UrlTitle");
-					this.OnUrlTitleChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Title
-		{
-			get
-			{
-				return this._Title;
-			}
-			set
-			{
-				if ((this._Title != value))
-				{
-					this.OnTitleChanging(value);
-					this.SendPropertyChanging();
-					this._Title = value;
-					this.SendPropertyChanged("Title");
-					this.OnTitleChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Body", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string Body
-		{
-			get
-			{
-				return this._Body;
-			}
-			set
-			{
-				if ((this._Body != value))
-				{
-					this.OnBodyChanging(value);
-					this.SendPropertyChanging();
-					this._Body = value;
-					this.SendPropertyChanged("Body");
-					this.OnBodyChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime NOT NULL")]
-		public System.DateTime CreatedOn
-		{
-			get
-			{
-				return this._CreatedOn;
-			}
-			set
-			{
-				if ((this._CreatedOn != value))
-				{
-					this.OnCreatedOnChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedOn = value;
-					this.SendPropertyChanged("CreatedOn");
-					this.OnCreatedOnChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
-		public string CreatedBy
-		{
-			get
-			{
-				return this._CreatedBy;
-			}
-			set
-			{
-				if ((this._CreatedBy != value))
-				{
-					this.OnCreatedByChanging(value);
-					this.SendPropertyChanging();
-					this._CreatedBy = value;
-					this.SendPropertyChanged("CreatedBy");
-					this.OnCreatedByChanged();
-				}
-			}
-		}
-		
-		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Blog_Post", Storage="_Blog", ThisKey="BlogId", OtherKey="BlogId", IsForeignKey=true)]
-		public Blog Blog
-		{
-			get
-			{
-				return this._Blog.Entity;
-			}
-			set
-			{
-				Blog previousValue = this._Blog.Entity;
-				if (((previousValue != value) 
-							|| (this._Blog.HasLoadedOrAssignedValue == false)))
-				{
-					this.SendPropertyChanging();
-					if ((previousValue != null))
-					{
-						this._Blog.Entity = null;
-						previousValue.Posts.Remove(this);
-					}
-					this._Blog.Entity = value;
-					if ((value != null))
-					{
-						value.Posts.Add(this);
-						this._BlogId = value.BlogId;
-					}
-					else
-					{
-						this._BlogId = default(int);
-					}
-					this.SendPropertyChanged("Blog");
-				}
-			}
-		}
-		
-		public event PropertyChangingEventHandler PropertyChanging;
-		
-		public event PropertyChangedEventHandler PropertyChanged;
-		
-		protected virtual void SendPropertyChanging()
-		{
-			if ((this.PropertyChanging != null))
-			{
-				this.PropertyChanging(this, emptyChangingEventArgs);
-			}
-		}
-		
-		protected virtual void SendPropertyChanged(String propertyName)
-		{
-			if ((this.PropertyChanged != null))
-			{
-				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-			}
 		}
 	}
 	
@@ -1422,6 +1151,325 @@ namespace Blog.Data
 						this._UserId = default(int);
 					}
 					this.SendPropertyChanged("User");
+				}
+			}
+		}
+		
+		public event PropertyChangingEventHandler PropertyChanging;
+		
+		public event PropertyChangedEventHandler PropertyChanged;
+		
+		protected virtual void SendPropertyChanging()
+		{
+			if ((this.PropertyChanging != null))
+			{
+				this.PropertyChanging(this, emptyChangingEventArgs);
+			}
+		}
+		
+		protected virtual void SendPropertyChanged(String propertyName)
+		{
+			if ((this.PropertyChanged != null))
+			{
+				this.PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+			}
+		}
+	}
+	
+	[global::System.Data.Linq.Mapping.TableAttribute(Name="dbo.Posts")]
+	public partial class Post : INotifyPropertyChanging, INotifyPropertyChanged
+	{
+		
+		private static PropertyChangingEventArgs emptyChangingEventArgs = new PropertyChangingEventArgs(String.Empty);
+		
+		private int _PostId;
+		
+		private int _BlogId;
+		
+		private System.Guid _PermalinkGuid;
+		
+		private string _UrlTitle;
+		
+		private string _Title;
+		
+		private string _Body;
+		
+		private System.DateTime _CreatedOn;
+		
+		private string _CreatedBy;
+		
+		private System.Nullable<System.DateTime> _PublishDate;
+		
+		private bool _IsDraft;
+		
+		private EntityRef<Blog> _Blog;
+		
+    #region Extensibility Method Definitions
+    partial void OnLoaded();
+    partial void OnValidate(System.Data.Linq.ChangeAction action);
+    partial void OnCreated();
+    partial void OnPostIdChanging(int value);
+    partial void OnPostIdChanged();
+    partial void OnBlogIdChanging(int value);
+    partial void OnBlogIdChanged();
+    partial void OnPermalinkGuidChanging(System.Guid value);
+    partial void OnPermalinkGuidChanged();
+    partial void OnUrlTitleChanging(string value);
+    partial void OnUrlTitleChanged();
+    partial void OnTitleChanging(string value);
+    partial void OnTitleChanged();
+    partial void OnBodyChanging(string value);
+    partial void OnBodyChanged();
+    partial void OnCreatedOnChanging(System.DateTime value);
+    partial void OnCreatedOnChanged();
+    partial void OnCreatedByChanging(string value);
+    partial void OnCreatedByChanged();
+    partial void OnPublishDateChanging(System.Nullable<System.DateTime> value);
+    partial void OnPublishDateChanged();
+    partial void OnIsDraftChanging(bool value);
+    partial void OnIsDraftChanged();
+    #endregion
+		
+		public Post()
+		{
+			this._Blog = default(EntityRef<Blog>);
+			OnCreated();
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PostId", AutoSync=AutoSync.OnInsert, DbType="Int NOT NULL IDENTITY", IsPrimaryKey=true, IsDbGenerated=true)]
+		public int PostId
+		{
+			get
+			{
+				return this._PostId;
+			}
+			set
+			{
+				if ((this._PostId != value))
+				{
+					this.OnPostIdChanging(value);
+					this.SendPropertyChanging();
+					this._PostId = value;
+					this.SendPropertyChanged("PostId");
+					this.OnPostIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_BlogId", DbType="Int NOT NULL")]
+		public int BlogId
+		{
+			get
+			{
+				return this._BlogId;
+			}
+			set
+			{
+				if ((this._BlogId != value))
+				{
+					if (this._Blog.HasLoadedOrAssignedValue)
+					{
+						throw new System.Data.Linq.ForeignKeyReferenceAlreadyHasValueException();
+					}
+					this.OnBlogIdChanging(value);
+					this.SendPropertyChanging();
+					this._BlogId = value;
+					this.SendPropertyChanged("BlogId");
+					this.OnBlogIdChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PermalinkGuid", DbType="UniqueIdentifier NOT NULL")]
+		public System.Guid PermalinkGuid
+		{
+			get
+			{
+				return this._PermalinkGuid;
+			}
+			set
+			{
+				if ((this._PermalinkGuid != value))
+				{
+					this.OnPermalinkGuidChanging(value);
+					this.SendPropertyChanging();
+					this._PermalinkGuid = value;
+					this.SendPropertyChanged("PermalinkGuid");
+					this.OnPermalinkGuidChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_UrlTitle", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string UrlTitle
+		{
+			get
+			{
+				return this._UrlTitle;
+			}
+			set
+			{
+				if ((this._UrlTitle != value))
+				{
+					this.OnUrlTitleChanging(value);
+					this.SendPropertyChanging();
+					this._UrlTitle = value;
+					this.SendPropertyChanged("UrlTitle");
+					this.OnUrlTitleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Title", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Title
+		{
+			get
+			{
+				return this._Title;
+			}
+			set
+			{
+				if ((this._Title != value))
+				{
+					this.OnTitleChanging(value);
+					this.SendPropertyChanging();
+					this._Title = value;
+					this.SendPropertyChanged("Title");
+					this.OnTitleChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_Body", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string Body
+		{
+			get
+			{
+				return this._Body;
+			}
+			set
+			{
+				if ((this._Body != value))
+				{
+					this.OnBodyChanging(value);
+					this.SendPropertyChanging();
+					this._Body = value;
+					this.SendPropertyChanged("Body");
+					this.OnBodyChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedOn", DbType="DateTime NOT NULL")]
+		public System.DateTime CreatedOn
+		{
+			get
+			{
+				return this._CreatedOn;
+			}
+			set
+			{
+				if ((this._CreatedOn != value))
+				{
+					this.OnCreatedOnChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedOn = value;
+					this.SendPropertyChanged("CreatedOn");
+					this.OnCreatedOnChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_CreatedBy", DbType="NVarChar(MAX) NOT NULL", CanBeNull=false)]
+		public string CreatedBy
+		{
+			get
+			{
+				return this._CreatedBy;
+			}
+			set
+			{
+				if ((this._CreatedBy != value))
+				{
+					this.OnCreatedByChanging(value);
+					this.SendPropertyChanging();
+					this._CreatedBy = value;
+					this.SendPropertyChanged("CreatedBy");
+					this.OnCreatedByChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_PublishDate", DbType="DateTime")]
+		public System.Nullable<System.DateTime> PublishDate
+		{
+			get
+			{
+				return this._PublishDate;
+			}
+			set
+			{
+				if ((this._PublishDate != value))
+				{
+					this.OnPublishDateChanging(value);
+					this.SendPropertyChanging();
+					this._PublishDate = value;
+					this.SendPropertyChanged("PublishDate");
+					this.OnPublishDateChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.ColumnAttribute(Storage="_IsDraft", DbType="Bit NOT NULL")]
+		public bool IsDraft
+		{
+			get
+			{
+				return this._IsDraft;
+			}
+			set
+			{
+				if ((this._IsDraft != value))
+				{
+					this.OnIsDraftChanging(value);
+					this.SendPropertyChanging();
+					this._IsDraft = value;
+					this.SendPropertyChanged("IsDraft");
+					this.OnIsDraftChanged();
+				}
+			}
+		}
+		
+		[global::System.Data.Linq.Mapping.AssociationAttribute(Name="Blog_Post", Storage="_Blog", ThisKey="BlogId", OtherKey="BlogId", IsForeignKey=true)]
+		public Blog Blog
+		{
+			get
+			{
+				return this._Blog.Entity;
+			}
+			set
+			{
+				Blog previousValue = this._Blog.Entity;
+				if (((previousValue != value) 
+							|| (this._Blog.HasLoadedOrAssignedValue == false)))
+				{
+					this.SendPropertyChanging();
+					if ((previousValue != null))
+					{
+						this._Blog.Entity = null;
+						previousValue.Posts.Remove(this);
+					}
+					this._Blog.Entity = value;
+					if ((value != null))
+					{
+						value.Posts.Add(this);
+						this._BlogId = value.BlogId;
+					}
+					else
+					{
+						this._BlogId = default(int);
+					}
+					this.SendPropertyChanged("Blog");
 				}
 			}
 		}

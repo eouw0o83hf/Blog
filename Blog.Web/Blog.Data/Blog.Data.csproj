@@ -64,6 +64,8 @@
     <Compile Include="Migrations\M003_UsersPermissions.cs" />
     <Compile Include="Migrations\M004_PopulatePermissions.cs" />
     <Compile Include="Migrations\M005_EmailInvites.cs" />
+    <Compile Include="Migrations\M006_PublishDateForPost.cs" />
+    <Compile Include="Migrations\M007_DraftStatus.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -86,7 +86,7 @@ namespace Blog.Web.Controllers
         [HttpGet, BlogAuthorize(PermissionEnum.Admin)]
         public ActionResult Posts()
         {
-            var posts = BlogService.GetPosts(null, 0, int.MaxValue);
+            var posts = BlogService.GetPosts(null, 0, int.MaxValue, true, true);
 
             var result = new PostListViewModel
             {
@@ -117,7 +117,9 @@ namespace Blog.Web.Controllers
                     PostId = model.PostId,
                     Title = model.Title,
                     BlogId = model.BlogId,
-                    UrlTitle = model.UrlTitle
+                    UrlTitle = model.UrlTitle,
+                    PublishDate = model.PublishDate,
+                    IsDraft = model.IsDraft
                 };
             }
             else
@@ -143,7 +145,9 @@ namespace Blog.Web.Controllers
                 Identifier = model.Identifier,
                 PostId = model.PostId,
                 Title = model.Title,
-                UrlTitle = model.UrlTitle
+                UrlTitle = model.UrlTitle,
+                PublishDate = model.PublishDate,
+                IsDraft = model.IsDraft
             });
 
             return RedirectToAction("Posts");

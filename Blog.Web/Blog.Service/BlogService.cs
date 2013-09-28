@@ -66,10 +66,12 @@ namespace Blog.Service
             return blog.BlogId;
         }
 
-        public PaginatedList<PostModel> GetPosts(int? blogId, int? page = null, int? count = null)
+        public PaginatedList<PostModel> GetPosts(int? blogId, int? page = null, int? count = null, bool overridePublishDate = false, bool overrideDraftStatus = false)
         {
             var query = from p in BlogDb.Posts
-                        where blogId == null || p.BlogId == blogId
+                        where (blogId == null || p.BlogId == blogId)
+                            && (overridePublishDate || p.PublishDate == null || p.PublishDate <= DateTime.UtcNow)
+                            && (overrideDraftStatus || !p.IsDraft)
                         orderby p.PostId descending
                         select p.ToModel();
 
@@ -107,6 +109,8 @@ namespace Blog.Service
             dbPost.BlogId = model.BlogId;
             dbPost.Body = model.Body;
             dbPost.Title = model.Title;
+            dbPost.PublishDate = model.PublishDate;
+            dbPost.IsDraft = model.IsDraft;
 
             var urlTitle = model.UrlTitle;
             if (urlTitle.IsBlank())
@@ -400,7 +404,9 @@ namespace Blog.Service
                 PostId = post.PostId,
                 Title = post.Title,
                 BlogId = post.BlogId,
-                UrlTitle = post.UrlTitle
+                UrlTitle = post.UrlTitle,
+                PublishDate = post.PublishDate,
+                IsDraft = post.IsDraft
             };
         }
 

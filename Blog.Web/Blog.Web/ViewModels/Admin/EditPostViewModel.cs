@@ -15,6 +15,9 @@ namespace Blog.Web.ViewModels.Admin
 
         public DateTime? CreatedDate { get; set; }
         public DateTime? ModifedDate { get; set; }
+        public DateTime? PublishDate { get; set; }
+
+        public bool IsDraft { get; set; }
 
         [AllowHtml]
         public string Title { get; set; }

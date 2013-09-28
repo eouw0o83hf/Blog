@@ -15,7 +15,10 @@ namespace Blog.Models
 
         public DateTime CreatedDate { get; set; }
         public DateTime? ModifedDate { get; set; }
-        
+        public DateTime? PublishDate { get; set; }
+
+        public bool IsDraft { get; set; }
+
         public string Title { get; set; }
         public string UrlTitle { get; set; }
         public string Body { get; set; }
