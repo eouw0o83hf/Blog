@@ -12,6 +12,7 @@ using Blog.Models;
 using Blog.Web.Filters;
 using Common;
 using System.Text.RegularExpressions;
+using Blog.Web.ViewModels.Blog;
 
 namespace Blog.Web.Controllers
 {
@@ -149,9 +150,15 @@ namespace Blog.Web.Controllers
         }
 
         [HttpPost, BlogAuthorize(PermissionEnum.Admin)]
-        public PartialViewResult PreviewMarkdown(string markdown)
+        public PartialViewResult PreviewMarkdown(EditPostViewModel model)
         {
-            return PartialView(markdown);
+            var result = new Post
+            {
+                Title = model.Title,
+                PostDate = DateTime.UtcNow,
+                RawBody = model.Body
+            };
+            return PartialView("../Blog/Post", result);
         }
 
         #endregion

@@ -13,6 +13,18 @@
 
     var breadcrumbName = Model.PostId.HasValue ? "Edit" : "Create";
 }
+@section Scripts
+{
+    <script type="text/javascript">
+        $(function() {
+            $('.text-input').keyup(function () {
+                $.post('previewMarkdown', $('form').serialize(), function (data) {
+                    $('#preview').html(data);
+                });
+            });
+        });
+    </script>
+}
 <div class="admin-wrapper">
     <h2>@Html.ActionLink("Admin", "Index") » @Html.ActionLink("Posts", "Posts") »  @breadcrumbName</h2>
     @using (Html.BeginForm())
@@ -49,12 +61,7 @@
                     @Html.LabelFor(a => a.Body, "Text")
                 </td>
                 <td>
-                    @Html.TextAreaFor(a => a.Body, new {  })
-                </td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <button type="button">Preview</button>
+                    @Html.TextAreaFor(a => a.Body, new { @class = "text-input" })
                 </td>
             </tr>
             <tr>
@@ -64,4 +71,6 @@
             </tr>
         </table>
     }
+</div>
+<div id="preview">
 </div>
