@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="eouw0o83hf" Class="ExampleDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\v11.0;Initial Catalog=eouw0o83hf;Integrated Security=True" SettingsObjectName="CodeExamples.Properties.Settings" SettingsPropertyName="eouw0o83hfConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="example.Cars" Member="Cars">
+    <Type Name="Car">
+      <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="Vin" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="LicensePlate" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Make" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Model" Type="System.String" DbType="NVarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Year" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="NumberOfDoors" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Odometer" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="MaxSpeed" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="HasAllWheelDrive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="HasPowerSteering" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="HasAirConditioning" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="NumberOfAxles" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="SpeedCount" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="HighwayMilesPerGallon" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="CityMilesPerGallon" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="HasSunRoof" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="HasDoubleSunRoof" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="HasPowerWindows" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="HasAutomaticTransmission" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+    </Type>
+  </Table>
+</Database>

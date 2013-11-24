@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DiContainer")]
+[assembly: AssemblyTitle("CodeExamples")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DiContainer")]
+[assembly: AssemblyProduct("CodeExamples")]
 [assembly: AssemblyCopyright("Copyright ©  2013")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("e025986e-b157-47bc-92ec-7b9887d0c679")]
+[assembly: Guid("a5d43540-6ba3-47fb-b67b-45cf1d6c51ee")]
 
 // Version information for an assembly consists of the following four values:
 //
