@@ -21,7 +21,7 @@ namespace GiftGivr.Web.App_Start
         {
             get
             {
-                return Dependency.OnValue("connectionString", ConfigurationManager.ConnectionStrings["giftGivr"].ConnectionString);
+                return Dependency.OnValue("connectionString", ConfigurationManager.ConnectionStrings["GiftGivrConnectionString"].ConnectionString);
             }
         }
 

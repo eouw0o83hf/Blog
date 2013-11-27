@@ -5,10 +5,10 @@ using System.Web;
 
 namespace GiftGivr.Web.Models
 {
-    public class AccountViewModel
+    public class TestUserViewModel
     {
+        public string Email { get; set; }
+        public string Password { get; set; }
         public string Name { get; set; }
-
-        public ICollection<GiftViewModel> Gifts { get; set; }
     }
 }

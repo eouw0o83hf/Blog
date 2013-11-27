@@ -1,21 +1,39 @@
-﻿@model GiftGivr.Web.Models.LoginViewModel
-
+﻿@model GiftGivr.Web.Models.TestUserViewModel
 @{
-    Layout = null;
+    ViewBag.Title = "Test Login";
+    Layout = "~/Views/Shared/Global.cshtml";
 }
-
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>GenerateTestLogin</title>
-</head>
-<body>
-    <div>
-        Email : @Model.Email
-        <br />
-        Pass: @Model.Password
-    </div>
-</body>
-</html>
+@using(Html.BeginForm())
+{
+    <table>
+        <tr>
+            <td>
+                Email:
+            </td>
+            <td>
+                @Html.TextBoxFor(a => a.Email)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Name:
+            </td>
+            <td>
+                @Html.TextBoxFor(a => a.Name)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Password:
+            </td>
+            <td>
+                @Html.TextBoxFor(a => a.Password)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit">Create!</button>
+            </td>
+        </tr>
+    </table>
+}

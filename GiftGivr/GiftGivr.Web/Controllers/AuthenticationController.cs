@@ -25,25 +25,31 @@ namespace GiftGivr.Web.Controllers
                 throw new Exception("NOPE!");
             }
 
-            var email = Guid.NewGuid().ToString();
+            return View(new TestUserViewModel());
+        }
+
+        [HttpPost]
+        public ActionResult GenerateTestLogin(TestUserViewModel model)
+        {
+            if (!Request.Url.AbsoluteUri.ToString().Contains("http://localhost:"))
+            {
+                throw new Exception("NOPE!");
+            }
+
             var salt = GetNewSalt();
-            var hash = HashPassword("a", salt);
+            var hash = HashPassword(model.Password, salt);
 
             var account = new Data.Account
             {
-                Email = email,
+                Email = model.Email,
                 Salt = salt,
                 Password = hash,
-                Name = "a test"
+                Name = model.Name
             };
             DataContext.Accounts.InsertOnSubmit(account);
             DataContext.SubmitChanges();
 
-            return View(new LoginViewModel
-            {
-                Email = email,
-                Password = "a"
-            });
+            return Redirect("/");
         }
 
         [HttpGet]
@@ -69,6 +75,13 @@ namespace GiftGivr.Web.Controllers
             TempData["Message"] = "Login failed";
             FormsAuthentication.RedirectToLoginPage();
             return null;
+        }
+
+        [HttpGet]
+        public ActionResult Logout()
+        {
+            FormsAuthentication.SignOut();
+            return Redirect("/");
         }
 
         protected string GetNewSalt()

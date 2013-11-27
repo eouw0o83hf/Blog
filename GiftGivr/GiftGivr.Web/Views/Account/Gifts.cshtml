@@ -1,0 +1,45 @@
+﻿@model GiftGivr.Web.Models.AccountViewModel
+
+@{
+    ViewBag.Title = "Gifts";
+    Layout = "~/Views/Shared/Global.cshtml";
+}
+<h1>@Model.Name</h1>
+@if (Model.Gifts.Count > 0)
+{
+    var requested = Model.Gifts.Where(a => a.TargetRequestedThisGift).ToList();
+    if(requested.Any())
+    {
+        <h2>
+            Gifts that @Model.Name has requested
+        </h2>
+    }
+    else
+    {
+        <h2>
+            @Model.Name hasn't yet requested any gifts
+        </h2>
+    }
+    
+    var suggested = Model.Gifts.Where(a => !a.TargetRequestedThisGift).ToList();
+    if(suggested.Any())
+    {
+        <h2>
+            Suggested gifts for @Model.Name
+        </h2>
+    }
+    else
+    {
+        <h2>
+            Nobody has suggested any gifts for @Model.Name yet!
+        </h2>
+        <p>
+            @Html.ActionLink("Suggest one now!", "AddGift")
+        </p>
+    }
+}
+else
+{
+    <h2>@Model.Name doesn't have any gift listings yet!</h2>
+    @Html.ActionLink("Add one now!", "AddGift")
+}

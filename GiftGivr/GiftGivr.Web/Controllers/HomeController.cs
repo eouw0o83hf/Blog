@@ -1,4 +1,5 @@
 ﻿using GiftGivr.Web.Classes;
+using GiftGivr.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +16,14 @@ namespace GiftGivr.Web.Controllers
 
         public ActionResult Index()
         {
-            return View();
+            var allUsers = DataContext.Accounts
+                                .Select(a => new { a.AccountId, a.Name })
+                                .ToList()
+                                .ToDictionary(a => a.AccountId, a => a.Name);
+            return View(new HomeViewModel
+                {
+                    AllUsers = allUsers
+                });
         }
     }
 }

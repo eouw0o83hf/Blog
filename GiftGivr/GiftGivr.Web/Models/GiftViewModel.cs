@@ -9,7 +9,8 @@ namespace GiftGivr.Web.Models
     {
         public int GiftId { get; set; }
         public string TargetUser { get; set; }
-        
+
+        public bool TargetRequestedThisGift { get; set; }
         public bool ThisIsYourGift { get; set; }
         public bool YouBoughtThisGift { get; set; }
 

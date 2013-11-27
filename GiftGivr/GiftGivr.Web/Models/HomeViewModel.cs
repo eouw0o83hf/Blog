@@ -5,10 +5,8 @@ using System.Web;
 
 namespace GiftGivr.Web.Models
 {
-    public class AccountViewModel
+    public class HomeViewModel
     {
-        public string Name { get; set; }
-
-        public ICollection<GiftViewModel> Gifts { get; set; }
+        public IDictionary<int, string> AllUsers { get; set; }
     }
 }

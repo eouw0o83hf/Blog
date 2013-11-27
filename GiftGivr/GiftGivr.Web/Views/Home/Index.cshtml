@@ -1,5 +1,16 @@
-﻿@{
+﻿@model GiftGivr.Web.Models.HomeViewModel
+@{
     Layout = "~/Views/Shared/Global.cshtml";
 }
-<h1>Welcome</h1>
-<p>This is GiftGivr</p>
+<h1>Welcome to GiftGivr</h1>
+<p>Want to give a gift? Check out your friends and family:</p>
+
+<h2>Friends and Family</h2>
+<ul>
+@foreach (var u in Model.AllUsers)
+{
+    <li>
+        @Html.ActionLink(u.Value, "Gifts", "Account", new { userId = u.Key }, new { })
+    </li>
+}
+</ul>

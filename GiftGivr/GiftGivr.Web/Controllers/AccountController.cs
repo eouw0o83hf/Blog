@@ -72,7 +72,8 @@ namespace GiftGivr.Web.Controllers
                 TargetUser = userDictionary[a.TargetAccountId],
                 ThisIsYourGift = userId == UserId,
                 Url = a.Url,
-                YouBoughtThisGift = a.ClaimedByAccountId == UserId
+                YouBoughtThisGift = a.ClaimedByAccountId == UserId,
+                TargetRequestedThisGift = a.TargetAccountId == userId
             }).ToList();
 
             var result = new AccountViewModel
