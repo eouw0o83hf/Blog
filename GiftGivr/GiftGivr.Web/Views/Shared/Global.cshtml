@@ -1,0 +1,34 @@
+﻿@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>@ViewBag.Title</title>
+
+    <link href="~/Content/metro-ui/css/metro-bootstrap.css" rel="stylesheet" />
+    <script src="~/Scripts/jquery-2.0.3.js"></script>
+    <script src="~/Scripts/metro-ui/jquery.ui.widget.js"></script>
+    <script src="~/Scripts/metro-ui/metro-core.js"></script>
+ 
+    @RenderSection("header", false)
+</head>
+<body class="metro">
+    <div id="global-wrapper">
+        @{
+            var message = TempData["Message"] as string;
+        }
+        @if (message != null)
+        {
+            <div id="global-message">
+                @message
+            </div>
+        }
+        @RenderBody()
+    </div>
+    @RenderSection("footer", false)
+</body>
+</html>

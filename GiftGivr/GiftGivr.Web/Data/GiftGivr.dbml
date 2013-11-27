@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="GiftGivr" Class="GiftGivrDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=(LocalDB)\v11.0;Initial Catalog=GiftGivr;Integrated Security=True" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="GiftGivrConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="dbo.Accounts" Member="Accounts">
+    <Type Name="Account">
+      <Column Name="AccountId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(200)" CanBeNull="true" />
+      <Column Name="Salt" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Password" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="Account_Comment" Member="Comments" ThisKey="AccountId" OtherKey="AccountId" Type="Comment" />
+      <Association Name="Account_GiftAnswer" Member="GiftAnswers" ThisKey="AccountId" OtherKey="AccountId" Type="GiftAnswer" />
+      <Association Name="Account_GiftQuestion" Member="GiftQuestions" ThisKey="AccountId" OtherKey="AccountId" Type="GiftQuestion" />
+      <Association Name="Account_Gift" Member="Gifts" ThisKey="AccountId" OtherKey="ClaimedByAccountId" Type="Gift" />
+      <Association Name="Account_Gift1" Member="Gifts1" ThisKey="AccountId" OtherKey="CreatorAccountId" Type="Gift" />
+      <Association Name="Account_Gift2" Member="Gifts2" ThisKey="AccountId" OtherKey="TargetAccountId" Type="Gift" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Comments" Member="Comments">
+    <Type Name="Comment">
+      <Column Name="CommentId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GiftId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Timestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="CommentText" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="Account_Comment" Member="Account" ThisKey="AccountId" OtherKey="AccountId" Type="Account" IsForeignKey="true" />
+      <Association Name="Gift_Comment" Member="Gift" ThisKey="GiftId" OtherKey="GiftId" Type="Gift" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GiftAnswers" Member="GiftAnswers">
+    <Type Name="GiftAnswer">
+      <Column Name="GiftAnswerId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GiftQuestionId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Timestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="QuestionAnswer" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="Account_GiftAnswer" Member="Account" ThisKey="AccountId" OtherKey="AccountId" Type="Account" IsForeignKey="true" />
+      <Association Name="GiftQuestion_GiftAnswer" Member="GiftQuestion" ThisKey="GiftQuestionId" OtherKey="GiftQuestionId" Type="GiftQuestion" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.GiftQuestions" Member="GiftQuestions">
+    <Type Name="GiftQuestion">
+      <Column Name="GiftQuestionId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GiftId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="AccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Timestamp" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="QuestionText" Type="System.String" DbType="Text NOT NULL" CanBeNull="false" UpdateCheck="Never" />
+      <Association Name="GiftQuestion_GiftAnswer" Member="GiftAnswers" ThisKey="GiftQuestionId" OtherKey="GiftQuestionId" Type="GiftAnswer" />
+      <Association Name="Account_GiftQuestion" Member="Account" ThisKey="AccountId" OtherKey="AccountId" Type="Account" IsForeignKey="true" />
+      <Association Name="Gift_GiftQuestion" Member="Gift" ThisKey="GiftId" OtherKey="GiftId" Type="Gift" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Gifts" Member="Gifts">
+    <Type Name="Gift">
+      <Column Name="GiftId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="TargetAccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="CreatorAccountId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ClaimedByAccountId" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="Name" Type="System.String" DbType="NVarChar(MAX) NOT NULL" CanBeNull="false" />
+      <Column Name="PurchaseUrl" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Description" Type="System.String" DbType="Text" CanBeNull="true" UpdateCheck="Never" />
+      <Association Name="Gift_Comment" Member="Comments" ThisKey="GiftId" OtherKey="GiftId" Type="Comment" />
+      <Association Name="Gift_GiftQuestion" Member="GiftQuestions" ThisKey="GiftId" OtherKey="GiftId" Type="GiftQuestion" />
+      <Association Name="Account_Gift" Member="Account" ThisKey="ClaimedByAccountId" OtherKey="AccountId" Type="Account" IsForeignKey="true" />
+      <Association Name="Account_Gift1" Member="Account1" ThisKey="CreatorAccountId" OtherKey="AccountId" Type="Account" IsForeignKey="true" />
+      <Association Name="Account_Gift2" Member="Account2" ThisKey="TargetAccountId" OtherKey="AccountId" Type="Account" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>
