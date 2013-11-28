@@ -1,4 +1,5 @@
 ﻿using GiftGivr.Web.Classes;
+using GiftGivr.Web.Data;
 using GiftGivr.Web.Models;
 using System;
 using System.Collections.Generic;
@@ -18,36 +19,36 @@ namespace GiftGivr.Web.Controllers
         public ActionResult Gifts(int userId)
         {
             var primitiveResults = (from g in DataContext.Gifts
-                          where g.TargetAccountId == UserId
-                            && (UserId != userId || UserId == g.CreatorAccountId)
-                          select new
-                          {
-                              GiftId = g.GiftId,
-                              g.ClaimedByAccountId,
-                              g.CreatorAccountId,
-                              g.TargetAccountId,
-                              Name = g.Name,
-                              Description = g.Description,
-                              Url = g.PurchaseUrl,
-                              Questions = g.GiftQuestions.OrderBy(a => a.Timestamp).Select(a => new GiftQuestionViewModel
-                              {
-                                  Question = a.QuestionText,
-                                  Timestamp = a.Timestamp,
-                                  User = a.Account.Name,
-                                  Answers = a.GiftAnswers.OrderBy(b => b.Timestamp).Select(b => new GiftAnswerViewModel
-                                  {
-                                      Answer = b.QuestionAnswer,
-                                      Timestamp = b.Timestamp,
-                                      User = b.Account.Name
-                                  }).ToList()
-                              }).ToList(),
-                              Comments = g.Comments.OrderBy(a => a.Timestamp).Select(a => new GiftCommentViewModel
-                              {
-                                  Comment = a.CommentText,
-                                  Timestamp = a.Timestamp,
-                                  User = a.Account.Name
-                              }).ToList()
-                          }).ToList();
+                                    where g.TargetAccountId == userId
+                                      && (UserId != userId || UserId == g.CreatorAccountId)
+                                    select new
+                                    {
+                                        GiftId = g.GiftId,
+                                        g.ClaimedByAccountId,
+                                        g.CreatorAccountId,
+                                        g.TargetAccountId,
+                                        Name = g.Name,
+                                        Description = g.Description,
+                                        Url = g.PurchaseUrl,
+                                        Questions = g.GiftQuestions.OrderBy(a => a.Timestamp).Select(a => new GiftQuestionViewModel
+                                        {
+                                            Question = a.QuestionText,
+                                            Timestamp = a.Timestamp,
+                                            User = a.Account.Name,
+                                            Answers = a.GiftAnswers.OrderBy(b => b.Timestamp).Select(b => new GiftAnswerViewModel
+                                            {
+                                                Answer = b.QuestionAnswer,
+                                                Timestamp = b.Timestamp,
+                                                User = b.Account.Name
+                                            }).ToList()
+                                        }).ToList(),
+                                        Comments = g.Comments.OrderBy(a => a.Timestamp).Select(a => new GiftCommentViewModel
+                                        {
+                                            Comment = a.CommentText,
+                                            Timestamp = a.Timestamp,
+                                            User = a.Account.Name
+                                        }).ToList()
+                                    }).ToList();
 
             var allUserIds = primitiveResults.Where(a => a.ClaimedByAccountId.HasValue).Select(a => a.ClaimedByAccountId.Value)
                             .Union(primitiveResults.Select(a => a.CreatorAccountId))
@@ -101,7 +102,19 @@ namespace GiftGivr.Web.Controllers
         [HttpPost]
         public ActionResult AddGift(int userId, GiftViewModel model)
         {
-            throw new NotImplementedException();
+            var dbItem = new Gift
+            {
+                CreatorAccountId = UserId.Value,
+                TargetAccountId = userId,
+                Name = model.Name,
+                Description = model.Description,
+                PurchaseUrl = model.Url
+            };
+
+            DataContext.Gifts.InsertOnSubmit(dbItem);
+            DataContext.SubmitChanges();
+
+            return RedirectToAction("Gifts", new { userId });
         }
     }
 }
