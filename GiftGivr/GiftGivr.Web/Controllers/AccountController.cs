@@ -79,11 +79,29 @@ namespace GiftGivr.Web.Controllers
 
             var result = new AccountViewModel
             {
+                UserId = userId,
+                ThisIsYou = userId == UserId,
                 Gifts = viewModels,
                 Name = userDictionary[userId]
             };
 
             return View(result);
+        }
+
+        [HttpGet]
+        public ActionResult AddGift(int userId)
+        {
+            var user = DataContext.Accounts.Single(a => a.AccountId == userId);
+            return View(new GiftViewModel
+                {
+                    TargetUser = user.Name
+                });
+        }
+
+        [HttpPost]
+        public ActionResult AddGift(int userId, GiftViewModel model)
+        {
+            throw new NotImplementedException();
         }
     }
 }

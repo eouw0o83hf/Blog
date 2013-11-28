@@ -7,7 +7,9 @@ namespace GiftGivr.Web.Models
 {
     public class AccountViewModel
     {
+        public int UserId { get; set; }
         public string Name { get; set; }
+        public bool ThisIsYou { get; set; }
 
         public ICollection<GiftViewModel> Gifts { get; set; }
     }

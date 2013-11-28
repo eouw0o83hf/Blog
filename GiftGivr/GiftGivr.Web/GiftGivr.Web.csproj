@@ -224,6 +224,7 @@
     <Content Include="Views\Shared\Global.cshtml" />
     <Content Include="Views\Authentication\Login.cshtml" />
     <Content Include="Views\Account\Gifts.cshtml" />
+    <Content Include="Views\Account\AddGift.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

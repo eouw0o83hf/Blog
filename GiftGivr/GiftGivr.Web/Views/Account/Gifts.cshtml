@@ -34,12 +34,12 @@
             Nobody has suggested any gifts for @Model.Name yet!
         </h2>
         <p>
-            @Html.ActionLink("Suggest one now!", "AddGift")
+            @Html.ActionLink("Suggest one now!", "AddGift", new { UserId = Model.UserId })
         </p>
     }
 }
 else
 {
     <h2>@Model.Name doesn't have any gift listings yet!</h2>
-    @Html.ActionLink("Add one now!", "AddGift")
+    @Html.ActionLink("Add one now!", "AddGift", new { UserId = Model.UserId })
 }

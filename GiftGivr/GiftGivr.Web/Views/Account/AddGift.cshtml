@@ -1,0 +1,41 @@
+﻿@model GiftGivr.Web.Models.GiftViewModel
+
+@{
+    ViewBag.Title = "AddGift";
+    Layout = "~/Views/Shared/Global.cshtml";
+}
+<h1>Add a Gift for @Model.TargetUser</h1>
+@using(Html.BeginForm())
+{
+    <table>
+        <tr>
+            <td>
+                What is this gift?
+            </td>
+            <td>
+                @Html.TextBoxFor(a => a.Name)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Is there a specific website/URL?
+            </td>
+            <td>
+                @Html.TextBoxFor(a => a.Url)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                Anything else to say about it?
+            </td>
+            <td>
+                @Html.TextAreaFor(a => a.Comments, new { cols = 30, rows = 30 })
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit">Submit</button>
+            </td>
+        </tr>
+    </table>
+}
