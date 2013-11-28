@@ -52,6 +52,7 @@ namespace GiftGivr.Web.Controllers
             var allUserIds = primitiveResults.Where(a => a.ClaimedByAccountId.HasValue).Select(a => a.ClaimedByAccountId.Value)
                             .Union(primitiveResults.Select(a => a.CreatorAccountId))
                             .Union(primitiveResults.Select(a => a.TargetAccountId))
+                            .Union(new [] { userId })
                             .Distinct();
 
             var userDictionary = DataContext.Accounts
