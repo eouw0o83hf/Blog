@@ -4,6 +4,8 @@ using Castle.Windsor;
 using DbSync;
 using GiftGivr.Web.Classes;
 using GiftGivr.Web.Data;
+using SendGrid;
+using SendGrid.Transport;
 using SimpleCrypto;
 using System;
 using System.Collections.Generic;
@@ -53,14 +55,20 @@ namespace GiftGivr.Web.App_Start
             container.Register(Component.For<CryptoProvider>()
                                         .LifestyleTransient());
 
+
+            container.Register(Component.For<ITransport>()
+                                        .UsingFactoryMethod(a =>
+                                                SMTP.GetInstance(new System.Net.NetworkCredential
+                                                {
+                                                    UserName = ConfigurationManager.AppSettings["SendGrid_Username"],
+                                                    Password = ConfigurationManager.AppSettings["SendGrid_Password"]
+                                                }, ConfigurationManager.AppSettings["SendGrid_SmtpServer"])
+                                            )
+                                        .LifestyleTransient());
+
             //// Controllers
             container.Register(Component.For<GiftGivrControllerContext>()
-                                .LifestyleTransient()
-                                .DependsOn(
-                                    Dependency.OnValue("SendGridSmtpServer", ConfigurationManager.AppSettings["SendGrid_SmtpServer"]),
-                                    Dependency.OnValue("SendGridUsername", ConfigurationManager.AppSettings["SendGrid_Username"]),
-                                    Dependency.OnValue("SendGridPassword", ConfigurationManager.AppSettings["SendGrid_Password"])
-                                ));
+                                .LifestyleTransient());
 
             container.Register(WindsorClasses.FromThisAssembly()
                                 .BasedOn<IController>()

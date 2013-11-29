@@ -1,4 +1,5 @@
 ﻿using GiftGivr.Web.Data;
+using SendGrid.Transport;
 using SimpleCrypto;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,6 @@ namespace GiftGivr.Web.Classes
 
         public CryptoProvider CryptoProvider { get; set; }
 
-        public string SendGridSmtpServer { get; set; }
-        public string SendGridUsername { get; set; }
-        public string SendGridPassword { get; set; }
+        public ITransport SendGridProvider { get; set; }
     }
 }

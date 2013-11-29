@@ -1,5 +1,6 @@
 ﻿using GiftGivr.Web.Classes;
 using GiftGivr.Web.Data;
+using SendGrid.Transport;
 using SimpleCrypto;
 using System;
 using System.Collections.Generic;
@@ -15,19 +16,13 @@ namespace GiftGivr.Web.Controllers
 
         protected readonly CryptoProvider CryptoProvider;
 
-        protected readonly string SendGridSmtpServer;
-        protected readonly string SendGridUsername;
-        protected readonly string SendGridPassword;
+        protected readonly ITransport SendGridProvider;
 
         protected BaseController(GiftGivrControllerContext context)
         {
             DataContext = context.DataContext;
-
             CryptoProvider = context.CryptoProvider;
-
-            SendGridSmtpServer = context.SendGridSmtpServer;
-            SendGridUsername = context.SendGridUsername;
-            SendGridPassword = context.SendGridPassword;
+            SendGridProvider = context.SendGridProvider;
         }
 
         protected int? UserId
