@@ -11,7 +11,7 @@ namespace GiftGivr.Web.Classes
     {
         public GiftGivrDataContext DataContext { get; set; }
 
-        public ICryptoService CryptoService { get; set; }
+        public CryptoProvider CryptoProvider { get; set; }
 
         public string SendGridSmtpServer { get; set; }
         public string SendGridUsername { get; set; }

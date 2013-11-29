@@ -50,6 +50,9 @@ namespace GiftGivr.Web.App_Start
                                         .ImplementedBy<PBKDF2>()
                                         .LifestyleTransient());
 
+            container.Register(Component.For<CryptoProvider>()
+                                        .LifestyleTransient());
+
             //// Controllers
             container.Register(Component.For<GiftGivrControllerContext>()
                                 .LifestyleTransient()

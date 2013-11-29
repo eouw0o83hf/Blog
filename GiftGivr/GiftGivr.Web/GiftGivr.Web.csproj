@@ -136,12 +136,16 @@
     <Compile Include="App_Start\MetroUICSSBundleConfig.cs" />
     <Compile Include="App_Start\MigrationRunner.cs" />
     <Compile Include="App_Start\WindsorInstaller.cs" />
+    <Compile Include="Classes\CryptoProvider.cs" />
     <Compile Include="Classes\GiftGivrControllerContext.cs" />
     <Compile Include="Classes\ControllerFactory.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\AuthenticationController.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\CommentController.cs" />
+    <Compile Include="Controllers\GiftsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\QuestionController.cs" />
     <Compile Include="Data\GiftGivr.designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -151,7 +155,13 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Migrations\001_InitialDbCreate.cs" />
-    <Compile Include="Models\AccountViewModel.cs" />
+    <Compile Include="Migrations\002_AccountsUniqueEmail.cs" />
+    <Compile Include="Models\AddAccountViewModel.cs" />
+    <Compile Include="Models\AddCommentViewModel.cs" />
+    <Compile Include="Models\AnswerQuestionViewModel.cs" />
+    <Compile Include="Models\AskQuestionViewModel.cs" />
+    <Compile Include="Models\ClaimGiftViewModel.cs" />
+    <Compile Include="Models\GiftCollectionViewModel.cs" />
     <Compile Include="Models\GiftViewModel.cs" />
     <Compile Include="Models\HomeViewModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
@@ -223,8 +233,14 @@
     <Content Include="Views\Authentication\GenerateTestLogin.cshtml" />
     <Content Include="Views\Shared\Global.cshtml" />
     <Content Include="Views\Authentication\Login.cshtml" />
-    <Content Include="Views\Account\Gifts.cshtml" />
-    <Content Include="Views\Account\AddGift.cshtml" />
+    <Content Include="Views\Gifts\View.cshtml" />
+    <Content Include="Views\Gifts\Create.cshtml" />
+    <Content Include="Views\Gifts\Gift.cshtml" />
+    <Content Include="Views\Question\Ask.cshtml" />
+    <Content Include="Views\Question\Answer.cshtml" />
+    <Content Include="Views\Comment\Add.cshtml" />
+    <Content Include="Views\Gifts\Claim.cshtml" />
+    <Content Include="Views\Account\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

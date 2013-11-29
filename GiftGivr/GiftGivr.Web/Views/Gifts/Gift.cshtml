@@ -1,0 +1,79 @@
+﻿@model GiftGivr.Web.Models.GiftViewModel
+@if(Model.TargetRequestedThisGift || !Model.ThisIsYourGift)
+{
+    <h3>@Model.Name</h3>
+    if (!Model.TargetRequestedThisGift)
+    {
+        <p><em>Suggested by @Model.CreatedByUser</em></p>
+    }
+    if(!Model.ThisIsYourGift)
+    {
+        if (Model.BoughtByUser.IsNotBlank())
+        {
+            if (Model.YouBoughtThisGift)
+            {
+                <p><em>You bought this gift.</em> @Html.ActionLink("Change your mind?", "Claim", new { giftId = Model.GiftId })</p>
+            }
+            else
+            {   
+                <p><em>Bought by @Model.BoughtByUser</em></p>
+            }   
+        }
+        else
+        {
+            <p><em>Nobody has bought this yet.</em> @Html.ActionLink("Claim it!", "Claim", new { giftId = Model.GiftId })</p>
+        }
+    }
+    <h4>Information</h4>
+    if(!Model.Url.IsBlank())
+    {
+        <p>Find it here: <a href="@Model.Url" target="_blank">@Model.Url</a></p>
+    }
+    if(!Model.Description.IsBlank())
+    {
+        <span>Description:</span>
+        <pre>@Model.Description</pre>
+    }
+    if(Model.Url.IsBlank() && Model.Description.IsBlank())
+    {
+        <p>That's it - apparently no more information is needed!</p>
+    }
+    <h4>Questions</h4>
+    if(!Model.ThisIsYourGift)
+    {
+        if(Model.TargetRequestedThisGift)
+        {
+            <p><strong>@Model.TargetUser can see these questions</strong></p>
+        }
+    }
+    foreach (var q in Model.Questions)
+    {
+        <h5>@q.Question</h5>
+        <p><em>Asked by @q.User on @q.Timestamp.Date</em></p>
+        <h6>Replies</h6>
+        foreach (var r in q.Answers)
+        {
+            <p>@r.Answer</p>
+            <p><em>Answered by @r.User on @r.Timestamp.Date</em></p>
+        }
+        <h6>Can you answer this question?</h6>
+        <p>@Html.ActionLink("Let " + q.User + " know", "Answer", "Question", new { questionId = q.QuestionId }, null)</p>
+    }
+    <h5>Have a question about this gift?</h5>
+    <p>@Html.ActionLink("Ask now!", "Ask", "Question", new { giftId = Model.GiftId }, null)</p>
+    if(!Model.ThisIsYourGift)
+    {
+        <h4>Comments</h4>
+        if(Model.TargetRequestedThisGift)
+        {
+            <p><strong>@Model.TargetUser cannot see these comments</strong></p>
+        }
+        foreach (var c in Model.Comments)
+        {
+            <h5>@c.Comment</h5>
+            <p><em>by @c.User on @c.Timestamp.Date</em></p>
+        }
+        <h4>Have something to say?</h4>
+        <p>@Html.ActionLink("Comment now", "Add", "Comment", new { giftId = Model.GiftId }, null)</p>
+    }
+}

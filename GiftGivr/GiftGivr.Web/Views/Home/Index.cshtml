@@ -10,7 +10,10 @@
 @foreach (var u in Model.AllUsers)
 {
     <li>
-        @Html.ActionLink(u.Value, "Gifts", "Account", new { userId = u.Key }, new { })
+        @Html.ActionLink(u.Value, "View", "Gifts", new { userId = u.Key }, new { })
     </li>
 }
 </ul>
+
+<h2>Invite Someone Else!</h2>
+<p>@Html.ActionLink("Send an invite!", "Add", "Account")</p>

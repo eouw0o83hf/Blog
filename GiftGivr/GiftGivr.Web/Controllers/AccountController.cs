@@ -16,105 +16,35 @@ namespace GiftGivr.Web.Controllers
             : base(context) { }
 
         [HttpGet]
-        public ActionResult Gifts(int userId)
+        public ActionResult Add()
         {
-            var primitiveResults = (from g in DataContext.Gifts
-                                    where g.TargetAccountId == userId
-                                      && (UserId != userId || UserId == g.CreatorAccountId)
-                                    select new
-                                    {
-                                        GiftId = g.GiftId,
-                                        g.ClaimedByAccountId,
-                                        g.CreatorAccountId,
-                                        g.TargetAccountId,
-                                        Name = g.Name,
-                                        Description = g.Description,
-                                        Url = g.PurchaseUrl,
-                                        Questions = g.GiftQuestions.OrderBy(a => a.Timestamp).Select(a => new GiftQuestionViewModel
-                                        {
-                                            Question = a.QuestionText,
-                                            Timestamp = a.Timestamp,
-                                            User = a.Account.Name,
-                                            Answers = a.GiftAnswers.OrderBy(b => b.Timestamp).Select(b => new GiftAnswerViewModel
-                                            {
-                                                Answer = b.QuestionAnswer,
-                                                Timestamp = b.Timestamp,
-                                                User = b.Account.Name
-                                            }).ToList()
-                                        }).ToList(),
-                                        Comments = g.Comments.OrderBy(a => a.Timestamp).Select(a => new GiftCommentViewModel
-                                        {
-                                            Comment = a.CommentText,
-                                            Timestamp = a.Timestamp,
-                                            User = a.Account.Name
-                                        }).ToList()
-                                    }).ToList();
-
-            var allUserIds = primitiveResults.Where(a => a.ClaimedByAccountId.HasValue).Select(a => a.ClaimedByAccountId.Value)
-                            .Union(primitiveResults.Select(a => a.CreatorAccountId))
-                            .Union(primitiveResults.Select(a => a.TargetAccountId))
-                            .Union(new [] { userId })
-                            .Distinct();
-
-            var userDictionary = DataContext.Accounts
-                                    .Where(a => allUserIds.Contains(a.AccountId))
-                                    .Select(a => new { a.AccountId, a.Name })
-                                    .ToList()
-                                    .ToDictionary(a => a.AccountId, a => a.Name);
-
-            var viewModels = primitiveResults.Select(a => new GiftViewModel
-            {
-                BoughtbyUser = a.ClaimedByAccountId == null ? null : userDictionary[a.ClaimedByAccountId.Value],
-                Comments = a.Comments,
-                CreatedByUser = userDictionary[a.CreatorAccountId],
-                Description = a.Description,
-                GiftId = a.GiftId,
-                Name = a.Name,
-                Questions = a.Questions,
-                TargetUser = userDictionary[a.TargetAccountId],
-                ThisIsYourGift = userId == UserId,
-                Url = a.Url,
-                YouBoughtThisGift = a.ClaimedByAccountId == UserId,
-                TargetRequestedThisGift = a.TargetAccountId == userId
-            }).ToList();
-
-            var result = new AccountViewModel
-            {
-                UserId = userId,
-                ThisIsYou = userId == UserId,
-                Gifts = viewModels,
-                Name = userDictionary[userId]
-            };
-
-            return View(result);
-        }
-
-        [HttpGet]
-        public ActionResult AddGift(int userId)
-        {
-            var user = DataContext.Accounts.Single(a => a.AccountId == userId);
-            return View(new GiftViewModel
-                {
-                    TargetUser = user.Name
-                });
+            return View(new AddAccountViewModel());
         }
 
         [HttpPost]
-        public ActionResult AddGift(int userId, GiftViewModel model)
+        public ActionResult Add(AddAccountViewModel model)
         {
-            var dbItem = new Gift
+            var email = model.Email.Trim();
+            var existingAccount = DataContext.Accounts.Count(a => a.Email == email);
+            if (existingAccount > 0)
             {
-                CreatorAccountId = UserId.Value,
-                TargetAccountId = userId,
+                throw new Exception("Duplicate!");
+            }
+
+            var password = CryptoProvider.CreateNewPassword();
+            var salt = CryptoProvider.GetNewSalt();
+            var account = new Data.Account
+            {
+                Email = email,
                 Name = model.Name,
-                Description = model.Description,
-                PurchaseUrl = model.Url
+                Salt = salt,
+                Password = CryptoProvider.HashPassword(password, salt)
             };
 
-            DataContext.Gifts.InsertOnSubmit(dbItem);
+            DataContext.Accounts.InsertOnSubmit(account);
             DataContext.SubmitChanges();
 
-            return RedirectToAction("Gifts", new { userId });
+            return RedirectToAction("Index", "Home");
         }
     }
 }

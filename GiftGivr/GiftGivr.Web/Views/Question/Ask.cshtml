@@ -1,0 +1,25 @@
+﻿@model GiftGivr.Web.Models.AskQuestionViewModel
+@{
+    ViewBag.Title = "Ask";
+    Layout = "~/Views/Shared/Global.cshtml";
+}
+<h1>Ask a Question</h1>
+<p>You're asking @Model.GiftCreator a question about the gift <span>@Model.Gift</span>.</p>
+@using (Html.BeginForm())
+{
+    <table>
+        <tr>
+            <td>
+                What's up?
+            </td>
+            <td>
+                @Html.TextAreaFor(a => a.Question)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit">Ask!</button>
+            </td>
+        </tr>
+    </table>
+}

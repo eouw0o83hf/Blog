@@ -13,7 +13,7 @@ namespace GiftGivr.Web.Controllers
     {
         protected readonly GiftGivrDataContext DataContext;
 
-        protected readonly ICryptoService CryptoService;
+        protected readonly CryptoProvider CryptoProvider;
 
         protected readonly string SendGridSmtpServer;
         protected readonly string SendGridUsername;
@@ -23,7 +23,7 @@ namespace GiftGivr.Web.Controllers
         {
             DataContext = context.DataContext;
 
-            CryptoService = context.CryptoService;
+            CryptoProvider = context.CryptoProvider;
 
             SendGridSmtpServer = context.SendGridSmtpServer;
             SendGridUsername = context.SendGridUsername;

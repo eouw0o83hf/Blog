@@ -1,5 +1,5 @@
 ﻿@using Common;
-@model GiftGivr.Web.Models.AccountViewModel
+@model GiftGivr.Web.Models.GiftCollectionViewModel
 
 @{
     ViewBag.Title = "Gifts";
@@ -16,20 +16,7 @@
     </h2>
     foreach(var r in requested)
     {
-        <h3>@r.Name</h3>
-        if(!r.Url.IsBlank())
-        {
-            <p>Find it here: <a href="@r.Url" target="_blank">@r.Url</a></p>
-        }
-        if(!r.Description.IsBlank())
-        {
-            <span>Description:</span>
-            <pre>@r.Description</pre>
-        }
-        if(r.Url.IsBlank() && r.Description.IsBlank())
-        {
-            <p>That's it - apparently no more information is needed!</p>
-        }
+        @Html.Partial("Gift", r)
     }
 }
 else
@@ -55,7 +42,7 @@ else
         }
     </h3>
     <p>
-        @Html.ActionLink("Tell everyone what you need!", "AddGift", new { UserId = Model.UserId })
+        @Html.ActionLink("Tell everyone what you need!", "Create", new { UserId = Model.UserId })
     </p>
 }
     
@@ -67,28 +54,16 @@ else
         <h2>
             Suggested gifts for @Model.Name
         </h2>
+        <p><em>@Model.Name cannot see any of these.</em></p>
         foreach (var r in suggested)
         {
-            <h3>@r.Name</h3>
-            if(!r.Url.IsBlank())
-            {
-                <p>Find it here: <a href="@r.Url" target="_blank">@r.Url</a></p>
-            }
-            if(!r.Description.IsBlank())
-            {
-                <span>Description:</span>
-                <pre>@r.Description</pre>
-            }
-            if(r.Url.IsBlank() && r.Description.IsBlank())
-            {
-                <p>That's it - apparently no more information is needed!</p>
-            }
+            @Html.Partial("Gift", r)
         }
         <h3>
             Feeling Generous? 
         </h3>
         <p>
-            @Html.ActionLink("Suggest another gift!", "AddGift", new { UserId = Model.UserId })
+            @Html.ActionLink("Suggest another gift!", "Create", new { UserId = Model.UserId })
         </p>
     }
     else
@@ -97,7 +72,7 @@ else
             Nobody has suggested any gifts for @Model.Name yet!
         </h2>
         <p>
-            @Html.ActionLink("Suggest one now!", "AddGift", new { UserId = Model.UserId })
+            @Html.ActionLink("Suggest one now!", "Create", new { UserId = Model.UserId })
         </p>
     }
 }

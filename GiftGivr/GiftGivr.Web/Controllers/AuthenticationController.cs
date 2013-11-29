@@ -11,9 +11,6 @@ namespace GiftGivr.Web.Controllers
 {
     public class AuthenticationController : BaseController
     {
-        private const int HashIterations = 10000;
-        private const int SaltSize = 128;
-
         public AuthenticationController(GiftGivrControllerContext context)
             : base(context) { }
 
@@ -36,8 +33,8 @@ namespace GiftGivr.Web.Controllers
                 throw new Exception("NOPE!");
             }
 
-            var salt = GetNewSalt();
-            var hash = HashPassword(model.Password, salt);
+            var salt = CryptoProvider.GetNewSalt();
+            var hash = CryptoProvider.HashPassword(model.Password, salt);
 
             var account = new Data.Account
             {
@@ -64,7 +61,7 @@ namespace GiftGivr.Web.Controllers
             var target = DataContext.Accounts.FirstOrDefault(a => a.Email == model.Email);
             if (target != null)
             {
-                var hash = HashPassword(model.Password, target.Salt);
+                var hash = CryptoProvider.HashPassword(model.Password, target.Salt);
                 if (hash == target.Password)
                 {
                     FormsAuthentication.RedirectFromLoginPage(target.AccountId.ToString(), false);
@@ -82,16 +79,6 @@ namespace GiftGivr.Web.Controllers
         {
             FormsAuthentication.SignOut();
             return Redirect("/");
-        }
-
-        protected string GetNewSalt()
-        {
-            return CryptoService.GenerateSalt(HashIterations, SaltSize);
-        }
-
-        protected string HashPassword(string password, string salt)
-        {
-            return CryptoService.Compute(password, salt); 
         }
     }
 }

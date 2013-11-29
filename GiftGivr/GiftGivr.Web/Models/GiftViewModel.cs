@@ -15,7 +15,7 @@ namespace GiftGivr.Web.Models
         public bool YouBoughtThisGift { get; set; }
 
         public string CreatedByUser { get; set; }
-        public string BoughtbyUser { get; set; }
+        public string BoughtByUser { get; set; }
 
         public string Name { get; set; }
         public string Description { get; set; }
@@ -29,6 +29,7 @@ namespace GiftGivr.Web.Models
     {
         public string User { get; set; }
         public string Question { get; set; }
+        public int QuestionId { get; set; }
 
         public DateTime Timestamp { get; set; }
 

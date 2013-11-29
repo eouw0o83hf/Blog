@@ -1,0 +1,25 @@
+﻿@model GiftGivr.Web.Models.AddCommentViewModel
+@{
+    ViewBag.Title = "Add";
+    Layout = "~/Views/Shared/Global.cshtml";
+}
+<h1>Add a comment</h1>
+<p>Commenting on @Model.GiftCreator's gift <span>@Model.Gift</span>.</p>
+@using (Html.BeginForm())
+{
+    <table>
+        <tr>
+            <td>
+                What's on your mind?
+            </td>
+            <td>
+                @Html.TextAreaFor(a => a.Comment)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit">Post it!</button>
+            </td>
+        </tr>
+    </table>
+}

@@ -1,0 +1,28 @@
+﻿@model GiftGivr.Web.Models.AnswerQuestionViewModel
+@{
+    ViewBag.Title = "Answer";
+    Layout = "~/Views/Shared/Global.cshtml";
+}
+<h1>Answer a Question</h1>
+<p>@Model.QuestionAsker asked:</p>
+<q>@Model.Question</q>
+<p>About the gift from @Model.GiftCreator <span>@Model.Gift</span>.</p>
+<h2>Answer!</h2>
+@using (Html.BeginForm())
+{
+    <table>
+        <tr>
+            <td>
+                Give us knowledge!
+            </td>
+            <td>
+                @Html.TextAreaFor(a => a.Answer)
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2">
+                <button type="submit">Answer!</button>
+            </td>
+        </tr>
+    </table>
+}

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace GiftGivr.Web.Models
 {
-    public class AccountViewModel
+    public class GiftCollectionViewModel
     {
         public int UserId { get; set; }
         public string Name { get; set; }
