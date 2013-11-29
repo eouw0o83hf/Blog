@@ -1,6 +1,7 @@
 ﻿using GiftGivr.Web.Classes;
 using GiftGivr.Web.Data;
 using GiftGivr.Web.Models;
+using Common;
 using SendGrid;
 using System;
 using System.Collections.Generic;
@@ -74,6 +75,44 @@ namespace GiftGivr.Web.Controllers
             var mail = Mail.GetInstance(from, to, new MailAddress[0], new MailAddress[0], "Invitation to GiftGivr", message.ToString(), null);
             SendGridProvider.Deliver(mail);
 
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpGet]
+        public ActionResult Manage()
+        {
+            return View(new ManageAccountViewModel());
+        }
+
+        [HttpPost]
+        public ActionResult ChangeName(ManageAccountViewModel model)
+        {
+            if (!model.Name.IsBlank())
+            {
+                var account = DataContext.Accounts.Single(a => a.AccountId == UserId.Value);
+                account.Name = model.Name;
+                DataContext.SubmitChanges();
+            }
+            return RedirectToAction("Index", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(ManageAccountViewModel model)
+        {
+            if (!model.NewPassword.IsBlank() && model.NewPassword == model.ConfirmPassword)
+            {
+                var account = DataContext.Accounts.Single(a => a.AccountId == UserId.Value);
+                var hash = CryptoProvider.HashPassword(model.OldPassword, account.Salt);
+
+                if (account.Password == hash)
+                {
+                    var newSalt = CryptoProvider.GetNewSalt();
+                    var newHash = CryptoProvider.HashPassword(model.NewPassword, newSalt);
+                    account.Salt = newSalt;
+                    account.Password = newHash;
+                    DataContext.SubmitChanges();
+                }
+            }
             return RedirectToAction("Index", "Home");
         }
     }
