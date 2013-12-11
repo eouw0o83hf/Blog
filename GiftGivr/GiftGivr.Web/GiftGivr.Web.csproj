@@ -199,6 +199,8 @@
     <None Include="Data\GiftGivr.dbml.layout">
       <DependentUpon>GiftGivr.dbml</DependentUpon>
     </None>
+    <None Include="Properties\PublishProfiles\giftgivr - FTP.pubxml" />
+    <None Include="Properties\PublishProfiles\giftgivr - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-2.0.3.intellisense.js" />
     <Content Include="Scripts\jquery-2.0.3.js" />
     <Content Include="Scripts\jquery-2.0.3.min.js" />
@@ -230,7 +232,9 @@
     <Content Include="Scripts\metro-ui\metro-times.js" />
     <Content Include="Scripts\metro-ui\metro-touch-handler.js" />
     <Content Include="Scripts\metro-ui\metro-treeview.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
