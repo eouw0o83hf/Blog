@@ -17,6 +17,7 @@ namespace Avalanche
         const string AccountId = "-";
         const string AccessKeyId = @"AKIAJYQTERPFN4YKLG5A";
         const string SecretAccessKey = @"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";
+        const string SnsTopicId = @"arn:aws:sns:us-east-1:608438481935:email";
 
         public static void Main(string[] args)
         {
@@ -38,15 +39,12 @@ namespace Avalanche
 
             var gateway = new GlacierGateway(AccessKeyId, SecretAccessKey, AccountId);
 
-            var repo = new Lightroom.LrRepository(@"C:\Junk\LaptopCatalog1-2.lrcat");
-            var pictures = repo.GetAllPictures();
+            //var repo = new Lightroom.LrRepository(@"C:\Junk\LaptopCatalog1-2.lrcat");
+            //var pictures = repo.GetAllPictures();
 
-            gateway.AssertVaultExists("Pictures-Test");
-            var picture = pictures.FirstOrDefault(a => a.LibraryCount > 0);
-            gateway.SaveImage(picture, "Pictures-Test");
-
-
-            //gateway.ListVault("Pictures-Test");
+            //gateway.AssertVaultExists("Pictures-Test");
+            //var picture = pictures.FirstOrDefault(a => a.LibraryCount > 0);
+            //gateway.SaveImage(picture, "Pictures-Test");
 
             Console.WriteLine("Done");
             Console.Read();

@@ -158,7 +158,7 @@ namespace Avalanche.Glacier
             return compressedStream;
         }
 
-        public void ListVault(string vaultName)
+        public void BeginVaultInventoryRetrieval(string vaultName, string notificationTargetTopicId)
         {
             vaultName = GetTrimmedVaultName(vaultName);
             using (var client = GetGlacierClient())
@@ -169,40 +169,28 @@ namespace Avalanche.Glacier
                     JobParameters = new JobParameters
                     {
                         Type = "inventory-retrieval",
-                        SNSTopic = "arn:aws:sns:us-east-1:608438481935:email"
+                        SNSTopic = notificationTargetTopicId
                     }
                 });
                 Console.WriteLine("Job ID: {0}", response.JobId);
+            }
+        }
 
-                while (true)
-                {
-                    Console.WriteLine("Polling job");
-                    var pollResult = client.DescribeJob(new DescribeJobRequest
-                    {
-                        AccountId = _accountId,
-                        JobId = response.JobId,
-                        VaultName = vaultName
-                    });
-
-                    if (pollResult.Completed)
-                    {
-                        break;
-                    }
-
-                    Console.WriteLine("Waiting 10s");
-                    Task.Delay(10000).Wait();
-                }
-
+        public void PickupVaultInventoryRetrieval(string vaultName, string jobId, string outputFileName)
+        {
+            using(var client = GetGlacierClient())
+            {
                 var result = client.GetJobOutput(new GetJobOutputRequest
                 {
                     AccountId = _accountId,
-                    JobId = response.JobId,
+                    JobId = jobId,
                     VaultName = vaultName
                 });
 
-                Console.WriteLine("done!");
-                var serialized = JsonConvert.SerializeObject(result);
-                File.WriteAllText(@"C:\Junk\job.txt", serialized);
+                using (var file = File.OpenWrite(outputFileName))
+                {
+                    result.Body.CopyTo(file);
+                }
             }
         }
     }
