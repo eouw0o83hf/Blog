@@ -11,11 +11,11 @@ using System.Threading.Tasks;
 
 namespace Avalanche.Lightroom
 {
-    public class LrRepository
+    public class LightroomRepository
     {
         protected readonly string _filename;
 
-        public LrRepository(string filename)
+        public LightroomRepository(string filename)
         {
             _filename = filename;
         }

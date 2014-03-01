@@ -140,7 +140,8 @@ namespace Avalanche.Glacier
                         ArchiveId = result.ArchiveId,
                         Status = result.HttpStatusCode,
                         Location = result.Location,
-                        Metadata = JsonConvert.SerializeObject(result.ResponseMetadata)
+                        Metadata = JsonConvert.SerializeObject(result.ResponseMetadata),
+                        PostedTimestamp = DateTime.UtcNow
                     };
 
                     return response;

@@ -77,12 +77,13 @@
   <ItemGroup>
     <Compile Include="Glacier\ConsolePercentUpdater.cs" />
     <Compile Include="Glacier\GlacierGateway.cs" />
-    <Compile Include="Lightroom\LrRepository.cs" />
+    <Compile Include="Lightroom\LightroomRepository.cs" />
     <Compile Include="Models\ArchivedPictureModel.cs" />
     <Compile Include="Models\ArchiveModel.cs" />
     <Compile Include="Models\PictureModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Repository\AvalancheRepository.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

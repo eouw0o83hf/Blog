@@ -13,6 +13,7 @@ namespace Avalanche.Models
         public HttpStatusCode Status { get; set; }
         public string Location { get; set; }
 
+        public DateTime PostedTimestamp { get; set; }
         public string Metadata { get; set; }
     }
 }

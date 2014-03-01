@@ -2,9 +2,12 @@
 using Amazon.Glacier;
 using Amazon.Glacier.Model;
 using Avalanche.Glacier;
+using Avalanche.Lightroom;
+using Avalanche.Repository;
 using SevenZip;
 using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -21,23 +24,27 @@ namespace Avalanche
 
         public static void Main(string[] args)
         {
-            //var repo = new Lightroom.LrRepository(@"C:\Junk\LaptopCatalog1-2.lrcat");
-            //var output = repo.GetAllPictures();
-            //Console.WriteLine(output.Count);
+            var catalogLocation = @"C:\LRPortable\Catalog\Landis\Landis.lrcat";
+            var avalancheFileLocation = @"C:\Junk\dropbox\Dropbox\Backup\Avalanche\avalanche.sqlite";
 
-            //foreach (var o in output.Where(a => a.LibraryCount > 0))
-            //{
-            //    var exists = System.IO.File.Exists(Path.Combine(o.AbsolutePath, o.FileName));
-            //    if (!exists)
-            //    {
-            //        Console.WriteLine("FailE!!!");
-            //    }
-            //}
+            var lightroomRepo = new LightroomRepository(catalogLocation);
+            var output = lightroomRepo.GetAllPictures();
+            var filteredPictures = output.Where(a => a.LibraryCount > 1);
 
-            //Console.Write("Done");
-            //Console.Read();
-
+            var avalancheRepo = new AvalancheRepository(avalancheFileLocation, Path.GetFileName(avalancheFileLocation));
             var gateway = new GlacierGateway(AccessKeyId, SecretAccessKey, AccountId);
+
+            filteredPictures = filteredPictures.Where(a => !avalancheRepo.FileIsArchived(a.FileId));
+
+            foreach (var f in filteredPictures.Skip(1).Take(1))
+            {
+                Console.WriteLine("Need to archive {0}", Path.Combine(f.AbsolutePath, f.FileName));
+
+                var archive = gateway.SaveImage(f, "Pictures-Test");
+                avalancheRepo.MarkFileAsArchived(archive);
+            }
+
+            //var gateway = new GlacierGateway(AccessKeyId, SecretAccessKey, AccountId);
 
 
             //var repo = new Lightroom.LrRepository(@"C:\Junk\LaptopCatalog1-2.lrcat");
