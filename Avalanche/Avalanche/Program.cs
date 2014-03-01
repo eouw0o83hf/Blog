@@ -39,14 +39,6 @@ namespace Avalanche
 
             var gateway = new GlacierGateway(AccessKeyId, SecretAccessKey, AccountId);
 
-            var file = @"C:\Junk\and you should feel bad.png";
-            var meta = @"{ input: wat, other: hmmm, ni: ping }";
-
-            var filestream = gateway.GetFileStream(file, true, meta);
-            var filewriter = File.OpenWrite(@"C:\Junk\output.7z");
-            filestream.CopyTo(filewriter);
-            filewriter.Close();
-
 
             //var repo = new Lightroom.LrRepository(@"C:\Junk\LaptopCatalog1-2.lrcat");
             //var pictures = repo.GetAllPictures();

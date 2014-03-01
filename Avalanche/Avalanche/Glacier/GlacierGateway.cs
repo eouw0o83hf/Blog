@@ -89,12 +89,17 @@ namespace Avalanche.Glacier
 
         #region Save
 
-        public void SaveImage(PictureModel picture, string vaultName = "Pictures", bool compress = true)
+        public ArchivedPictureModel SaveImage(PictureModel picture, string vaultName = "Pictures", bool compress = true)
         {
-            SaveFile(Path.Combine(picture.AbsolutePath, picture.FileName), picture, vaultName, compress);
+            var archive = SaveFile(Path.Combine(picture.AbsolutePath, picture.FileName), picture, vaultName, compress);
+            return new ArchivedPictureModel
+            {
+                Archive = archive,
+                Picture = picture
+            };
         }
 
-        public void SaveFile(string filename, object metadata, string vaultName, bool compress)
+        public ArchiveModel SaveFile(string filename, object metadata, string vaultName, bool compress)
         {
             var json = JsonConvert.SerializeObject(metadata);
 
@@ -129,11 +134,16 @@ namespace Avalanche.Glacier
                     }
 
                     Console.WriteLine("File uploaded: {0}, archive ID: ", result.HttpStatusCode, result.ArchiveId);
-                    Console.WriteLine("RequestId: {0}", result.ResponseMetadata.RequestId);
-                    foreach (var m in result.ResponseMetadata.Metadata)
+
+                    var response = new ArchiveModel
                     {
-                        Console.Write("Metadata: {0}: {1}", m.Key, m.Value);
-                    }
+                        ArchiveId = result.ArchiveId,
+                        Status = result.HttpStatusCode,
+                        Location = result.Location,
+                        Metadata = JsonConvert.SerializeObject(result.ResponseMetadata)
+                    };
+
+                    return response;
                 }
             }
         }
