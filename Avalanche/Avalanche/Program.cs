@@ -43,8 +43,10 @@ namespace Avalanche
 
             gateway.AssertVaultExists("Pictures-Test");
             var picture = pictures.FirstOrDefault(a => a.LibraryCount > 0);
-            gateway.SaveImage(picture, "Pictures-Test", false);
+            gateway.SaveImage(picture, "Pictures-Test");
 
+
+            //gateway.ListVault("Pictures-Test");
 
             Console.WriteLine("Done");
             Console.Read();

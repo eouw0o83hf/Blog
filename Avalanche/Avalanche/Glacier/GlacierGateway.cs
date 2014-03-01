@@ -11,6 +11,8 @@ using System.IO;
 using Newtonsoft.Json;
 using SevenZip;
 using Avalanche.Models;
+using Amazon.Glacier.Transfer;
+using Amazon.Runtime;
 
 namespace Avalanche.Glacier
 {
@@ -94,15 +96,38 @@ namespace Avalanche.Glacier
             {
                 using (var client = GetGlacierClient())
                 {
-                    Console.WriteLine("uploading {0}", json);
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Uploading {0}, {1} bytes", filename, fileStream.Length);
+                    Console.ResetColor();
 
-                    //client.UploadArchive(new UploadArchiveRequest
-                    //{
-                    //    AccountId = _accountId,
-                    //    ArchiveDescription = json,
-                    //    VaultName = GetTrimmedVaultName(vaultName),
-                    //    Body = fileStream
-                    //});
+                    var hash = TreeHashGenerator.CalculateTreeHash(fileStream);
+                    fileStream.Position = 0;
+
+                    UploadArchiveResponse result;
+                    using (var percentUpdater = new ConsolePercentUpdater())
+                    {
+                        percentUpdater.Start();
+
+                        result = client.UploadArchive(new UploadArchiveRequest
+                        {
+                            AccountId = _accountId,
+                            ArchiveDescription = json,
+                            VaultName = GetTrimmedVaultName(vaultName),
+                            Body = fileStream,
+                            Checksum = hash,
+                            StreamTransferProgress = new EventHandler<StreamTransferProgressArgs>((a, b) =>
+                                {
+                                    percentUpdater.PercentDone = b.PercentDone;
+                                })
+                        });
+                    }
+
+                    Console.WriteLine("File uploaded: {0}, archive ID: ", result.HttpStatusCode, result.ArchiveId);
+                    Console.WriteLine("RequestId: {0}", result.ResponseMetadata.RequestId);
+                    foreach (var m in result.ResponseMetadata.Metadata)
+                    {
+                        Console.Write("Metadata: {0}: {1}", m.Key, m.Value);
+                    }
                 }
             }
         }
@@ -115,6 +140,7 @@ namespace Avalanche.Glacier
                 return file;
             }
 
+            SevenZipCompressor.SetLibraryPath(@"C:\Program Files\7-Zip\7z.dll");
             var compressor = new SevenZipCompressor
             {
                 ArchiveFormat = OutArchiveFormat.SevenZip,
@@ -125,33 +151,59 @@ namespace Avalanche.Glacier
             compressor.CompressStream(file, compressedStream);
             compressedStream.Position = 0;
 
+            Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine("Compressed {0} from {1} to {2}, removing {3:0.00}%", Path.GetFileName(filename), file.Length, compressedStream.Length, (float)((file.Length - compressedStream.Length) * 100) / file.Length);
+            Console.ResetColor();
+            
             return compressedStream;
         }
 
-        protected void x()
+        public void ListVault(string vaultName)
         {
-            var client = GetGlacierClient();
-            var request = new ListVaultsRequest
+            vaultName = GetTrimmedVaultName(vaultName);
+            using (var client = GetGlacierClient())
             {
-                AccountId = _accountId
-            };
-            var response = client.ListVaults(request);
-
-            Console.WriteLine("Dumping stuff");
-            foreach (var v in response.VaultList)
-            {
-                Console.WriteLine(v.VaultName);
-
-                var request2 = new DescribeVaultRequest
+                var response = client.InitiateJob(new InitiateJobRequest
                 {
-                    AccountId = _accessKeyId,
-                    VaultName = v.VaultName
-                };
-                var response2 = client.DescribeVault(request2);
+                    VaultName = vaultName,
+                    JobParameters = new JobParameters
+                    {
+                        Type = "inventory-retrieval",
+                        SNSTopic = "arn:aws:sns:us-east-1:608438481935:email"
+                    }
+                });
+                Console.WriteLine("Job ID: {0}", response.JobId);
 
+                while (true)
+                {
+                    Console.WriteLine("Polling job");
+                    var pollResult = client.DescribeJob(new DescribeJobRequest
+                    {
+                        AccountId = _accountId,
+                        JobId = response.JobId,
+                        VaultName = vaultName
+                    });
+
+                    if (pollResult.Completed)
+                    {
+                        break;
+                    }
+
+                    Console.WriteLine("Waiting 10s");
+                    Task.Delay(10000).Wait();
+                }
+
+                var result = client.GetJobOutput(new GetJobOutputRequest
+                {
+                    AccountId = _accountId,
+                    JobId = response.JobId,
+                    VaultName = vaultName
+                });
+
+                Console.WriteLine("done!");
+                var serialized = JsonConvert.SerializeObject(result);
+                File.WriteAllText(@"C:\Junk\job.txt", serialized);
             }
-            Console.WriteLine("Done");
-            Console.Read();
         }
     }
 }
