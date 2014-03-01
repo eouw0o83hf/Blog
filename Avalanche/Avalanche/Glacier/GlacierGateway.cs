@@ -34,6 +34,8 @@ namespace Avalanche.Glacier
             return new AmazonGlacierClient(_accessKeyId, _secretAccessKey, RegionEndpoint.USEast1);
         }
 
+        #region Vaults
+
         public void AssertVaultExists(string vaultName)
         {
             vaultName = GetTrimmedVaultName(vaultName);
@@ -83,6 +85,10 @@ namespace Avalanche.Glacier
             return vaultName;
         }
 
+        #endregion
+
+        #region Save
+
         public void SaveImage(PictureModel picture, string vaultName = "Pictures", bool compress = true)
         {
             SaveFile(Path.Combine(picture.AbsolutePath, picture.FileName), picture, vaultName, compress);
@@ -92,7 +98,7 @@ namespace Avalanche.Glacier
         {
             var json = JsonConvert.SerializeObject(metadata);
 
-            using (var fileStream = GetFileStream(filename, compress))
+            using (var fileStream = GetFileStream(filename, compress, json))
             {
                 using (var client = GetGlacierClient())
                 {
@@ -132,7 +138,7 @@ namespace Avalanche.Glacier
             }
         }
 
-        protected Stream GetFileStream(string filename, bool compress)
+        protected Stream GetFileStream(string filename, bool compress, string metadata, string metadataFilename = "metadata.txt")
         {
             var file = File.OpenRead(filename);
             if (!compress)
@@ -140,6 +146,23 @@ namespace Avalanche.Glacier
                 return file;
             }
 
+            var inputFileLength = file.Length;
+
+            // Setup the streams to be zipped 
+            var compressions = new Dictionary<string, Stream>();
+
+            var filenameOnly = Path.GetFileName(filename);
+            compressions[filenameOnly] = file;
+
+            var metadataStream = new MemoryStream(Encoding.Unicode.GetBytes(metadata));
+            // Make sure there's not some bizarre filename coincidence
+            if (metadataFilename == filenameOnly)
+            {
+                metadataFilename += ".actuallythemetadata.txt";
+            }
+            compressions[metadataFilename] = metadataStream;
+            
+            // Setup the compressor
             SevenZipCompressor.SetLibraryPath(@"C:\Program Files\7-Zip\7z.dll");
             var compressor = new SevenZipCompressor
             {
@@ -147,16 +170,22 @@ namespace Avalanche.Glacier
                 CompressionMode = CompressionMode.Create,
                 CompressionLevel = CompressionLevel.Ultra
             };
+
+            // Compress!
             var compressedStream = new MemoryStream();
-            compressor.CompressStream(file, compressedStream);
+            compressor.CompressStreamDictionary(compressions, compressedStream);
             compressedStream.Position = 0;
 
             Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("Compressed {0} from {1} to {2}, removing {3:0.00}%", Path.GetFileName(filename), file.Length, compressedStream.Length, (float)((file.Length - compressedStream.Length) * 100) / file.Length);
+            Console.WriteLine("Compressed {0} from {1} to {2}, removing {3:0.00}%", filenameOnly, inputFileLength, compressedStream.Length, (float)((inputFileLength - compressedStream.Length) * 100) / inputFileLength);
             Console.ResetColor();
             
             return compressedStream;
         }
+
+        #endregion
+
+        #region Load
 
         public void BeginVaultInventoryRetrieval(string vaultName, string notificationTargetTopicId)
         {
@@ -193,5 +222,7 @@ namespace Avalanche.Glacier
                 }
             }
         }
+
+        #endregion
     }
 }
