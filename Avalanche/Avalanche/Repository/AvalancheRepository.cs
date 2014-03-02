@@ -20,23 +20,23 @@ namespace Avalanche.Repository
         //-- autodetect vaults
         //-- pull vaultid
 
-
         protected readonly string _savePath;
-        protected readonly string _catalogName;
 
-        public AvalancheRepository(string savePath, string catalogName)
+        public AvalancheRepository(string savePath)
         {
             _savePath = savePath;
-            _catalogName = catalogName;
 
             AssertDatabaseExists();
         }
 
         #region Setup
 
-        protected DbConnection GetConnection()
+        protected DbConnection OpenNewConnection()
         {
-            return new SQLiteConnection(string.Format("DataSource={0};Version=3;", _savePath));
+            var connection = new SQLiteConnection(string.Format("DataSource={0};Version=3;", _savePath));
+            connection.Open();
+
+            return connection;
         }
 
         protected void AssertDatabaseExists()
@@ -48,11 +48,10 @@ namespace Avalanche.Repository
 
             SQLiteConnection.CreateFile(_savePath);
 
-            using (var connection = GetConnection())
+            using (var connection = OpenNewConnection())
             {
-                connection.Open();
-
                 var command = connection.CreateCommand();
+
                 command.CommandText = @"
 CREATE TABLE Catalogs
 (
@@ -60,13 +59,27 @@ CREATE TABLE Catalogs
         CONSTRAINT PK_Catalogs
             PRIMARY KEY 
             AUTOINCREMENT,
-    UniqueId NVARCHAR(200)
+    UniqueId NVARCHAR(200) NOT NULL
         CONSTRAINT IX_Catalogs_UniqueId
             UNIQUE
             ON CONFLICT ROLLBACK,
     FileName NVARCHAR(200) NOT NULL
 )";
+                command.ExecuteNonQuery();
 
+                command.CommandText = @"
+CREATE TABLE Vaults
+(
+    VaultId INTEGER NOT NULL
+        CONSTRAINT PK_Vaults
+            PRIMARY KEY
+            AUTOINCREMENT,
+    Name NVARCHAR(200) NOT NULL
+        CONSTRAINT IX_Vaults_UniqueId
+            UNIQUE
+            ON CONFLICT ROLLBACK,
+    Region NVARCHAR(200) NOT NULL
+)";
                 command.ExecuteNonQuery();
 
                 command.CommandText = @"
@@ -79,6 +92,9 @@ CREATE TABLE Pictures
     CatalogId INTEGER NOT NULL
         CONSTRAINT FK_Pictures_Catalogs
             REFERENCES Catalogs(CatalogId),
+    VaultId INTEGER NOT NULL
+        CONSTRAINT FK_Pictures_Vaults
+            REFERENCES Vaults(VaultId),
     FileAbsolutePath TEXT NOT NULL,
     FileCatalogPath TEXT NULL,
     FileName TEXT NOT NULL,
@@ -100,10 +116,8 @@ CREATE TABLE Pictures
 
         public bool FileIsArchived(Guid fileId)
         {
-            using (var connection = GetConnection())
+            using (var connection = OpenNewConnection())
             {
-                connection.Open();
-
                 var query = connection.CreateCommand();
                 query.CommandText = @"
 SELECT
@@ -119,21 +133,126 @@ WHERE
             }
         }
 
+        public int GetOrCreateVaultId(string name, string region)
+        {
+            using (var connection = OpenNewConnection())
+            {
+                var query = connection.CreateCommand();
+                query.CommandText = @"
+SELECT
+    v.VaultId
+FROM
+    Vaults v
+WHERE
+    v.Name = $name
+";
+                query.Parameters.Add(new SQLiteParameter("$name", name));
+                var response = query.ExecuteScalar();
+
+                if (response != null)
+                {
+                    return (int)(long)response;
+                }
+            }
+
+            return CreateVault(name, region);
+        }
+
+        public int GetOrCreateCatalogId(string filename, string uniqueId)
+        {
+            using (var connection = OpenNewConnection())
+            {
+                var query = connection.CreateCommand();
+                query.CommandText = @"
+SELECT
+    c.CatalogId
+FROM
+    Catalogs c
+WHERE
+    c.UniqueId = $uniqueId
+";
+                query.Parameters.Add(new SQLiteParameter("$uniqueId", uniqueId));
+                var response = query.ExecuteScalar();
+
+                if (response != null)
+                {
+                    return (int)(long)response;
+                }
+            }
+
+            return CreateCatalog(filename, uniqueId);
+        }
+
         #endregion
 
         #region Write
 
-        public void MarkFileAsArchived(ArchivedPictureModel model)
+        protected int CreateVault(string name, string region)
         {
-            using (var connection = GetConnection())
+            using (var connection = OpenNewConnection())
             {
-                connection.Open();
+                var command = connection.CreateCommand();
+                command.CommandText = @"
 
+INSERT INTO Vaults
+(
+    Name,
+    Region
+)
+VALUES
+(
+    $name,
+    $region
+)";
+                command.Parameters.Add(new SQLiteParameter("$name", name));
+                command.Parameters.Add(new SQLiteParameter("$region", region));
+                command.ExecuteNonQuery();
+
+                command.CommandText = @"SELECT LAST_INSERT_ROWID()";
+                var responseId = (long)command.ExecuteScalar();
+                return (int)responseId;
+            }
+        }
+
+        protected int CreateCatalog(string filename, string uniqueId)
+        {
+            using (var connection = OpenNewConnection())
+            {
+                var command = connection.CreateCommand();
+                command.CommandText = @"
+INSERT INTO Catalogs
+(
+    UniqueId,
+    FileName
+)
+VALUES
+(
+    $uniqueId,
+    $filename
+)";
+                command.Parameters.Add(new SQLiteParameter("$uniqueId", uniqueId));
+                command.Parameters.Add(new SQLiteParameter("$filename", filename));
+                command.ExecuteNonQuery();
+
+                command.CommandText = @"SELECT LAST_INSERT_ROWID()";
+                var responseId = (long)command.ExecuteScalar();
+                return (int)responseId;
+            }
+        }
+
+        public void MarkFileAsArchived(ArchivedPictureModel model, string vaultName, string vaultRegion, string catalogFilename, string catalogUniqueId)
+        {
+            var vaultId = GetOrCreateVaultId(vaultName, vaultRegion);
+            var catalogId = GetOrCreateCatalogId(catalogFilename, catalogUniqueId);
+
+            using (var connection = OpenNewConnection())
+            {
                 var insert = connection.CreateCommand();
                 insert.CommandText = @"
 INSERT INTO Pictures
     (
         CatalogId,
+        VaultId,
         FileAbsolutePath, 
         FileCatalogPath,
         FileName,
@@ -147,6 +266,7 @@ INSERT INTO Pictures
     )
 SELECT
     $catalogId,
+    $vaultId,
     $fileAbsolutePath,
     $fileCatalogPath,
     $fileName,
@@ -158,7 +278,8 @@ SELECT
     $glacierMetadata,
     $glacierTimestamp
 ";
-                //insert.Parameters.Add(new SQLiteParameter("$catalogId", 0));
+                insert.Parameters.Add(new SQLiteParameter("$catalogId", catalogId));
+                insert.Parameters.Add(new SQLiteParameter("$vaultid", vaultId));
                 insert.Parameters.Add(new SQLiteParameter("$fileAbsolutePath", model.Picture.AbsolutePath));
                 insert.Parameters.Add(new SQLiteParameter("$fileCatalogPath", model.Picture.CatalogRelativePath));
                 insert.Parameters.Add(new SQLiteParameter("$fileName", model.Picture.FileName));

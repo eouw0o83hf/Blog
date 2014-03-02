@@ -31,7 +31,7 @@ namespace Avalanche
             var output = lightroomRepo.GetAllPictures();
             var filteredPictures = output.Where(a => a.LibraryCount > 1);
 
-            var avalancheRepo = new AvalancheRepository(avalancheFileLocation, Path.GetFileName(avalancheFileLocation));
+            var avalancheRepo = new AvalancheRepository(avalancheFileLocation);
             var gateway = new GlacierGateway(AccessKeyId, SecretAccessKey, AccountId);
 
             filteredPictures = filteredPictures.Where(a => !avalancheRepo.FileIsArchived(a.FileId));
@@ -41,18 +41,8 @@ namespace Avalanche
                 Console.WriteLine("Need to archive {0}", Path.Combine(f.AbsolutePath, f.FileName));
 
                 var archive = gateway.SaveImage(f, "Pictures-Test");
-                avalancheRepo.MarkFileAsArchived(archive);
+                //avalancheRepo.MarkFileAsArchived(archive);
             }
-
-            //var gateway = new GlacierGateway(AccessKeyId, SecretAccessKey, AccountId);
-
-
-            //var repo = new Lightroom.LrRepository(@"C:\Junk\LaptopCatalog1-2.lrcat");
-            //var pictures = repo.GetAllPictures();
-
-            //gateway.AssertVaultExists("Pictures-Test");
-            //var picture = pictures.FirstOrDefault(a => a.LibraryCount > 0);
-            //gateway.SaveImage(picture, "Pictures-Test");
 
             Console.WriteLine("Done");
             Console.Read();
