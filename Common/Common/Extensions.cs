@@ -24,7 +24,19 @@ namespace Common
         {
             int result;
             if (int.TryParse(str, out result))
+            {
                 return result;
+            }
+            return null;
+        }
+
+        public static Guid? TryParseGuid(this string str)
+        {
+            Guid result;
+            if (Guid.TryParse(str, out result))
+            {
+                return result;
+            }
             return null;
         }
 

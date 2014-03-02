@@ -22,25 +22,27 @@ namespace Avalanche
         const string SecretAccessKey = @"Dr2LBzxrCODVfgFgfKRj/wAi7V2hMoNmNCSpt+kc";
         const string SnsTopicId = @"arn:aws:sns:us-east-1:608438481935:email";
 
+        const string Vault = @"Pictures-Test";
+
+        const string CatalogLocation = @"C:\LRPortable\Catalog\Landis\Landis.lrcat";
+        const string AvalancheFileLocation = @"C:\Junk\dropbox\Dropbox\Backup\Avalanche\avalanche.sqlite";
+
         public static void Main(string[] args)
         {
-            var catalogLocation = @"C:\LRPortable\Catalog\Landis\Landis.lrcat";
-            var avalancheFileLocation = @"C:\Junk\dropbox\Dropbox\Backup\Avalanche\avalanche.sqlite";
-
-            var lightroomRepo = new LightroomRepository(catalogLocation);
-            var output = lightroomRepo.GetAllPictures();
-            var filteredPictures = output.Where(a => a.LibraryCount > 1);
-
-            var avalancheRepo = new AvalancheRepository(avalancheFileLocation);
+            var lightroomRepo = new LightroomRepository(CatalogLocation);
+            var avalancheRepo = new AvalancheRepository(AvalancheFileLocation);
             var gateway = new GlacierGateway(AccessKeyId, SecretAccessKey, AccountId);
 
+            var catalogId = lightroomRepo.GetUniqueId();
+            var allPictures = lightroomRepo.GetAllPictures();
+            var filteredPictures = allPictures.Where(a => a.LibraryCount > 1);
             filteredPictures = filteredPictures.Where(a => !avalancheRepo.FileIsArchived(a.FileId));
 
-            foreach (var f in filteredPictures.Skip(1).Take(1))
+            foreach (var f in filteredPictures)
             {
                 Console.WriteLine("Need to archive {0}", Path.Combine(f.AbsolutePath, f.FileName));
 
-                var archive = gateway.SaveImage(f, "Pictures-Test");
+                var archive = gateway.SaveImage(f, Vault);
                 //avalancheRepo.MarkFileAsArchived(archive);
             }
 
