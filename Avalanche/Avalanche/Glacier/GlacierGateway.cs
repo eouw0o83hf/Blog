@@ -104,48 +104,46 @@ namespace Avalanche.Glacier
             var json = JsonConvert.SerializeObject(metadata);
 
             using (var fileStream = GetFileStream(filename, compress, json))
+            using (var client = GetGlacierClient())
             {
-                using (var client = GetGlacierClient())
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Uploading {0}, {1} bytes", filename, fileStream.Length);
+                Console.ResetColor();
+
+                var hash = TreeHashGenerator.CalculateTreeHash(fileStream);
+                fileStream.Position = 0;
+
+                UploadArchiveResponse result;
+                using (var percentUpdater = new ConsolePercentUpdater())
                 {
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Uploading {0}, {1} bytes", filename, fileStream.Length);
-                    Console.ResetColor();
+                    percentUpdater.Start();
 
-                    var hash = TreeHashGenerator.CalculateTreeHash(fileStream);
-                    fileStream.Position = 0;
-
-                    UploadArchiveResponse result;
-                    using (var percentUpdater = new ConsolePercentUpdater())
+                    result = client.UploadArchive(new UploadArchiveRequest
                     {
-                        percentUpdater.Start();
-
-                        result = client.UploadArchive(new UploadArchiveRequest
-                        {
-                            AccountId = _accountId,
-                            ArchiveDescription = json,
-                            VaultName = GetTrimmedVaultName(vaultName),
-                            Body = fileStream,
-                            Checksum = hash,
-                            StreamTransferProgress = new EventHandler<StreamTransferProgressArgs>((a, b) =>
-                                {
-                                    percentUpdater.PercentDone = b.PercentDone;
-                                })
-                        });
-                    }
-
-                    Console.WriteLine("File uploaded: {0}, archive ID: ", result.HttpStatusCode, result.ArchiveId);
-
-                    var response = new ArchiveModel
-                    {
-                        ArchiveId = result.ArchiveId,
-                        Status = result.HttpStatusCode,
-                        Location = result.Location,
-                        Metadata = JsonConvert.SerializeObject(result.ResponseMetadata),
-                        PostedTimestamp = DateTime.UtcNow
-                    };
-
-                    return response;
+                        AccountId = _accountId,
+                        ArchiveDescription = json,
+                        VaultName = GetTrimmedVaultName(vaultName),
+                        Body = fileStream,
+                        Checksum = hash,
+                        StreamTransferProgress = new EventHandler<StreamTransferProgressArgs>((a, b) =>
+                            {
+                                percentUpdater.PercentDone = b.PercentDone;
+                            })
+                    });
                 }
+
+                Console.WriteLine("File uploaded: {0}, archive ID: ", result.HttpStatusCode, result.ArchiveId);
+
+                var response = new ArchiveModel
+                {
+                    ArchiveId = result.ArchiveId,
+                    Status = result.HttpStatusCode,
+                    Location = result.Location,
+                    Metadata = JsonConvert.SerializeObject(result.ResponseMetadata),
+                    PostedTimestamp = DateTime.UtcNow
+                };
+
+                return response;
             }
         }
 

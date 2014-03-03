@@ -43,7 +43,7 @@ namespace Avalanche
                 Console.WriteLine("Need to archive {0}", Path.Combine(f.AbsolutePath, f.FileName));
 
                 var archive = gateway.SaveImage(f, Vault);
-                //avalancheRepo.MarkFileAsArchived(archive);
+                avalancheRepo.MarkFileAsArchived(archive, Vault, "", CatalogLocation, catalogId.ToString());
             }
 
             Console.WriteLine("Done");
