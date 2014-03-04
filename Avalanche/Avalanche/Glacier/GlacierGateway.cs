@@ -132,7 +132,7 @@ namespace Avalanche.Glacier
                     });
                 }
 
-                Console.WriteLine("File uploaded: {0}, archive ID: ", result.HttpStatusCode, result.ArchiveId);
+                Console.WriteLine("File uploaded: {0}, archive ID: {1}", result.HttpStatusCode, result.ArchiveId);
 
                 var response = new ArchiveModel
                 {

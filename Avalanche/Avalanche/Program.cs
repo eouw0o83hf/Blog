@@ -3,6 +3,7 @@ using Amazon.Glacier;
 using Amazon.Glacier.Model;
 using Avalanche.Glacier;
 using Avalanche.Lightroom;
+using Avalanche.Models;
 using Avalanche.Repository;
 using SevenZip;
 using System;
@@ -22,10 +23,10 @@ namespace Avalanche
         const string SecretAccessKey = @"Dr2LBzxrCODVfgFgfKRj/wAi7V2hMoNmNCSpt+kc";
         const string SnsTopicId = @"arn:aws:sns:us-east-1:608438481935:email";
 
-        const string Vault = @"Pictures-Test";
+        const string Vault = @"Pictures-Raw";
 
-        const string CatalogLocation = @"C:\LRPortable\Catalog\Landis\Landis.lrcat";
-        const string AvalancheFileLocation = @"C:\Junk\dropbox\Dropbox\Backup\Avalanche\avalanche.sqlite";
+        const string CatalogLocation = @"D:\Pictures\Catalogs\LaptopCatalog1-2.lrcat";
+        const string AvalancheFileLocation = @"X:\CloudSync\Dropbox\Backup\Avalanche\avalanche.sqlite";
 
         public static void Main(string[] args)
         {
@@ -35,15 +36,39 @@ namespace Avalanche
 
             var catalogId = lightroomRepo.GetUniqueId();
             var allPictures = lightroomRepo.GetAllPictures();
-            var filteredPictures = allPictures.Where(a => a.LibraryCount > 1);
-            filteredPictures = filteredPictures.Where(a => !avalancheRepo.FileIsArchived(a.FileId));
+            var filteredPictures = allPictures.Where(a => a.LibraryCount > 1 && !avalancheRepo.FileIsArchived(a.FileId)).ToList();
+
+            Console.WriteLine("Backing up {0} images", filteredPictures.Count);
 
             foreach (var f in filteredPictures)
             {
                 Console.WriteLine("Need to archive {0}", Path.Combine(f.AbsolutePath, f.FileName));
 
-                var archive = gateway.SaveImage(f, Vault);
-                avalancheRepo.MarkFileAsArchived(archive, Vault, "", CatalogLocation, catalogId.ToString());
+                // Try three times
+                ArchivedPictureModel archive = null;
+                for (var i = 0; i < 3; ++i)
+                {
+                    try
+                    {
+                        archive = gateway.SaveImage(f, Vault);
+                    }
+                    catch(Exception ex)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.WriteLine("Error!!! {0}", ex);
+                        Console.ResetColor();
+                        continue;
+                    }
+                    break;
+                }
+
+                if (archive == null)
+                {
+                    continue;
+                }
+
+                avalancheRepo.MarkFileAsArchived(archive, Vault, "USEast1", CatalogLocation, catalogId.ToString());
             }
 
             Console.WriteLine("Done");
