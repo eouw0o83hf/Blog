@@ -72,7 +72,7 @@ namespace Avalanche
                         continue;
                     }
 
-                    avalancheRepo.MarkFileAsArchived(archive, parameters.Glacier.VaultName, "USEast1", parameters.Avalanche.CatalongFilePath, catalogId.ToString());
+                    avalancheRepo.MarkFileAsArchived(archive, parameters.Glacier.VaultName, parameters.Glacier.Region, parameters.Avalanche.CatalongFilePath, catalogId.ToString());
                 }
 
                 _log.Info("Done");

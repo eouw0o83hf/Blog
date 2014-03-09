@@ -23,17 +23,19 @@ namespace Avalanche.Glacier
         protected readonly string _accessKeyId;
         protected readonly string _secretAccessKey;
         protected readonly string _accountId;
+        protected readonly RegionEndpoint _region;
 
         public GlacierGateway(GlacierParameters parameters)
         {
             _accessKeyId = parameters.AccessKeyId;
             _secretAccessKey = parameters.SecretAccessKey;
             _accountId = parameters.AccountId ?? "-";
+            _region = parameters.GetRegion();
         }
 
         protected IAmazonGlacier GetGlacierClient()
         {
-            return new AmazonGlacierClient(_accessKeyId, _secretAccessKey, RegionEndpoint.USEast1);
+            return new AmazonGlacierClient(_accessKeyId, _secretAccessKey, _region);
         }
 
         #region Vaults
