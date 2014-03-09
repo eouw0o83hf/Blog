@@ -6,7 +6,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Common;
 using System.IO;
 using Newtonsoft.Json;
 using SevenZip;
@@ -79,7 +78,7 @@ namespace Avalanche.Glacier
 
         protected string GetTrimmedVaultName(string vaultName)
         {
-            if (vaultName.IsBlank())
+            if (string.IsNullOrWhiteSpace(vaultName))
             {
                 throw new ArgumentException("Value cannot be null/empty", "vaultName");
             }
