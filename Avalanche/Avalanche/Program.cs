@@ -5,6 +5,7 @@ using Avalanche.Glacier;
 using Avalanche.Lightroom;
 using Avalanche.Models;
 using Avalanche.Repository;
+using Mono.Options;
 using SevenZip;
 using System;
 using System.Collections.Generic;
