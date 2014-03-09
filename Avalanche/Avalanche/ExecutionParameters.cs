@@ -1,4 +1,5 @@
-﻿using Mono.Options;
+﻿using log4net;
+using Mono.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace Avalanche
 {
-
     public class ExecutionParameters
     {
+        private static readonly ILog _log = LogManager.GetLogger(typeof(Program));
+
         public class GlacierParameters
         {
             public string AccountId { get; set; }
@@ -56,18 +58,18 @@ namespace Avalanche
                 var extra = options.Parse(args);
                 if (extra.Any())
                 {
-                    Console.WriteLine("Error: following arguments were not understood: (If you need a list, use -h for help)");
+                    _log.Error("Error: following arguments were not understood: (If you need a list, use -h for help)");
                     foreach (var e in extra)
                     {
-                        Console.WriteLine(e);
+                        _log.Error(e);
                     }
                     return null;
                 }
             }
             catch (OptionException ex)
             {
-                Console.WriteLine("Error with arguments: (If you need a list, use -h for help)");
-                Console.WriteLine(ex.Message);
+                _log.Error("Error with arguments: (If you need a list, use -h for help)");
+                _log.Error(ex.Message);
             }
 
             return context;

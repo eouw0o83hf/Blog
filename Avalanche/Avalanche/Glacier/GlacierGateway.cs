@@ -13,11 +13,14 @@ using SevenZip;
 using Avalanche.Models;
 using Amazon.Glacier.Transfer;
 using Amazon.Runtime;
+using log4net;
 
 namespace Avalanche.Glacier
 {
     public class GlacierGateway
     {
+        private static readonly ILog _log = LogManager.GetLogger(typeof(Program));
+
         protected readonly string _accessKeyId;
         protected readonly string _secretAccessKey;
         protected readonly string _accountId;
@@ -43,11 +46,11 @@ namespace Avalanche.Glacier
 
             if (exists)
             {
-                Console.WriteLine("Vault {0} exists", vaultName);
+                _log.DebugFormat("Vault {0} exists", vaultName);
                 return;
             }
 
-            Console.WriteLine("Creating vault {0}", vaultName);
+            _log.InfoFormat("Creating vault {0}", vaultName);
             using (var client = GetGlacierClient())
             {
                 var result = client.CreateVault(new CreateVaultRequest
@@ -55,7 +58,7 @@ namespace Avalanche.Glacier
                     AccountId = _accountId,
                     VaultName = vaultName
                 });
-                Console.WriteLine("Vault creation result: {0}", result.HttpStatusCode);
+                _log.DebugFormat("Vault creation result: {0}", result.HttpStatusCode);
             }
         }
 
@@ -106,9 +109,7 @@ namespace Avalanche.Glacier
             using (var fileStream = GetFileStream(filename, compress, json))
             using (var client = GetGlacierClient())
             {
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Uploading {0}, {1} bytes", filename, fileStream.Length);
-                Console.ResetColor();
+                _log.InfoFormat("Uploading {0}, {1} bytes", filename, fileStream.Length);
 
                 var hash = TreeHashGenerator.CalculateTreeHash(fileStream);
                 fileStream.Position = 0;
@@ -132,7 +133,7 @@ namespace Avalanche.Glacier
                     });
                 }
 
-                Console.WriteLine("File uploaded: {0}, archive ID: {1}", result.HttpStatusCode, result.ArchiveId);
+                _log.InfoFormat("File uploaded: {0}, archive ID: {1}", result.HttpStatusCode, result.ArchiveId);
 
                 var response = new ArchiveModel
                 {
@@ -185,9 +186,7 @@ namespace Avalanche.Glacier
             compressor.CompressStreamDictionary(compressions, compressedStream);
             compressedStream.Position = 0;
 
-            Console.ForegroundColor = ConsoleColor.Yellow;
-            Console.WriteLine("Compressed {0} from {1} to {2}, removing {3:0.00}%", filenameOnly, inputFileLength, compressedStream.Length, (float)((inputFileLength - compressedStream.Length) * 100) / inputFileLength);
-            Console.ResetColor();
+            _log.InfoFormat("Compressed {0} from {1} to {2}, removing {3:0.00}%", filenameOnly, inputFileLength, compressedStream.Length, (float)((inputFileLength - compressedStream.Length) * 100) / inputFileLength);
             
             return compressedStream;
         }
@@ -210,7 +209,7 @@ namespace Avalanche.Glacier
                         SNSTopic = notificationTargetTopicId
                     }
                 });
-                Console.WriteLine("Job ID: {0}", response.JobId);
+                _log.DebugFormat("Job ID: {0}", response.JobId);
             }
         }
 
