@@ -8,6 +8,7 @@ using Avalanche.Repository;
 using log4net;
 using log4net.Config;
 using Mono.Options;
+using Newtonsoft.Json;
 using SevenZip;
 using System;
 using System.Collections.Generic;
@@ -23,30 +24,21 @@ namespace Avalanche
     public class Program
     {
         private static readonly ILog _log = LogManager.GetLogger(typeof(Program));
-
-        const string AccountId = "-";
-        const string AccessKeyId = @"AKIAJYQTERPFN4YKLG5A";
-        const string SecretAccessKey = @"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";
-        const string SnsTopicId = @"arn:aws:sns:us-east-1:608438481935:email";
-
-        const string Vault = @"Pictures-Raw";
-
-        const string CatalogLocation = @"D:\Pictures\Catalogs\LaptopCatalog1-2.lrcat";
-        const string AvalancheFileLocation = @"X:\CloudSync\Dropbox\Backup\Avalanche\avalanche.sqlite";
-
+        
         public static void Main(string[] args)
         {
-            var previousExecutionState = ThreadState.SetThreadExecutionState(ThreadState.ES_CONTINUOUS | ThreadState.ES_SYSTEM_REQUIRED);
-            if (previousExecutionState == 0)
+            var parameters = GetParameters(args);
+            if (parameters == null)
             {
-                _log.Warn("Couldn't set thread state; the application may be unable to prevent the computer's going to sleep.");
+                _log.Fatal("No config file could be found in the default location (my documents) and none was specified in the parameters.");
+                Environment.Exit(0);
             }
 
-            try
+            using (var insomniac = new Insomniac())
             {
-                var lightroomRepo = new LightroomRepository(CatalogLocation);
-                var avalancheRepo = new AvalancheRepository(AvalancheFileLocation);
-                var gateway = new GlacierGateway(AccessKeyId, SecretAccessKey, AccountId);
+                var lightroomRepo = new LightroomRepository(parameters.Avalanche.CatalongFilePath);
+                var avalancheRepo = new AvalancheRepository(parameters.Avalanche.AvalancheFilePath);
+                var gateway = new GlacierGateway(parameters.Glacier);
 
                 var catalogId = lightroomRepo.GetUniqueId();
                 var allPictures = lightroomRepo.GetAllPictures();
@@ -65,7 +57,7 @@ namespace Avalanche
                     {
                         try
                         {
-                            archive = gateway.SaveImage(f, Vault);
+                            archive = gateway.SaveImage(f, parameters.Glacier.VaultName);
                         }
                         catch (Exception ex)
                         {
@@ -80,25 +72,37 @@ namespace Avalanche
                         continue;
                     }
 
-                    avalancheRepo.MarkFileAsArchived(archive, Vault, "USEast1", CatalogLocation, catalogId.ToString());
+                    avalancheRepo.MarkFileAsArchived(archive, parameters.Glacier.VaultName, "USEast1", parameters.Avalanche.CatalongFilePath, catalogId.ToString());
                 }
 
                 _log.Info("Done");
                 Console.Read();
             }
-            finally
-            {
-                // Restore previous state
-                ThreadState.SetThreadExecutionState(previousExecutionState);
-            }
         }
 
-        static class ThreadState
+        static ExecutionParameters GetParameters(string[] args)
         {
-            [DllImport("kernel32.dll")]
-            public static extern uint SetThreadExecutionState(uint esFlags);
-            public const uint ES_CONTINUOUS = 0x80000000;
-            public const uint ES_SYSTEM_REQUIRED = 0x00000001;
+            var parameters = ExecutionParameters.Initialize(args);
+
+            if (args == null || args.Length == 0)
+            {
+                var myDocuments = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+                var defaultPath = Path.Combine(myDocuments, "avalanche.json");
+                if (File.Exists(defaultPath))
+                {
+                    parameters = JsonConvert.DeserializeObject<ExecutionParameters>(File.ReadAllText(defaultPath));
+                }
+            }
+            else if (parameters.ConfigFileLocation != null)
+            {
+                if (!File.Exists(parameters.ConfigFileLocation))
+                {
+                    _log.FatalFormat("Couldn't find config file specified at location {0}", parameters.ConfigFileLocation);
+                }
+                parameters = JsonConvert.DeserializeObject<ExecutionParameters>(File.ReadAllText(parameters.ConfigFileLocation));
+            }
+
+            return parameters;
         }
     }
 }

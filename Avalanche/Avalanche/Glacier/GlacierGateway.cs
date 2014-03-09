@@ -24,11 +24,11 @@ namespace Avalanche.Glacier
         protected readonly string _secretAccessKey;
         protected readonly string _accountId;
 
-        public GlacierGateway(string accessKeyId, string secretAccessKey, string accountId = "-")
+        public GlacierGateway(GlacierParameters parameters)
         {
-            _accessKeyId = accessKeyId;
-            _secretAccessKey = secretAccessKey;
-            _accountId = accountId;
+            _accessKeyId = parameters.AccessKeyId;
+            _secretAccessKey = parameters.SecretAccessKey;
+            _accountId = parameters.AccountId ?? "-";
         }
 
         protected IAmazonGlacier GetGlacierClient()

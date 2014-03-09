@@ -82,6 +82,7 @@
     <Compile Include="Extensions.cs" />
     <Compile Include="Glacier\ConsolePercentUpdater.cs" />
     <Compile Include="Glacier\GlacierGateway.cs" />
+    <Compile Include="Insomniac.cs" />
     <Compile Include="Lightroom\LightroomRepository.cs" />
     <Compile Include="Models\ArchivedPictureModel.cs" />
     <Compile Include="Models\ArchiveModel.cs" />

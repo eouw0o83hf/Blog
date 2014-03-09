@@ -11,26 +11,11 @@ namespace Avalanche
     public class ExecutionParameters
     {
         private static readonly ILog _log = LogManager.GetLogger(typeof(Program));
-
-        public class GlacierParameters
-        {
-            public string AccountId { get; set; }
-            public string AccessKeyId { get; set; }
-            public string SecretAccessKey { get; set; }
-
-            public string SnsTopicId { get; set; }
-
-            public string VaultName { get; set; }
-        }
-
-        public class AvalancheParameters
-        {
-            public string CatalongFilePath { get; set; }
-            public string AvalancheFilePath { get; set; }
-        }
-
+        
         public GlacierParameters Glacier { get; set; }
         public AvalancheParameters Avalanche { get; set; }
+
+        public string ConfigFileLocation { get; set; }
 
         public static ExecutionParameters Initialize(string[] args)
         {
@@ -46,10 +31,11 @@ namespace Avalanche
                 { "gk|glacier-key", "Access Key ID for Amazon Glacier", a => context.Glacier.AccessKeyId = a },
                 { "gs|glacier-secret", "Secret Access Key for Amazon Glacier", a => context.Glacier.SecretAccessKey = a },
                 { "ga|glacier-account", "Account ID for Amazon Glacier", a => context.Glacier.AccountId = a },
-                { "gs|glacier-sns-topic", "SNS Topic ID for Amazon Glacier Job", a => context.Glacier.SnsTopicId = a },
+                { "gsns|glacier-sns-topic", "SNS Topic ID for Amazon Glacier Job", a => context.Glacier.SnsTopicId = a },
                 { "gv|glacier-vault", "Vault name for Amazon Glacier", a => context.Glacier.VaultName = a },
                 { "lc|lightroom-catalog", "Path/File for Lightroom Catalog", a => context.Avalanche.CatalongFilePath = a },
                 { "ad|avalanche-db", "Path/File for Avalanche DB", a => context.Avalanche.AvalancheFilePath = a },
+                { "c|config-file", "Path/File for Avalanche Config File", a => context.ConfigFileLocation = a },
                 { "h|help", "Help", a => showHelp = a != null }
             };
 
@@ -70,9 +56,27 @@ namespace Avalanche
             {
                 _log.Error("Error with arguments: (If you need a list, use -h for help)");
                 _log.Error(ex.Message);
+                return null;
             }
 
             return context;
         }
+    }
+
+    public class GlacierParameters
+    {
+        public string AccountId { get; set; }
+        public string AccessKeyId { get; set; }
+        public string SecretAccessKey { get; set; }
+
+        public string SnsTopicId { get; set; }
+
+        public string VaultName { get; set; }
+    }
+
+    public class AvalancheParameters
+    {
+        public string CatalongFilePath { get; set; }
+        public string AvalancheFilePath { get; set; }
     }
 }
