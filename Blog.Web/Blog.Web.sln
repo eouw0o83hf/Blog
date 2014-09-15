@@ -16,33 +16,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeExamples", "CodeExamples\CodeExamples.csproj", "{75165FA7-86B8-47CA-823A-3CB95077501D}"
 EndProject
 Global
-	GlobalSection(TeamFoundationVersionControl) = preSolution
-		SccNumberOfProjects = 8
-		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
-		SccTeamFoundationServer = https://eouw0o83hf.visualstudio.com/defaultcollection
-		SccLocalPath0 = .
-		SccProjectUniqueName1 = Blog.Web\\Blog.Web.csproj
-		SccProjectName1 = Blog.Web
-		SccLocalPath1 = Blog.Web
-		SccProjectUniqueName2 = Blog.Data\\Blog.Data.csproj
-		SccProjectName2 = Blog.Data
-		SccLocalPath2 = Blog.Data
-		SccProjectUniqueName3 = Blog.Models\\Blog.Models.csproj
-		SccProjectName3 = Blog.Models
-		SccLocalPath3 = Blog.Models
-		SccProjectUniqueName4 = Blog.Service\\Blog.Service.csproj
-		SccProjectName4 = Blog.Service
-		SccLocalPath4 = Blog.Service
-		SccProjectUniqueName5 = ..\\Common\\Common\\Common.csproj
-		SccProjectName5 = ../Common/Common
-		SccLocalPath5 = ..\\Common\\Common
-		SccProjectUniqueName6 = ..\\Common\\DbSync\\DbSync.csproj
-		SccProjectName6 = ../Common/DbSync
-		SccLocalPath6 = ..\\Common\\DbSync
-		SccProjectUniqueName7 = CodeExamples\\CodeExamples.csproj
-		SccProjectName7 = CodeExamples
-		SccLocalPath7 = CodeExamples
-	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
 		Release|Any CPU = Release|Any CPU
