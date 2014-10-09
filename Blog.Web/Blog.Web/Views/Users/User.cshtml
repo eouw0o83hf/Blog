@@ -3,7 +3,7 @@
     ViewBag.Title += "Admin: User";
     Layout = "~/Views/Shared/Global.cshtml";
 
-    var permissions = (ICollection<Blog.Models.PermissionEnum>)ViewData[Blog.Web.Controllers.UsersController.VIEWDATA_PERMISSIONS];
+    var permissions = (ICollection<Blog.Models.PermissionEnum>)ViewData[Blog.Web.Controllers.UsersController.ViewdataPermissions];
 }
 <div class="admin-wrapper">
     <h2>@Html.ActionLink("Admin", "Index") » @Html.ActionLink("List", "Users") »  @Model.Email</h2>
