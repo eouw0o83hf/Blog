@@ -233,6 +233,7 @@
     <Compile Include="ViewModels\Admin\BlogViewModel.cs" />
     <Compile Include="ViewModels\Admin\EditPostViewModel.cs" />
     <Compile Include="ViewModels\Admin\PostListViewModel.cs" />
+    <Compile Include="ViewModels\Authentication\DirectLoginViewModel.cs" />
     <Compile Include="ViewModels\Authentication\LoginViewModel.cs" />
     <Compile Include="ViewModels\Blog\Page.cs" />
     <Compile Include="ViewModels\Blog\Permalink.cs" />
@@ -283,6 +284,7 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Users\List.cshtml" />
     <Content Include="Views\Users\User.cshtml" />
+    <Content Include="Views\Authentication\DirectLogin.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?><Database Name="eouw0o83hf" Class="BlogDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
-  <Connection Mode="AppSettings" ConnectionString="Data Source=(LocalDB)\v11.0;Initial Catalog=eouw0o83hf;Integrated Security=True" SettingsObjectName="Blog.Data.Properties.Settings" SettingsPropertyName="eouw0o83hfConnectionString" Provider="System.Data.SqlClient" />
+  <Connection Mode="AppSettings" ConnectionString="Data Source=localhost;Initial Catalog=eouw0o83hf;Integrated Security=True" SettingsObjectName="Blog.Data.Properties.Settings" SettingsPropertyName="eouw0o83hfConnectionString1" Provider="System.Data.SqlClient" />
   <Table Name="dbo.Blogs" Member="Blogs">
     <Type Name="Blog">
       <Column Name="BlogId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
@@ -31,20 +31,6 @@
       <Association Name="Permission_UserPermission" Member="UserPermissions" ThisKey="PermissionId" OtherKey="PermissionId" Type="UserPermission" />
     </Type>
   </Table>
-  <Table Name="dbo.Users" Member="Users">
-    <Type Name="User">
-      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
-      <Column Name="IdentityProviderId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
-      <Column Name="Upn" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
-      <Column Name="Email" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="Handle" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
-      <Column Name="TimeZoneOffset" Type="System.DateTimeOffset" DbType="DateTimeOffset" CanBeNull="true" />
-      <Column Name="EmailIsVerified" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
-      <Association Name="User_UserPermission" Member="UserPermissions" ThisKey="UserId" OtherKey="UserId" Type="UserPermission" />
-      <Association Name="User_EmailVerification" Member="EmailVerifications" ThisKey="UserId" OtherKey="UserId" Type="EmailVerification" />
-      <Association Name="IdentityProvider_User" Member="IdentityProvider" ThisKey="IdentityProviderId" OtherKey="IdentityProviderId" Type="IdentityProvider" IsForeignKey="true" />
-    </Type>
-  </Table>
   <Table Name="dbo.EmailVerifications" Member="EmailVerifications">
     <Type Name="EmailVerification">
       <Column Name="Id" Type="System.Guid" DbType="UniqueIdentifier NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
@@ -67,6 +53,22 @@
       <Column Name="PublishDate" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
       <Column Name="IsDraft" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
       <Association Name="Blog_Post" Member="Blog" ThisKey="BlogId" OtherKey="BlogId" Type="Blog" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="dbo.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="UserId" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="IdentityProviderId" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Upn" Type="System.String" DbType="NVarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="Handle" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="TimeZoneOffset" Type="System.DateTimeOffset" DbType="DateTimeOffset" CanBeNull="true" />
+      <Column Name="EmailIsVerified" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Column Name="PasswordSalt" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Column Name="PasswordHash" Type="System.String" DbType="NVarChar(MAX)" CanBeNull="true" />
+      <Association Name="User_UserPermission" Member="UserPermissions" ThisKey="UserId" OtherKey="UserId" Type="UserPermission" />
+      <Association Name="User_EmailVerification" Member="EmailVerifications" ThisKey="UserId" OtherKey="UserId" Type="EmailVerification" />
+      <Association Name="IdentityProvider_User" Member="IdentityProvider" ThisKey="IdentityProviderId" OtherKey="IdentityProviderId" Type="IdentityProvider" IsForeignKey="true" />
     </Type>
   </Table>
 </Database>

@@ -1,4 +1,5 @@
-﻿using Blog.Data;
+﻿using System.Security.Cryptography;
+using Blog.Data;
 using Blog.Models;
 using Common;
 using DotNetOpenAuth.OpenId.Extensions.SimpleRegistration;
@@ -166,10 +167,54 @@ namespace Blog.Service
             return GetUser(dbUser.UserId);
         }
 
+        public UserModel PasswordValidate(string upn, string password)
+        {
+            var user = BlogDb.Users.SingleOrDefault(a => a.Upn == upn);
+            if (user == null || user.PasswordSalt.IsBlank() || user.PasswordHash.IsBlank())
+            {
+                return null;
+            }
+
+            var salt = FromHexString(user.PasswordSalt);
+            
+            byte[] result;
+            var inputBytes = Encoding.UTF8.GetBytes(password);
+            using (var pbkdf2 = new Rfc2898DeriveBytes(inputBytes, salt, 10000))
+            {
+                result = pbkdf2.GetBytes(128);
+            }
+
+            var hashed = ToHexString(result);
+
+            if (hashed.Equals(user.PasswordHash, StringComparison.InvariantCultureIgnoreCase))
+            {
+                return GetUser(user);
+            }
+
+            return null;
+        }
+
+        private static string ToHexString(byte[] bytes)
+        {
+            return BitConverter.ToString(bytes).Replace("-", "");
+        }
+
+        private static byte[] FromHexString(string str)
+        {
+            return Enumerable.Range(0, str.Length)
+                             .Where(a => a % 2 == 0)
+                             .Select(a => Convert.ToByte(str.Substring(a, 2), 16))
+                             .ToArray();
+        }
+
         public UserModel GetUser(int userId)
         {
             var dbUser = BlogDb.Users.FirstOrDefault(a => a.UserId == userId);
+            return GetUser(dbUser);
+        }
 
+        private static UserModel GetUser(User dbUser)
+        {
             if (dbUser == null)
             {
                 return null;

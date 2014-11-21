@@ -25,6 +25,7 @@ namespace Blog.Web
         public const string Admin = "Admin";
 
         public const string Login = "Login";
+        public const string DirectLogin = "DirectLogin";
         public const string Logout = "Logout";
     }
 
@@ -94,6 +95,12 @@ namespace Blog.Web
                 name: RouteNames.Login,
                 url: "login",
                 defaults: new { controller = "Authentication", action = "Login" }
+            );
+
+            routes.MapRoute(
+                name: RouteNames.DirectLogin,
+                url: "directlogin",
+                defaults: new { controller = "Authentication", action = "Directlogin" }
             );
 
             routes.MapRoute(

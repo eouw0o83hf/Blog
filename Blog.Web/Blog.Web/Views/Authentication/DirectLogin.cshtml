@@ -1,0 +1,27 @@
+﻿@model Blog.Web.ViewModels.Authentication.DirectLoginViewModel
+@{
+    ViewBag.Title = "Direct Login";
+    Layout = "~/Views/Shared/Global.cshtml";
+}
+@using (Html.BeginForm())
+{
+    <table>
+        <tr>
+            <td>
+                @Html.LabelFor(a => a.Upn, "UPN")
+            </td>
+            <td>
+                @Html.TextBoxFor(a => a.Upn)
+            </td>
+        </tr>
+        <tr>
+            <td>
+                @Html.LabelFor(a => a.Password, "Password")
+            </td>
+            <td>
+                @Html.PasswordFor(a => a.Password)
+            </td>
+        </tr>
+    </table>
+    <button type="submit">Submit</button>
+}

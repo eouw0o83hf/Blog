@@ -1,4 +1,5 @@
-﻿using DotNetOpenAuth.OpenId;
+﻿using Blog.Service;
+using DotNetOpenAuth.OpenId;
 using DotNetOpenAuth.OpenId.Extensions.SimpleRegistration;
 using DotNetOpenAuth.OpenId.RelyingParty;
 using DotNetOpenAuth.Messaging;
@@ -52,15 +53,7 @@ namespace Blog.Web.Controllers
                 {
                     case AuthenticationStatus.Authenticated:
                         var user = BlogService.GetOrCreateUser(response);
-                        var blogUser = new BlogUser
-                        {
-                            Email = user.Email,
-                            Roles = user.Permissions.Select(a => a.ToString()).ToList(),
-                            UserId = user.UserId,
-                            Upn = user.Upn
-                        };
-                        SetUserToContext(HttpContext.ApplicationInstance.Context, blogUser);
-                        return RedirectToRoute(RouteNames.Main);
+                        return FinishAuthentication(user);
 
                     case AuthenticationStatus.Canceled:
                         throw new Exception("Login was cancelled at the provider");
@@ -111,20 +104,34 @@ namespace Blog.Web.Controllers
             return RedirectToRoute(RouteNames.Main);
         }
 
-        [HttpGet, Authorize]
-        public ActionResult MakeMeAnAdmin(Guid guid)
+        [HttpGet, RequireHttps]
+        public ActionResult DirectLogin()
         {
-            if (guid == Guid.Parse(ConfigurationManager.AppSettings["MakeMeAnAdminGuid"]))
-            {
-                if (BlogUser == null || BlogUser.UserId == null)
-                {
-                    throw new HttpException(404, "Not found");
-                }
-                BlogService.GrantUserPermission(BlogUser.UserId.Value, PermissionEnum.Admin);
-            }
+            return View(new DirectLoginViewModel());
+        }
 
-            // Make sure we logout so that the saved state will get repopulated
-            return RedirectToRoute(RouteNames.Logout);
+        [HttpPost, RequireHttps]
+        public ActionResult DirectLogin(DirectLoginViewModel model)
+        {
+            var user = BlogService.PasswordValidate(model.Upn, model.Password);
+            if (user == null)
+            {
+                return RedirectToAction("DirectLogin");
+            }
+            return FinishAuthentication(user);
+        }
+
+        private ActionResult FinishAuthentication(UserModel user)
+        {
+            var blogUser = new BlogUser
+            {
+                Email = user.Email,
+                Roles = user.Permissions.Select(a => a.ToString()).ToList(),
+                UserId = user.UserId,
+                Upn = user.Upn
+            };
+            SetUserToContext(HttpContext.ApplicationInstance.Context, blogUser);
+            return RedirectToRoute(RouteNames.Main);
         }
     }
 }
