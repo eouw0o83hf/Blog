@@ -45,6 +45,7 @@ namespace Blog.Service
         #region Authentication and Authorization
 
         UserModel GetOrCreateUser(IAuthenticationResponse openIdResponse);
+        UserModel PasswordValidate(string upn, string password);
         UserModel GetUser(int userId);
         ICollection<UserModel> GetAllUsers();
 

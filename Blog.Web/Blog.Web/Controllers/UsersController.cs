@@ -44,8 +44,9 @@ namespace Blog.Web.Controllers
             return View(result);
         }
 
+        [ActionName("User")]
         [HttpGet, BlogAuthorize(PermissionEnum.Admin)]
-        public ActionResult User(int userId)
+        public ActionResult UserAction(int userId)
         {
             var user = BlogService.GetUser(userId);
             var result = new UserViewModel
@@ -59,18 +60,19 @@ namespace Blog.Web.Controllers
             return View(result);
         }
 
+        [ActionName("User")]
         [HttpPost, BlogAuthorize(PermissionEnum.Admin)]
-        public ActionResult User(UserViewModel model)
+        public ActionResult UserAction(UserViewModel model)
         {
-            return RedirectToAction("Index");
+            return RedirectToAction("List");
         }
 
-        public const string VIEWDATA_PERMISSIONS = "VIEWDATA_PERMISSIONS";
+        public const string ViewdataPermissions = "VIEWDATA_PERMISSIONS";
         protected override void CramViewData()
         {
             base.CramViewData();
 
-            ViewData[VIEWDATA_PERMISSIONS] = Enum.GetValues(typeof(PermissionEnum)).Cast<PermissionEnum>().ToList();
+            ViewData[ViewdataPermissions] = Enum.GetValues(typeof(PermissionEnum)).Cast<PermissionEnum>().ToList();
         }
     }
 }
