@@ -49,6 +49,8 @@ namespace Blog.Service
         UserModel GetUser(int userId);
         ICollection<UserModel> GetAllUsers();
 
+        bool ChangePassword(int userId, string oldPassword, string newPassword);
+
         void GrantUserPermission(int userId, PermissionEnum permission);
         Response UpdateEmail(int userId, string emailAddress, string pickupUrl);
         void SendEmailPickupInvite(int userId, string pickupUrl);
