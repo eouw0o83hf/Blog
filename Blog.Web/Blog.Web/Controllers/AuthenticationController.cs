@@ -104,13 +104,13 @@ namespace Blog.Web.Controllers
             return RedirectToRoute(RouteNames.Main);
         }
 
-        [HttpGet, RequireHttps]
+        [HttpGet, RequireHttpsNonDebug]
         public ActionResult DirectLogin()
         {
             return View(new DirectLoginViewModel());
         }
 
-        [HttpPost, RequireHttps]
+        [HttpPost, RequireHttpsNonDebug]
         public ActionResult DirectLogin(DirectLoginViewModel model)
         {
             var user = BlogService.PasswordValidate(model.Upn, model.Password);

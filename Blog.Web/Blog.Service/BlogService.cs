@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Security;
+using System.Security.Cryptography;
 using Blog.Data;
 using Blog.Models;
 using Common;
@@ -175,23 +176,55 @@ namespace Blog.Service
                 return null;
             }
 
-            var salt = FromHexString(user.PasswordSalt);
-            
-            byte[] result;
-            var inputBytes = Encoding.UTF8.GetBytes(password);
-            using (var pbkdf2 = new Rfc2898DeriveBytes(inputBytes, salt, 10000))
-            {
-                result = pbkdf2.GetBytes(128);
-            }
-
-            var hashed = ToHexString(result);
-
-            if (hashed.Equals(user.PasswordHash, StringComparison.InvariantCultureIgnoreCase))
+            if(ValidatePassword(user, password))
             {
                 return GetUser(user);
             }
 
             return null;
+        }
+
+        private static bool ValidatePassword(User user, string password)
+        {
+            var hashed = Hash(password, user.PasswordSalt);
+            return hashed.Equals(user.PasswordHash, StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        private static string Hash(string password, string salt)
+        {
+            byte[] result;
+            var saltBytes = FromHexString(salt);
+            var inputBytes = Encoding.UTF8.GetBytes(password);
+            using (var pbkdf2 = new Rfc2898DeriveBytes(inputBytes, saltBytes, 10000))
+            {
+                result = pbkdf2.GetBytes(128);
+            }
+
+            return ToHexString(result);
+        }
+
+        private static string GetNewSalt()
+        {
+            var salt = new byte[32];
+            using (var saltShaker = new RNGCryptoServiceProvider())
+            {
+                saltShaker.GetNonZeroBytes(salt);
+            }
+            return ToHexString(salt);
+        }
+
+        public bool ChangePassword(int userId, string oldPassword, string newPassword)
+        {
+            var user = BlogDb.Users.Single(a => a.UserId == userId);
+            if (!ValidatePassword(user, oldPassword))
+            {
+                return false;
+            }
+
+            user.PasswordSalt = GetNewSalt();
+            user.PasswordHash = Hash(newPassword, user.PasswordSalt);
+            BlogDb.SubmitChanges();
+            return true;
         }
 
         private static string ToHexString(byte[] bytes)

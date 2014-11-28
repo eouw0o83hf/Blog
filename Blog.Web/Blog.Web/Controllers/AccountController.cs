@@ -119,6 +119,46 @@ namespace Blog.Web.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet, Authorize, RequireHttpsNonDebug]
+        public ActionResult ChangePassword()
+        {
+            return View(new ChangePasswordViewModel());
+        }
+
+        [HttpPost, Authorize, RequireHttpsNonDebug]
+        public ActionResult ChangePassword(ChangePasswordViewModel viewModel)
+        {
+            var notification = new Notification();
+
+            TryValidateModel(viewModel);
+
+            if (viewModel.NewPassword != viewModel.ConfirmNewPassword)
+            {
+                ModelState.AddModelError("ConfirmNewPassword", "Passwords must match");
+            }
+
+            if (!ModelState.IsValid)
+            {
+                notification.Type = NotificationType.Error;
+                notification.Subject = "Password Change Failed";
+                notification.Message = "Inputs not acceptable";
+            }
+            else if (BlogService.ChangePassword(UserId, viewModel.OldPassword, viewModel.NewPassword))
+            {
+                notification.Type = NotificationType.Confirmation;
+                notification.Subject = "Password Successfully Changed";
+            }
+            else
+            {
+                notification.Type = NotificationType.Error;
+                notification.Subject = "Password Change Failed";
+                notification.Message = "Old password did not match";
+            }
+
+            TempData.StoreNotification(notification);
+            return View(new ChangePasswordViewModel());
+        }
+
         public void SendVerificationEmail()
         {
             //var from = new MailAddress("noreply@eouw0o83hf.com");
