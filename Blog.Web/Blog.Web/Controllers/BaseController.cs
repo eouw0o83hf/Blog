@@ -1,4 +1,5 @@
-﻿using Blog.Models;
+﻿using System.Security;
+using Blog.Models;
 using Blog.Service;
 using Blog.Web.ViewModels.Shared;
 using MarkdownSharp;
@@ -34,6 +35,19 @@ namespace Blog.Web.Controllers
         #endregion
 
         #region Authentication
+
+        protected int UserId 
+        {
+            get
+            {
+                var blogUser = User as BlogUser;
+                if (blogUser != null && blogUser.UserId.HasValue)
+                {
+                    return blogUser.UserId.Value;
+                }
+                throw new SecurityException("Attempted to get user ID without authorization having occurred.");
+            }
+        }
 
         protected static void SetUserFromCookie(HttpContext context)
         {

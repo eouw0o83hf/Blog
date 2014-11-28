@@ -144,7 +144,7 @@ p {
         color: #d02020;
     }
 
-input[type="text"], select {
+input[type="text"], input[type="password"], select {
     padding: 6px;
     width: 300px;
 }
@@ -157,4 +157,13 @@ textarea {
 
 .warning {
     color: #f00000;
+}
+
+.input-validation-error {
+    background-color: #fff6f6;
+    border: 1px solid #ff0000;
+}
+
+.field-validation-error {
+    color: #d02020;
 }
