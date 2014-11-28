@@ -223,6 +223,7 @@ namespace Blog.Service
 
             user.PasswordSalt = GetNewSalt();
             user.PasswordHash = Hash(newPassword, user.PasswordSalt);
+            BlogDb.SubmitChanges();
             return true;
         }
 
