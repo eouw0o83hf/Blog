@@ -18,17 +18,6 @@
 </head>
 <body>
     <div id="Wrapper">
-        <div id="Menu" class="outer-container">
-            <ul>
-            @foreach(var l in ViewData.Get<ICollection<LinkViewModel>>("MenuLinks"))
-            {
-                <li>
-                    <a href="@l.Url">@l.LinkText</a>
-                </li>
-            }
-            @RenderSection("MenuLinks", false)
-            </ul>
-        </div>
         <div id="Content">
             @{
                 var notification = TempData.GetNotification();                        
@@ -41,6 +30,17 @@
                 </div>
             }
             @RenderBody()
+        </div>
+        <div id="Menu" class="outer-container">
+            <ul>
+            @foreach(var l in ViewData.Get<ICollection<LinkViewModel>>("MenuLinks"))
+            {
+                <li>
+                    <a href="@l.Url">@l.LinkText</a>
+                </li>
+            }
+            @RenderSection("MenuLinks", false)
+            </ul>
         </div>
     </div>
     <!-- Make prettify work with markdown -->

@@ -1,5 +1,5 @@
 ﻿body {
-    background-color: #f3f3f9;
+    background-color: #fcfcfc;
     font-family: "Segoe UI", Calibri, Helvetica Neue, Arial,Verdana, sans-serif;
     padding: 0;
     margin: 0;
@@ -7,27 +7,28 @@
     line-height: 23px;
 }
 
+a {
+    text-decoration: none;
+}
+
 #Wrapper {
-    width: 1360px;
     margin: 10px auto 0 auto;
 }
 
 #Menu {
-    margin: 0 20px 0 0;
     background-color: #fcfcfc;
     color: #0f0f0f;
     padding: 15px 20px;
-    width: 220px;
-    float: left;
+    clear: both;
 }
 
 #Content {
-    width: 1080px;
+    width: 100%;
     float: left;
 }
 
 .post-wrapper {
-    margin: 0 0 30px 0;
+    margin: 0 0 80px 0;
     background-color: #fcfcfc;
     color: #0f0f0f;
     padding: 20px;
@@ -50,8 +51,7 @@
 
 h1 {
     font-weight: bold;
-    font-size: 22px;
-    text-decoration: underline;
+    font-size: 32px;
     margin: 0 0 5px 0;
 }
 
@@ -71,6 +71,11 @@ h3 {
     list-style: none;
     margin: 0;
     padding: 0;
+}
+
+#Menu li {
+    display: inline;
+    margin: 0 50px 0 0;
 }
 
 pre, pre.prettyprint {
